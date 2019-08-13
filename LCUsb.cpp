@@ -12,14 +12,10 @@
 
 #include <cmath>
 
-using freq_t = std::pair<bool, double>;
-
 namespace
 {
   typedef __int128 int128_t;
   typedef unsigned __int128 uint128_t;
-
-  static constexpr double MINFREQ = 16000.0;
 
   hid_device* _device;
 
@@ -27,10 +23,11 @@ namespace
   {
     enum BIT : uint128_t
     {
-      CONNECTED = ( 1 << 0 ),
+      C = ( 1 << 0 ),  //CONNECTED
       NEWSTATUS = ( 1 << 1 ),
       NEWCALIBRATION = ( 1 << 2 ),
-      READCALIBRATION = ( 1 << 3 )
+      READCALIBRATION = ( 1 << 3 ),
+      BSC = ( 1 << 4 )  //BEGINSIMPLECALIBARTION
     };
 
     TStatus( void ) : status{} {}
@@ -96,9 +93,6 @@ namespace
 
   uint8_t version{};
 
-  std::pair<uint16_t, uint32_t> C{};  // first = C, second = L
-  std::pair<uint16_t, uint32_t> L{};
-
   static constexpr uint8_t RELAY_BIT = ( 1 << 7 );
   static constexpr uint8_t PCPROGRAMRUN_BIT = ( 1 << 6 );
 
@@ -127,19 +121,32 @@ namespace
   // frequencies
 
   Kernel::TRingBufferStatistic<double, 256> rb;
-
-  // async call result
-  // true if valid
-  static constexpr size_t M = 4;
-  std::future<freq_t> last[ M ];
-  size_t i{};
   double frequency;
 }  // namespace
 
-//static freq_t end( hid_device*, bool, double );
-namespace
+using callback_t = void ( * )( uint8_t, double );
+void dummy( uint8_t, double ) {}
+callback_t callback{ &dummy };
+
+struct TExecute
 {
-  inline void freq_( void )
+ private:
+  std::pair<uint16_t, uint32_t> C{};  // first = C, second = L
+  std::pair<uint16_t, uint32_t> L{};
+
+  static constexpr double MINFREQ = 16000.0;
+
+  inline bool need_ref_get( void )
+  {
+    return ( status.get<TStatus::BIT::C>() && status.get<TStatus::BIT::READCALIBRATION>() );
+  }
+
+  inline bool need_ref_set( void )
+  {
+    return ( status.get<TStatus::BIT::C>() && status.get<TStatus::BIT::NEWCALIBRATION>() );
+  }
+
+  inline void _hid_SendStatus( void )
   {
     if ( _device == nullptr )
     {
@@ -151,32 +158,20 @@ namespace
     struct report_t
     {
       unsigned char id;
-      unsigned char data[ 3 ];
+      unsigned char status;
     };
 #pragma pack( pop )
 
     report_t report;
-    report.id = 0x01;
+    report.id = 0x02;
+    report.status = hw_status;
 
-    if ( ( ::hid_get_feature_report( _device, (unsigned char*)&report, sizeof( report ) ) == -1 ) )
-    {
+    if ( ::hid_send_feature_report( _device, reinterpret_cast<uint8_t*>( &report ), sizeof( report ) ) == -1 )
       _hid_ProcessError();
-      return;
-    }
-
-    auto a = report.data[ 0 ];
-    auto b = report.data[ 1 ];
-    auto c = report.data[ 2 ];
-    double freq = ( ( b << 8 ) + a ) * 256 / 0.36 + c;
-
-    std::cout << "freq " << freq << std::endl;
-
-    if ( freq <= MINFREQ ) return;
-    frequency = freq;
-    rb.put( frequency );
+    status.reset<TStatus::BIT::NEWSTATUS>();
   }
 
-  inline void _hid_ReadCalibration( void )
+  inline void _hid_ReadRef( void )
   {
     if ( _device == nullptr )
     {
@@ -226,32 +221,7 @@ namespace
     status.reset<TStatus::BIT::READCALIBRATION>();
   }
 
-  inline void _hid_SendStatus( void )
-  {
-    if ( _device == nullptr )
-    {
-      _device = _init();
-      if ( _device == nullptr ) return;
-    }
-
-#pragma pack( push, 1 )
-    struct report_t
-    {
-      unsigned char id;
-      unsigned char status;
-    };
-#pragma pack( pop )
-
-    report_t report;
-    report.id = 0x02;
-    report.status = hw_status;
-
-    if ( ::hid_send_feature_report( _device, reinterpret_cast<uint8_t*>( &report ), sizeof( report ) ) == -1 )
-      _hid_ProcessError();
-    status.reset<TStatus::BIT::NEWSTATUS>();
-  }
-
-  inline void _hid_SendCalibration( void )
+  inline void _hid_SendRef( void )
   {
     if ( _device == nullptr )
     {
@@ -288,177 +258,144 @@ namespace
     status.reset<TStatus::BIT::NEWCALIBRATION>();
   }
 
-  using callback_t = void ( * )( uint8_t, double );
-  void dummy( uint8_t, double ) {}
-  callback_t callback{ &dummy };
-
   template <typename F, typename LC>
   inline double GetLC( F freq, LC lc )  // Возвращает значение емкости в pF
   {
     return ( ( 1.0 / ( 4.0 * ( M_PI * M_PI ) * ( freq * freq ) * lc ) ) * std::pow( 10, 21 ) );
   }
 
-  inline void callback_call( void )
+  inline void _hid_ReadFrequency( void )
   {
-    if ( hw_status & RELAY_BIT )
+    if ( _device == nullptr )
     {
-      if ( reasonable( L.first ) && reasonable( L.second ) )
-      {
-        auto Lm = GetLC( frequency, L.first ) - L.second;
-        callback( uint8_t{ 1 }, Lm );
-      }
+      _device = _init();
+      if ( _device == nullptr ) return;
     }
-    else
+
+#pragma pack( push, 1 )
+    struct report_t
     {
-      if ( reasonable( C.first ) && reasonable( C.second ) )
-      {
-        auto Cm = GetLC( frequency, C.second ) - C.first;
-        callback( uint8_t{ 0 }, Cm );
-      }
-    }
-  };
-}  // namespace
+      unsigned char id;
+      unsigned char data[ 3 ];
+    };
+#pragma pack( pop )
 
-/*
-inline void clean( void )
-{
-  size_t j = ( i + 1 ) % M;
-  if ( last[ j ].valid() )
-  {
-    std::cout << "valid " << j << std::endl;
-    auto pair = last[ j ].get();
-    if ( pair.first )
+    report_t report;
+    report.id = 0x01;
+
+    if ( ( ::hid_get_feature_report( _device, (unsigned char*)&report, sizeof( report ) ) == -1 ) )
     {
-      rb.put( pair.second );
-      frequency = pair.second;
-
-      callback_call();
+      _hid_ProcessError();
+      return;
     }
-  }
-}
 
-inline void next( hid_device* dev )
-{
-  i = ( i + 1 ) % M;
-  last[ i ] = std::async( std::launch::async, work, dev );
-}
+    auto a = report.data[ 0 ];
+    auto b = report.data[ 1 ];
+    auto c = report.data[ 2 ];
+    double freq = ( ( b << 8 ) + a ) * 256 / 0.36 + c;
 
-inline void if_connected_clean_next( hid_device* dev )
-{
-  if ( connected )
-  {
-    clean();
-    next( dev );
-  }
-}  // namespace
-
-static freq_t end( hid_device* dev, bool successfuly, double freq )
-{
-  std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
-  if ( status & NEWSTATUS_BIT )
-  {
-    std::cout << "new status " << connected << std::endl;
-    if ( _hid_SendStatus( dev ) )
+    if ( freq <= MINFREQ ) return;
+    frequency = freq;
+    rb.put( frequency );
+    auto valid_refL = reasonable( L.first ) && reasonable( L.second );
+    auto valid_refC = reasonable( C.first ) && reasonable( C.second );
+    if ( ( hw_status & RELAY_BIT ) && valid_refL )
     {
-      std::cout << "_hid_SendStatus success" << std::endl;
-      status &= ~NEWSTATUS_BIT;
+      auto Lm = GetLC( frequency, L.first ) - L.second;
+      callback( uint8_t{ 1 }, Lm );
     }
-    if_connected_clean_next( dev );
-  }
-  else if ( connected && ( status & READCALIBRATION_BIT ) )
-  {
-    if ( _hid_ReadCalibration( dev ) )
+    else if ( valid_refC )
     {
-      std::cout << "_hid_ReadCalibration success" << std::endl;
-      status &= ~READCALIBRATION_BIT;
+      auto Cm = GetLC( frequency, C.second ) - C.first;
+      callback( uint8_t{ 0 }, Cm );
     }
-    if_connected_clean_next( dev );
   }
-  else if ( connected && ( status & NEWCALIBRATION_BIT ) )
+
+  inline void _hid_ReadRefFrequency( void )
   {
-    std::cout << "calibration" << std::endl;
-    // auto pair = last.get();
-    // if (pair.first) rb.put(pair.second);
-    if ( _hid_SendCalibration( dev ) )
+    if ( _device == nullptr )
     {
-      status &= NEWCALIBRATION_BIT;
-      std::cout << "_hid_ReadCalibration success" << std::endl;
+      _device = _init();
+      if ( _device == nullptr ) return;
     }
-    if_connected_clean_next( dev );
-  }
-  else if ( connected )
-  {
-    clean();
-    next( dev );
-  }
-  else if ( dev )
-    ::hid_close( dev );
-  std::cout << "exit" << std::endl;
-  return ( std::make_pair( successfuly, freq ) );
-}
-*/
-void run( void )
-{
-  std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
 
-  if ( status.get<TStatus::BIT::NEWSTATUS>() )
-  {
-    _hid_SendStatus();
-    //if_connected_clean_next( dev );
-  }
-  else if ( status.get<TStatus::BIT::CONNECTED>() && status.get<TStatus::BIT::READCALIBRATION>() )
-  {
-    _hid_ReadCalibration();
-    //if_connected_clean_next( dev );
-  }
-  else if ( status.get<TStatus::BIT::CONNECTED>() && status.get<TStatus::BIT::NEWCALIBRATION>() )
-  {
-    //std::cout << "calibration" << std::endl;
-    // auto pair = last.get();
-    // if (pair.first) rb.put(pair.second);
-    _hid_SendCalibration();
+#pragma pack( push, 1 )
+    struct report_t
+    {
+      unsigned char id;
+      unsigned char data[ 3 ];
+    };
+#pragma pack( pop )
 
-    //if_connected_clean_next( dev );
-  }
-  else if ( status.get<TStatus::BIT::CONNECTED>() )
-  {
-    freq_();
-  }
-  else if ( _device )
-  {
-    ::hid_close( _device );
-    return;
-  }
-  std::cout << "exit" << std::endl;
-  std::async( std::launch::async, run );
-  //return ( std::make_pair( successfuly, freq ) );
-}
+    report_t report;
+    report.id = 0x01;
 
-/*bool init( void )
-{
-  connected = false;
-  _device = _init();
+    if ( ( ::hid_get_feature_report( _device, (unsigned char*)&report, sizeof( report ) ) == -1 ) )
+    {
+      _hid_ProcessError();
+      return;
+    }
 
-  if ( _device )
-  {
-    next( _device );
-    connected = true;
+    auto a = report.data[ 0 ];
+    auto b = report.data[ 1 ];
+    auto c = report.data[ 2 ];
+    double freq = ( ( b << 8 ) + a ) * 256 / 0.36 + c;
+
+    if ( freq <= MINFREQ ) return;
+    frequency = freq;
+    rb.put( frequency );
+
+    auto valid_refL = reasonable( L.first ) && reasonable( L.second );
+
+    auto valid_refC = reasonable( C.first ) && reasonable( C.second );
+
+    if ( ( hw_status & RELAY_BIT ) && valid_refL )
+    {
+      auto Lm = GetLC( frequency, L.first ) - L.second;
+      callback( uint8_t{ 1 }, Lm );
+    }
+    else if ( valid_refC )
+    {
+      auto Cm = GetLC( frequency, C.second ) - C.first;
+      callback( uint8_t{ 0 }, Cm );
+    }
   }
-  return ( connected );
-}*/
+
+ public:
+  void operator()( void )
+  {
+    std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
+    if ( status.get<TStatus::BIT::NEWSTATUS>() )
+      _hid_SendStatus();
+    else if ( need_ref_get() )  //if CONNECTED && READ CALIBRATION bits - need to read calibration constants (refs)
+      _hid_ReadRef();
+    else if ( need_ref_set() )
+      _hid_SendRef();
+    else if ( status.get<TStatus::BIT::C>() )
+      _hid_ReadFrequency();
+    else if ( _device )
+    {
+      ::hid_close( _device );
+      return;
+    }
+    std::async( std::launch::async, *this );
+    //return ( std::make_pair( successfuly, freq ) );
+  }
+};
+
+TExecute run;
 
 bool init( void ( *callback_ )( uint8_t, double ) )
 {
   callback = callback_;
-  status.reset<TStatus::BIT::CONNECTED>();
+  status.reset<TStatus::BIT::C>();
   _device = _init();
-
   if ( _device )
   {
     std::async( std::launch::async, run );
-    status.set<TStatus::BIT::CONNECTED>();
+    status.set<TStatus::BIT::C>();
   }
-  return ( status.get<TStatus::BIT::CONNECTED>() );
+  return ( status.get<TStatus::BIT::C>() );
 }
 
 void deinit( void )
@@ -466,7 +403,7 @@ void deinit( void )
   hw_status &= ~PCPROGRAMRUN_BIT;
   hw_status &= ~RELAY_BIT;
   status.set<TStatus::BIT::NEWSTATUS>();
-  status.reset<TStatus::BIT::CONNECTED>();
+  status.reset<TStatus::BIT::C>();
 }
 
 double freq( void )
@@ -479,37 +416,3 @@ void set_relay_capicatance( void )
   hw_status &= ~RELAY_BIT;
   status.set<TStatus::BIT::NEWSTATUS>();
 };
-
-/*
-double GetCapacitance( void )
-{
-  if ( !connected )
-    if ( !init() ) return ( double{} );
-
-  if ( status & RELAY_BIT ) set_relay_capicatance();
-
-  if ( reasonable( C.first ) && reasonable( C.second ) )
-  {
-    return ( GetLC( frequency, C.second ) - C.first );
-  }
-  return ( double{} );
-}
-
-double GetInductance( void )
-{
-  if ( !connected )
-    if ( !init() ) return ( double{} );
-
-  if ( !( status & RELAY_BIT ) )
-  {
-    status |= RELAY_BIT;
-    status |= NEWSTATUS_BIT;
-  }
-
-  if ( reasonable( L.first ) && reasonable( L.second ) )
-  {
-    return ( GetLC( frequency, L.first ) - L.second );
-  }
-  return ( double{} );
-}
-*/
