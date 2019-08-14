@@ -18,6 +18,36 @@ static constexpr double MINFREQ = 16000.0;
 
 hid_device* _device;
 
+struct TStatus {
+  enum BIT : uint64_t {
+    CONNECTED = (1 << 0),
+    NEWSTATUS = (1 << 1),
+    NEWCALIBRATION = (1 << 2),
+    READCALIBRATION = (1 << 3),
+    READCALIBRATION = (1 << 4)
+  };
+
+  TStatus(void) : status{} {}
+
+  template <BIT b>
+  inline bool get(void) {
+    return (status & b != 0);
+  }
+
+  template <BIT b>
+  inline void set(void) {
+    status |= b;
+  }
+
+  template <BIT b>
+  inline void reset(void) {
+    status &= ~b;
+  }
+
+ private:
+  uint64_t status;
+};
+
 template <typename A, typename B, typename C>
 inline unsigned int _original_ReadIntValueFromBytes(A a, B b, C c) {
   return ((a << 16) | (b << 8) | c);
@@ -252,11 +282,26 @@ using callback_t = void (*)(uint8_t, double);
 void dummy(uint8_t, double) {}
 callback_t callback{&dummy};
 
+Kernel::TRingBufferStatistic<double, 256> _ref;
+
+constexpr double pi = 3.1415926535897932385;
+
 template <typename F, typename LC>
 inline double GetLC(F freq, LC lc)  // Возвращает значение емкости в pF
 {
-  return ((1.0 / (4.0 * (M_PI * M_PI) * (freq * freq) * lc)) *
-          std::pow(10, 21));
+  return ((1.0 / (4.0 * (pi * pi) * (freq * freq) * lc)) * std::pow(10, 21));
+}
+
+template <typename F1, typename F2, typename LC, typename T>
+inline double GetRef(F1 freq1, F2 freq2, LC lc, T t) {
+  double resultLC = (1.0 / (4.0 * (pi * pi) * lc)) *
+                    (1.0 / (freq2 * freq2) - 1.0 / (freq1 * freq1)) *
+                    std::pow(10.0, 21.0);
+  _ref.put(resultLC);
+  auto d = _ref.getD();
+  auto m = _ref.getM();
+  if (d < m * t) return (m);
+  return (double{});
 }
 
 inline void callback_call(void) {
@@ -272,6 +317,35 @@ inline void callback_call(void) {
     }
   }
 };
+
+double triggered_frequency_idle{};
+double triggered_frequency_lc{};
+double customer_ref_lc{};
+double tolerance;
+
+inline bool is_idle_not_triggered(void) {
+  return (MINFREQ > triggered_frequency_idle);
+}
+
+void calibrate(void) {
+  if (is_idle_not_triggered()) {
+    if (rb.full() && is_freq_stable()) {
+      triggered_frequency_idle = get_stable_freq();
+      callback(uint8_t{2}, triggered_frequency_idle);
+    }
+  } else if ((freq + 100.0) < triggered_frequency_idle) {
+    auto ref1 = floor(
+        GetRef(triggered_frequency_idle, freq, customer_ref_lc, tolerance) +
+        0.5);
+    if (100.0 < ref1) {
+      callback(uint8_t{3}, freq);
+      auto ref2 = floor(GetLC(triggered_frequency_idle, ref1) + 0.5);
+      triggered_frequency_idle = double{};
+      successfully_calibrated(ref1, ref2);
+    }
+  }
+}  // namespace
+
 }  // namespace
 
 inline void clean(void) {
@@ -301,6 +375,39 @@ inline void if_connected_clean_next(hid_device* dev) {
 }  // namespace
 
 static freq_t end(hid_device* dev, bool successfuly, double freq) {
+  std::this_thread::sleep_for(std::chrono::milliseconds(500));
+  if (status & NEWSTATUS_BIT) {
+    std::cout << "new status " << connected << std::endl;
+    if (_hid_SendStatus(dev)) {
+      std::cout << "_hid_SendStatus success" << std::endl;
+      status &= ~NEWSTATUS_BIT;
+    }
+    if_connected_clean_next(dev);
+  } else if (connected && (status & READCALIBRATION_BIT)) {
+    if (_hid_ReadCalibration(dev)) {
+      std::cout << "_hid_ReadCalibration success" << std::endl;
+      status &= ~READCALIBRATION_BIT;
+    }
+    if_connected_clean_next(dev);
+  } else if (connected && (status & NEWCALIBRATION_BIT)) {
+    std::cout << "calibration" << std::endl;
+    // auto pair = last.get();
+    // if (pair.first) rb.put(pair.second);
+    if (_hid_SendCalibration(dev)) {
+      status &= NEWCALIBRATION_BIT;
+      std::cout << "_hid_ReadCalibration success" << std::endl;
+    }
+    if_connected_clean_next(dev);
+  } else if (connected) {
+    clean();
+    next(dev);
+  } else if (dev)
+    ::hid_close(dev);
+  std::cout << "exit" << std::endl;
+  return (std::make_pair(successfuly, freq));
+}
+
+void run(void) {
   std::this_thread::sleep_for(std::chrono::milliseconds(500));
   if (status & NEWSTATUS_BIT) {
     std::cout << "new status " << connected << std::endl;
