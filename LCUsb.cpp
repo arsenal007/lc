@@ -258,12 +258,6 @@ struct TExecute
     status.reset<TStatus::BIT::NEWCALIBRATION>();
   }
 
-  template <typename F, typename LC>
-  inline double GetLC( F freq, LC lc )  // Возвращает значение емкости в pF
-  {
-    return ( ( 1.0 / ( 4.0 * ( M_PI * M_PI ) * ( freq * freq ) * lc ) ) * std::pow( 10, 21 ) );
-  }
-
   inline void _hid_ReadFrequency( void )
   {
     if ( _device == nullptr )
@@ -310,55 +304,26 @@ struct TExecute
       callback( uint8_t{ 0 }, Cm );
     }
   }
+  Kernel::TRingBufferStatistic<double, 256> _ref;
 
-  inline void _hid_ReadRefFrequency( void )
+  constexpr double pi = 3.1415926535897932385;
+
+  template <typename F, typename LC>
+  inline double GetLC( F freq, LC lc )  // Возвращает значение емкости в pF
   {
-    if ( _device == nullptr )
-    {
-      _device = _init();
-      if ( _device == nullptr ) return;
-    }
+    return ( ( 1.0 / ( 4.0 * ( pi * pi ) * ( freq * freq ) * lc ) ) * std::pow( 10, 21 ) );
+  }
 
-#pragma pack( push, 1 )
-    struct report_t
-    {
-      unsigned char id;
-      unsigned char data[ 3 ];
-    };
-#pragma pack( pop )
-
-    report_t report;
-    report.id = 0x01;
-
-    if ( ( ::hid_get_feature_report( _device, (unsigned char*)&report, sizeof( report ) ) == -1 ) )
-    {
-      _hid_ProcessError();
-      return;
-    }
-
-    auto a = report.data[ 0 ];
-    auto b = report.data[ 1 ];
-    auto c = report.data[ 2 ];
-    double freq = ( ( b << 8 ) + a ) * 256 / 0.36 + c;
-
-    if ( freq <= MINFREQ ) return;
-    frequency = freq;
-    rb.put( frequency );
-
-    auto valid_refL = reasonable( L.first ) && reasonable( L.second );
-
-    auto valid_refC = reasonable( C.first ) && reasonable( C.second );
-
-    if ( ( hw_status & RELAY_BIT ) && valid_refL )
-    {
-      auto Lm = GetLC( frequency, L.first ) - L.second;
-      callback( uint8_t{ 1 }, Lm );
-    }
-    else if ( valid_refC )
-    {
-      auto Cm = GetLC( frequency, C.second ) - C.first;
-      callback( uint8_t{ 0 }, Cm );
-    }
+  template <typename F1, typename F2, typename LC, typename T>
+  inline double GetRef( F1 freq1, F2 freq2, LC lc, T t )
+  {
+    double resultLC = ( 1.0 / ( 4.0 * ( pi * pi ) * lc ) ) * ( 1.0 / ( freq2 * freq2 ) - 1.0 / ( freq1 * freq1 ) ) *
+                      std::pow( 10.0, 21.0 );
+    _ref.put( resultLC );
+    auto d = _ref.getD();
+    auto m = _ref.getM();
+    if ( d < m * t ) return ( m );
+    return ( double{} );
   }
 
  public:
@@ -381,6 +346,156 @@ struct TExecute
     std::async( std::launch::async, *this );
     //return ( std::make_pair( successfuly, freq ) );
   }
+};
+
+double triggered_frequency_idle{};
+double triggered_frequency_lc{};
+double customer_ref_lc{};
+double tolerance;
+
+inline bool is_idle_not_triggered( void )
+{
+  return ( MINFREQ > triggered_frequency_idle );
+}
+
+void calibrate( void )
+{
+  if ( is_idle_not_triggered() )
+  {
+    if ( rb.full() && is_freq_stable() )
+    {
+      triggered_frequency_idle = get_stable_freq();
+      callback( uint8_t{ 2 }, triggered_frequency_idle );
+    }
+  }
+  else if ( ( freq + 100.0 ) < triggered_frequency_idle )
+  {
+    auto ref1 = floor( GetRef( triggered_frequency_idle, freq, customer_ref_lc, tolerance ) + 0.5 );
+    if ( 100.0 < ref1 )
+    {
+      callback( uint8_t{ 3 }, freq );
+      auto ref2 = floor( GetLC( triggered_frequency_idle, ref1 ) + 0.5 );
+      triggered_frequency_idle = double{};
+      successfully_calibrated( ref1, ref2 );
+    }
+  }
+}  // namespace
+
+}  // namespace
+>>>>>>> calibration
+
+inline void _hid_ReadRefFrequency( void )
+{
+  if ( _device == nullptr )
+  {
+    _device = _init();
+    if ( _device == nullptr ) return;
+  }
+
+#pragma pack( push, 1 )
+  struct report_t
+  {
+    unsigned char id;
+    unsigned char data[ 3 ];
+  };
+#pragma pack( pop )
+
+  report_t report;
+  report.id = 0x01;
+
+  if ( ( ::hid_get_feature_report( _device, (unsigned char*)&report, sizeof( report ) ) == -1 ) )
+  {
+    _hid_ProcessError();
+    return;
+  }
+
+  auto a = report.data[ 0 ];
+  auto b = report.data[ 1 ];
+  auto c = report.data[ 2 ];
+  double freq = ( ( b << 8 ) + a ) * 256 / 0.36 + c;
+
+  if ( freq <= MINFREQ ) return;
+  frequency = freq;
+  rb.put( frequency );
+
+  auto valid_refL = reasonable( L.first ) && reasonable( L.second );
+
+  auto valid_refC = reasonable( C.first ) && reasonable( C.second );
+
+  if ( ( hw_status & RELAY_BIT ) && valid_refL )
+  {
+    auto Lm = GetLC( frequency, L.first ) - L.second;
+    callback( uint8_t{ 1 }, Lm );
+  }
+  else if ( valid_refC )
+  {
+    auto Cm = GetLC( frequency, C.second ) - C.first;
+    callback( uint8_t{ 0 }, Cm );
+  }
+<<<<<<< HEAD
+}
+== == == = if_connected_clean_next( dev );
+}
+else if ( connected )
+{
+  clean();
+  next( dev );
+}
+else if ( dev )::hid_close( dev );
+std::cout << "exit" << std::endl;
+return ( std::make_pair( successfuly, freq ) );
+}
+
+void run( void )
+{
+  std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
+  if ( status & NEWSTATUS_BIT )
+  {
+    std::cout << "new status " << connected << std::endl;
+    if ( _hid_SendStatus( dev ) )
+    {
+      std::cout << "_hid_SendStatus success" << std::endl;
+      status &= ~NEWSTATUS_BIT;
+    }
+    if_connected_clean_next( dev );
+  }
+  else if ( connected && ( status & READCALIBRATION_BIT ) )
+  {
+    if ( _hid_ReadCalibration( dev ) )
+    {
+      std::cout << "_hid_ReadCalibration success" << std::endl;
+      status &= ~READCALIBRATION_BIT;
+    }
+    if_connected_clean_next( dev );
+  }
+  else if ( connected && ( status & NEWCALIBRATION_BIT ) )
+  {
+    std::cout << "calibration" << std::endl;
+    // auto pair = last.get();
+    // if (pair.first) rb.put(pair.second);
+    if ( _hid_SendCalibration( dev ) )
+    {
+      status &= NEWCALIBRATION_BIT;
+      std::cout << "_hid_ReadCalibration success" << std::endl;
+    }
+    if_connected_clean_next( dev );
+  }
+  else if ( connected )
+  {
+    clean();
+    next( dev );
+  }
+  else if ( dev )
+    ::hid_close( dev );
+  std::cout << "exit" << std::endl;
+  return ( std::make_pair( successfuly, freq ) );
+}
+
+bool init( void )
+{
+  connected = false;
+  _device = _init();
+>>>>>>> calibration
 };
 
 TExecute run;
