@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.7)
-set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 project(lcusb VERSION 1.00 LANGUAGES C CXX)
+message("${CMAKE_CURRENT_SOURCE_DIR}")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(FindWinHID)
 set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 #set(CMAKE_CXX_COMPILER clang++-5.0)
@@ -20,5 +22,5 @@ set_property(TARGET objlib PROPERTY POSITION_INDEPENDENT_CODE 1)
 # shared and static libraries built from the same object files
 
 add_library(lcusb SHARED $<TARGET_OBJECTS:objlib> )
-target_link_libraries(lcusb ${_setupapi})
+target_link_libraries(lcusb ${WINHID_LIBRARIES})
 #add_library(lcusb STATIC $<TARGET_OBJECTS:objlib>)

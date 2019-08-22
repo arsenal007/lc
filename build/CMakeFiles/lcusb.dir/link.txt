@@ -1,2 +1,0 @@
-C:/msys64/mingw64/bin/ar.exe qc liblcusb.a  CMakeFiles/objlib.dir/src/hid.c.obj CMakeFiles/objlib.dir/src/LCUsb.cpp.obj
-C:/msys64/mingw64/bin/ranlib.exe liblcusb.a
