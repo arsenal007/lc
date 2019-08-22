@@ -1,0 +1,30 @@
+Determining if the C compiler works failed with the following output:
+Change Dir: C:/Users/vkuzmenko/eclipse-workspace/liblcusb/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/WinAVR-20100110/utils/bin/make.exe cmTC_8885f/fast && C:/WinAVR-20100110/utils/bin/make.exe -f CMakeFiles/cmTC_8885f.dir/build.make CMakeFiles/cmTC_8885f.dir/build
+make.exe[1]: Entering directory `C:/Users/vkuzmenko/eclipse-workspace/liblcusb/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8885f.dir/testCCompiler.c.obj
+/C/msys64/mingw64/bin/gcc.exe    -o CMakeFiles/cmTC_8885f.dir/testCCompiler.c.obj   -c /C/Users/vkuzmenko/eclipse-workspace/liblcusb/build/CMakeFiles/CMakeTmp/testCCompiler.c
+process_begin: CreateProcess(NULL, /C/msys64/mingw64/bin/gcc.exe -o CMakeFiles/cmTC_8885f.dir/testCCompiler.c.obj -c /C/Users/vkuzmenko/eclipse-workspace/liblcusb/build/CMakeFiles/CMakeTmp/testCCompiler.c, ...) failed.
+make (e=2): Das System kann die angegebene Datei nicht finden.
+make.exe[1]: *** [CMakeFiles/cmTC_8885f.dir/testCCompiler.c.obj] Error 2
+make.exe[1]: Leaving directory `C:/Users/vkuzmenko/eclipse-workspace/liblcusb/build/CMakeFiles/CMakeTmp'
+make.exe: *** [cmTC_8885f/fast] Error 2
+
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: C:/Users/vkuzmenko/eclipse-workspace/liblcusb/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/WinAVR-20100110/utils/bin/make.exe cmTC_96365/fast && C:/WinAVR-20100110/utils/bin/make.exe -f CMakeFiles/cmTC_96365.dir/build.make CMakeFiles/cmTC_96365.dir/build
+make.exe[1]: Entering directory `C:/Users/vkuzmenko/eclipse-workspace/liblcusb/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_96365.dir/testCCompiler.c.obj
+/C/msys64/mingw64/bin/gcc.exe    -o CMakeFiles/cmTC_96365.dir/testCCompiler.c.obj   -c /C/Users/vkuzmenko/eclipse-workspace/liblcusb/build/CMakeFiles/CMakeTmp/testCCompiler.c
+process_begin: CreateProcess(NULL, /C/msys64/mingw64/bin/gcc.exe -o CMakeFiles/cmTC_96365.dir/testCCompiler.c.obj -c /C/Users/vkuzmenko/eclipse-workspace/liblcusb/build/CMakeFiles/CMakeTmp/testCCompiler.c, ...) failed.
+make (e=2): Das System kann die angegebene Datei nicht finden.
+make.exe[1]: *** [CMakeFiles/cmTC_96365.dir/testCCompiler.c.obj] Error 2
+make.exe[1]: Leaving directory `C:/Users/vkuzmenko/eclipse-workspace/liblcusb/build/CMakeFiles/CMakeTmp'
+make.exe: *** [cmTC_96365/fast] Error 2
+
+
+

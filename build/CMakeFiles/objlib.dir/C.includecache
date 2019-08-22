@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/vkuzmenko/eclipse-workspace/liblcusb/src/hid.c
+windows.h
+-
+ntdef.h
+-
+winbase.h
+-
+ntdef.h
+-
+setupapi.h
+-
+winioctl.h
+-
+hidsdi.h
+-
+stdio.h
+-
+stdlib.h
+-
+hidapi.h
+C:/Users/vkuzmenko/eclipse-workspace/liblcusb/src/hidapi.h
+
+C:/Users/vkuzmenko/eclipse-workspace/liblcusb/src/hidapi.h
+wchar.h
+-
+
