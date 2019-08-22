@@ -107,9 +107,16 @@ namespace
   std::mutex mux;
 }  // namespace
 
-using callback_t = void ( * )( uint8_t, double*, size_t );
-void dummy( uint8_t, double*, size_t ) {}
-callback_t callback{ &dummy };
+using callback_t = void ( * )( double );
+void dummy( double ) {}
+callback_t callback_L{ &dummy };
+callback_t callback_C{ &dummy };
+callback_t callback_full{ &dummy };
+callback_t callback_mean_frequency{ &dummy };
+callback_t callback_standart_deviation{ &dummy };
+callback_t callback_treshold{ &dummy };
+callback_t callback_frequency_idle{ &dummy };
+callback_t callback_frequency_ref{ &dummy };
 
 struct TLC
 {
@@ -299,19 +306,13 @@ struct TExecute : public TLC
     auto valid_refL = reasonable( L.first ) && reasonable( L.second );
     auto valid_refC = reasonable( C.first ) && reasonable( C.second );
     if ( !status.get<TStatus::BIT::SC>() && ( hw_status & RELAY_BIT ) && valid_refL )
-    {
-      auto Lm = TLC::GetLC( freq, L.first ) - L.second;
-      callback( uint8_t{ 1 }, &Lm, 1u );
-    }
+      callback_L( TLC::GetLC( freq, L.first ) - L.second );
     else if ( !status.get<TStatus::BIT::SC>() && !( hw_status & RELAY_BIT ) && valid_refC )
-    {
-      auto Cm = TLC::GetLC( freq, C.second ) - C.first;
-      callback( uint8_t{ 0 }, &Cm, 1u );
-    }
+      callback_C( TLC::GetLC( freq, C.second ) - C.first );
   }
 
   double triggered_frequency_idle{};
-  double triggered_frequency_lc{};
+  double triggered_frequency_ref{};
 
   hid_device* _device{};
 
@@ -391,25 +392,29 @@ struct TExecute : public TLC
   {
     _hid_ReadFrequency();
     double Ms = M - 1.0;
-    double p[] = { rb.size() / Ms,        rb.getM(), rb.getD(), tolerance * rb.getM(), triggered_frequency_idle,
-                   triggered_frequency_lc };
-    callback( uint8_t{ 2 }, p, sizeof_array( p ) );
-    if ( is_idle_not_triggered() )
+    callback_full( rb.size() / Ms );
+    auto mean_frequency = rb.getM();
+    callback_mean_frequency( mean_frequency );
+    auto standart_deviation = rb.getD();
+    callback_standart_deviation( standart_deviation );
+    callback_treshold( tolerance * mean_frequency );
+    callback_frequency_idle( triggered_frequency_idle );
+    callback_frequency_ref( triggered_frequency_ref );
+    auto stable_freq{ rb.full() && ( standart_deviation < tolerance * mean_frequency ) };
+    auto is_idle_not_triggered{ triggered_frequency_idle < MINFREQ };
+    auto is_idle{ ( abs( mean_frequency - triggered_frequency_idle ) < 1000.0 ) && ( MINFREQ < mean_frequency ) };
+    auto is_ref{ abs( mean_frequency - triggered_frequency_ref ) < 1000.0 };
+    if ( stable_freq && ( is_idle_not_triggered || is_idle ) )
+      triggered_frequency_idle = mean_frequency;
+    else if ( !is_idle && stable_freq )
     {
-      if ( rb.full() && is_freq_stable() )
-      {
-        triggered_frequency_idle = rb.getM();
-      }
-    }
-    else if ( ( ( rb.getM() + 100.0 ) < triggered_frequency_idle ) && rb.full() && is_freq_stable() )
-    {
-      triggered_frequency_lc = rb.getM();
+      triggered_frequency_ref = mean_frequency;
       auto ref1 =
-          floor( TLC::GetRef( triggered_frequency_idle, triggered_frequency_lc, customer_ref_lc, tolerance ) + 0.5 );
+          floor( TLC::GetRef( triggered_frequency_idle, triggered_frequency_ref, customer_ref_lc, tolerance ) + 0.5 );
       if ( 100.0 < ref1 )
       {
         auto ref2 = floor( TLC::GetLC( triggered_frequency_idle, ref1 ) + 0.5 );
-        triggered_frequency_idle = double{};
+        //triggered_frequency_idle = double{};
         successfully_calibrated( ref1, ref2 );
       }
     }
@@ -450,7 +455,6 @@ struct TExecute : public TLC
     if ( _device )
     {
       hw_status |= PCPROGRAMRUN_BIT;
-      hw_status &= ~RELAY_BIT;
       status.set<TStatus::BIT::NEWSTATUS>();
       status.set<TStatus::BIT::READCALIBRATION>();
       status.set<TStatus::BIT::C>();
@@ -507,11 +511,20 @@ struct TExecute : public TLC
 
 TExecute run;
 
-bool init( void ( *callback_ )( uint8_t, double*, size_t ) )
+bool init( void )
 {
-  callback = callback_;
   if ( run.init() ) run.async();
   return ( status.get<TStatus::BIT::C>() );
+}
+
+void set_callback_inductance( void ( *l )( double ) )
+{
+  callback_L = l;
+}
+
+void set_callback_capicatance( void ( *c )( double ) )
+{
+  callback_C = c;
 }
 
 void cal_L( double L, double t )
