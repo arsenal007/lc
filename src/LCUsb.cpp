@@ -22,89 +22,6 @@ namespace
   typedef __int128 int128_t;
   typedef unsigned __int128 uint128_t;
 
-  struct TStatus
-  {
-    enum BIT : uint128_t
-    {
-      C = ( 1 << 0 ),  //CONNECTED
-      NEWSTATUS = ( 1 << 1 ),
-      NEWCALIBRATION = ( 1 << 2 ),
-      READCALIBRATION = ( 1 << 3 ),
-      SC = ( 1 << 5 )
-    };
-
-    TStatus( void ) : status{} {}
-
-    template <BIT b>
-    bool get( void )
-    {
-      return ( ( status & b ) != 0 );
-    }
-
-    template <BIT b>
-    void set( void )
-    {
-      status |= b;
-    }
-
-    template <BIT b>
-    void reset( void )
-    {
-      status &= ~b;
-    }
-
-   private:
-    uint128_t status;
-  };
-
-  template <typename A, typename B, typename C>
-  inline uint32_t _original_ReadIntValueFromBytes( A a, B b, C c )
-  {
-    return ( ( a << 16 ) | ( b << 8 ) | c );
-  }
-
-  template <typename A, typename B>
-  inline uint16_t _original_ReadIntValueFromBytes( A a, B b )
-  {
-    return ( ( a << 8 ) | b );
-  }
-
-  template <typename T>
-  inline bool reasonable( T v )
-  {
-    return ( ( std::numeric_limits<T>::min() + 10 < v ) && ( v < std::numeric_limits<T>::max() - 10 ) );
-  }
-
-  template <typename V, typename A, typename B, typename C>
-  inline bool _original_WriteIntValueToBytes( V value, A& a, B& b, C& c )
-  {
-    if ( 0xffffff < value ) return ( false );
-    a = ( value >> 16 ) & 0xFFFFFF;
-    b = ( value >> 8 ) & 0xFFFF;
-    c = (value)&0xFF;
-    return ( true );
-  }
-
-  template <typename V, typename A, typename B>
-  inline bool _original_WriteIntValueToBytes( V value, A& a, B& b )
-  {
-    if ( 0xffff < value ) return ( false );
-    a = ( value >> 8 ) & 0xFFFF;
-    b = (value)&0xFF;
-    return ( true );
-  }
-
-  uint8_t version{};
-
-  static constexpr uint8_t RELAY_BIT = ( 1 << 7 );
-  static constexpr uint8_t PCPROGRAMRUN_BIT = ( 1 << 6 );
-
-  TStatus status;
-  double customer_ref_lc;
-  double tolerance;
-  uint8_t hw_status;
-  static constexpr size_t M = 1024;
-  std::mutex mux;
 }  // namespace
 
 using callback_t = void ( * )( double );
@@ -145,7 +62,7 @@ struct TLC
   }
 };
 
-TExecute run;
+TExecute execute;
 
 void set_callback_inductance( void ( *l )( double ) )
 {

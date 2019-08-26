@@ -10,45 +10,143 @@
 #include <thread>
 #include <utility>
 #include <algorithm>
+#include <functional>
 
 #include "hidapi.h"
 #include "TRingBuffer.hpp"
 
-template <typename F>
-struct Func
+struct TStatus
 {
- private:
-  F& func;
-
- public:
-  template <typename A>
-  auto operator()( A... a )
+  enum BIT : uint64_t
   {
-    return ( func( a... ) );
+    CONNECTED = ( 1 << 0 ),  //CONNECTED
+    NEW_STATUS = ( 1 << 1 ),
+    NEW_CALIBRATION_SAVE = ( 1 << 2 ),
+    READ_CALIBRATION = ( 1 << 3 ),
+    RUN_CALIBRATION = ( 1 << 5 ),
+    RUN_C_MEASURMENTS = ( 1 << 6 ),
+    RUN_L_MEASURMENTS = ( 1 << 7 )
+  };
+
+  TStatus( void ) : status{} {}
+
+  template <BIT b>
+  bool get( void )
+  {
+    return ( ( status & b ) != 0 );
   }
 
-  Func( F& f ) : func{ f } {}
+  template <BIT b>
+  void set( void )
+  {
+    status |= b;
+  }
+
+  template <BIT b>
+  void reset( void )
+  {
+    status &= ~b;
+  }
+
+ private:
+  uint64_t status;
 };
+
+using f_t = std::function<void( void )>;
+
+struct TRun
+{
+ private:
+  f_t _func[ 32 ];
+  Kernel::TRingBuffer _rb;
+
+ public:
+  inline void operator()( void )
+  {
+    if ( !_rb.empty() )
+    {
+      auto f = _rb.get();
+      f();
+    }
+  }
+
+  inline void put( f_t item )
+  {
+    _rb.put( item );
+  }
+
+  TRun() : _func{}, _rb{ _func } {}
+};
+
+template <typename A, typename B, typename C>
+inline uint32_t _original_ReadIntValueFromBytes( A a, B b, C c )
+{
+  return ( ( a << 16 ) | ( b << 8 ) | c );
+}
+
+template <typename A, typename B>
+inline uint16_t _original_ReadIntValueFromBytes( A a, B b )
+{
+  return ( ( a << 8 ) | b );
+}
+
+template <typename T>
+inline bool reasonable( T v )
+{
+  return ( ( std::numeric_limits<T>::min() + 10 < v ) && ( v < std::numeric_limits<T>::max() - 10 ) );
+}
+
+template <typename V, typename A, typename B, typename C>
+inline bool _original_WriteIntValueToBytes( V value, A& a, B& b, C& c )
+{
+  if ( 0xffffff < value ) return ( false );
+  a = ( value >> 16 ) & 0xFFFFFF;
+  b = ( value >> 8 ) & 0xFFFF;
+  c = (value)&0xFF;
+  return ( true );
+}
+
+template <typename V, typename A, typename B>
+inline bool _original_WriteIntValueToBytes( V value, A& a, B& b )
+{
+  if ( 0xffff < value ) return ( false );
+  a = ( value >> 8 ) & 0xFFFF;
+  b = (value)&0xFF;
+  return ( true );
+}
+
+inline uint8_t version{};
+
+static constexpr uint8_t RELAY_BIT = ( 1 << 7 );
+static constexpr uint8_t PCPROGRAMRUN_BIT = ( 1 << 6 );
+
+inline TStatus status;
+inline uint8_t hw_status;
+static constexpr size_t M = 1024;
+inline std::mutex mux;
+inline double customer_ref_lc, tolerance, C_measured, L_measured;
+inline f_t callback;
+
+inline std::tuple<uint16_t, uint32_t, uint16_t, uint32_t> saved_ref;
 
 struct TExecute : public TLC
 {
  private:
   std::pair<uint16_t, uint32_t> C{};  // first = C, second = L
   std::pair<uint16_t, uint32_t> L{};
-
   Kernel::TRingBufferStatistic<double, M> rb;
-
   static constexpr double MINFREQ = 16000.0;
 
-  inline bool need_ref_get( void )
-  {
-    return ( status.get<TStatus::BIT::C>() && status.get<TStatus::BIT::READCALIBRATION>() );
-  }
+  double fraction, mean_frequency, standart_deviation, treshold, triggered_frequency_idle, triggered_frequency_ref;
 
-  inline bool need_ref_set( void )
-  {
-    return ( status.get<TStatus::BIT::C>() && status.get<TStatus::BIT::NEWCALIBRATION>() );
-  }
+  hid_device* _device{};
+
+  static constexpr size_t Mt = 8;
+  std::shared_future<void> fut[ Mt ]{};
+  size_t k{};
+
+  TRun _run;
+  f_t _hid_SendStatus, _hid_ReadRef, _hid_SendRef, _hid_ReadFrequency;
 
   inline void _hid_ProcessError( void )
   {
@@ -58,152 +156,6 @@ struct TExecute : public TLC
       _device = nullptr;
     }
   }
-
-  inline void _hid_SendStatus( void )
-  {
-    if ( _device == nullptr )
-      if ( !init() ) return;
-
-#pragma pack( push, 1 )
-    struct report_t
-    {
-      unsigned char id;
-      unsigned char status;
-    };
-#pragma pack( pop )
-
-    report_t report;
-    report.id = 0x02;
-    report.status = hw_status;
-
-    if ( ::hid_send_feature_report( _device, reinterpret_cast<uint8_t*>( &report ), sizeof( report ) ) == -1 )
-      _hid_ProcessError();
-    status.reset<TStatus::BIT::NEWSTATUS>();
-  }
-
-  inline void _hid_ReadRef( void )
-  {
-    if ( _device == nullptr )
-      if ( !init() ) return;
-
-#pragma pack( push, 1 )
-    struct report_t
-    {
-      unsigned char id;
-      unsigned char data[ 16 ];
-    };
-#pragma pack( pop )
-
-    report_t g;
-    g.id = 0x03;
-
-    if ( ::hid_get_feature_report( _device, (unsigned char*)&g, sizeof( g ) ) == -1 )
-    {
-      _hid_ProcessError();
-      return;
-    }
-
-    // C calibration
-    {
-      auto refC = _original_ReadIntValueFromBytes( g.data[ 1 ], g.data[ 2 ] );
-      auto refL = _original_ReadIntValueFromBytes( g.data[ 3 ], g.data[ 4 ], g.data[ 5 ] );
-
-      std::cout << "C: refC: " << refC << "pF, refL: " << refL << "nH" << std::endl;
-
-      if ( reasonable( refC ) && reasonable( refL ) ) C = std::make_pair( refC, refL );
-    }
-
-    // L calibration
-    {
-      auto refC = _original_ReadIntValueFromBytes( g.data[ 6 ], g.data[ 7 ] );
-      auto refL = _original_ReadIntValueFromBytes( g.data[ 8 ], g.data[ 9 ], g.data[ 10 ] );
-
-      std::cout << "L: refC: " << refC << "pF, refL: " << refL << "nH" << std::endl;
-
-      if ( reasonable( refC ) && reasonable( refL ) ) L = std::make_pair( refC, refL );
-    }
-
-    status.reset<TStatus::BIT::READCALIBRATION>();
-  }
-
-  inline void _hid_SendRef( void )
-  {
-    if ( _device == nullptr )
-      if ( !init() ) return;
-
-#pragma pack( push, 1 )
-    struct report_t
-    {
-      unsigned char id;
-      unsigned char data[ 16 ];
-    };
-#pragma pack( pop )
-
-    report_t g;
-    g.id = 0x03;
-    g.data[ 0 ] = version;
-
-    auto resonable_c_calibration = reasonable( C.first ) && reasonable( C.second );
-    if ( resonable_c_calibration )
-      if ( !_original_WriteIntValueToBytes( C.first, g.data[ 1 ], g.data[ 2 ] ) ||
-           !_original_WriteIntValueToBytes( C.second, g.data[ 3 ], g.data[ 4 ], g.data[ 5 ] ) )
-        return;
-
-    auto resonable_l_calibration = reasonable( L.first ) && reasonable( L.second );
-    if ( resonable_l_calibration )
-      if ( !_original_WriteIntValueToBytes( L.first, g.data[ 6 ], g.data[ 7 ] ) ||
-           !_original_WriteIntValueToBytes( L.second, g.data[ 8 ], g.data[ 9 ], g.data[ 10 ] ) )
-        return;
-
-    if ( resonable_c_calibration || resonable_l_calibration )
-      if ( ::hid_send_feature_report( _device, (unsigned char*)&g, sizeof( g ) ) == -1 ) _hid_ProcessError();
-    status.reset<TStatus::BIT::NEWCALIBRATION>();
-  }
-
-  inline void _hid_ReadFrequency( void )
-  {
-    if ( _device == nullptr )
-      if ( !init() ) return;
-
-#pragma pack( push, 1 )
-    struct report_t
-    {
-      unsigned char id;
-      unsigned char data[ 3 ];
-    };
-#pragma pack( pop )
-
-    report_t report;
-    report.id = 0x01;
-
-    if ( ( ::hid_get_feature_report( _device, (unsigned char*)&report, sizeof( report ) ) == -1 ) )
-    {
-      _hid_ProcessError();
-      return;
-    }
-
-    auto a = report.data[ 0 ];
-    auto b = report.data[ 1 ];
-    auto c = report.data[ 2 ];
-    double freq = ( ( b << 8 ) + a ) * 256 / 0.36 + c;
-    if ( freq <= MINFREQ ) return;
-    rb.put( freq );
-    auto valid_refL = reasonable( L.first ) && reasonable( L.second );
-    auto valid_refC = reasonable( C.first ) && reasonable( C.second );
-    if ( !status.get<TStatus::BIT::SC>() && ( hw_status & RELAY_BIT ) && valid_refL )
-      callback_L( TLC::GetLC( freq, L.first ) - L.second );
-    else if ( !status.get<TStatus::BIT::SC>() && !( hw_status & RELAY_BIT ) && valid_refC )
-      callback_C( TLC::GetLC( freq, C.second ) - C.first );
-  }
-
-  double triggered_frequency_idle{};
-  double triggered_frequency_ref{};
-
-  hid_device* _device{};
-
-  static constexpr size_t Mt = 8;
-  std::shared_future<void> fut[ Mt ]{};
-  size_t k{};
 
   inline bool yesno( const std::string& prompt )
   {
@@ -267,17 +219,16 @@ struct TExecute : public TLC
   {
     _hid_ReadFrequency();
     double Ms = M - 1.0;
-    auto fraction{ rb.size() / Ms };
-    auto mean_frequency = rb.getM();
-    auto standart_deviation = rb.getD();
-    callback( std::make_tuple( fraction, mean_frequency, standart_deviation, tolerance * mean_frequency,
-                               triggered_frequency_idle, triggered_frequency_ref ) );
+    fraction = rb.size() / Ms;
+    mean_frequency = rb.getM();
+    standart_deviation = rb.getD();
+    treshold = tolerance * mean_frequency;
+    callback();
 
     auto stable_freq{ rb.full() && ( standart_deviation < tolerance * mean_frequency ) };
-
     auto is_idle_not_triggered{ triggered_frequency_idle < MINFREQ };
-    auto is_idle{ ( abs( mean_frequency - triggered_frequency_idle ) < 1000.0 ) && ( MINFREQ < mean_frequency ) };
-    auto is_ref{ abs( mean_frequency - triggered_frequency_ref ) < 1000.0 };
+    auto is_idle{ ( abs( mean_frequency - triggered_frequency_idle ) < MINFREQ ) && ( MINFREQ < mean_frequency ) };
+    auto is_ref{ abs( mean_frequency - triggered_frequency_ref ) < MINFREQ };
 
     if ( stable_freq && ( is_idle_not_triggered || is_idle ) )
       triggered_frequency_idle = mean_frequency;
@@ -305,13 +256,17 @@ struct TExecute : public TLC
   void operator()( void )
   {
     std::this_thread::sleep_for( std::chrono::milliseconds( 33 ) );
-    if ( status.get<TStatus::BIT::NEWSTATUS>() )
+    _run();
+    if ( status.get<TStatus::BIT::NEW_STATUS>() )
       _hid_SendStatus();
-    else if ( need_ref_get() )  //if CONNECTED && READ CALIBRATION bits - need to read calibration constants (refs)
+    else if ( auto need_ref_get{ status.get<TStatus::BIT::CONNECTED>() &&
+                                 status.get<TStatus::BIT::READ_CALIBRATION>() };
+              need_ref_get )  //if CONNECTED && READ CALIBRATION bits - need to read calibration constants (refs)
       _hid_ReadRef();
-    else if ( need_ref_set() )
+    else if ( auto need_ref_set{ status.get<TStatus::BIT::C>() && status.get<TStatus::BIT::NEW_CALIBRATION>() };
+              need_ref_set )
       _hid_SendRef();
-    else if ( status.get<TStatus::BIT::SC>() )
+    else if ( status.get<TStatus::BIT::RUN_CALIBRATION>() )
       calibrate();
     else if ( status.get<TStatus::BIT::C>() )
       _hid_ReadFrequency();
@@ -324,33 +279,190 @@ struct TExecute : public TLC
   }
 
  public:
+  TExecute( void )
+      : _hid_SendStatus{ [&]( void ) {
+          if ( _device == nullptr )
+            if ( !init() ) return;
+
+#pragma pack( push, 1 )
+          struct report_t
+          {
+            unsigned char id;
+            unsigned char status;
+          };
+#pragma pack( pop )
+
+          report_t report;
+          report.id = 0x02;
+          report.status = hw_status;
+
+          if ( ::hid_send_feature_report( _device, reinterpret_cast<uint8_t*>( &report ), sizeof( report ) ) == -1 )
+            _hid_ProcessError();
+        } },
+        _hid_ReadRef{ [&]( void ) {
+          if ( _device == nullptr )
+            if ( !init() ) return;
+
+#pragma pack( push, 1 )
+          struct report_t
+          {
+            unsigned char id;
+            unsigned char data[ 16 ];
+          };
+#pragma pack( pop )
+
+          report_t g;
+          g.id = 0x03;
+
+          if ( ::hid_get_feature_report( _device, (unsigned char*)&g, sizeof( g ) ) == -1 )
+          {
+            _hid_ProcessError();
+            return;
+          }
+
+          saved_ref = std::make_tuple( _original_ReadIntValueFromBytes( g.data[ 1 ], g.data[ 2 ] ),
+                                       _original_ReadIntValueFromBytes( g.data[ 3 ], g.data[ 4 ], g.data[ 5 ] ),
+                                       _original_ReadIntValueFromBytes( g.data[ 6 ], g.data[ 7 ] ),
+                                       _original_ReadIntValueFromBytes( g.data[ 8 ], g.data[ 9 ], g.data[ 10 ] ) );
+          // C calibration
+          {
+            auto refC = std::get<0>( saved_ref );
+            auto refL = std::get<1>( saved_ref );
+
+            std::cout << "C: refC: " << refC << "pF, refL: " << refL << "nH" << std::endl;
+
+            if ( reasonable( refC ) && reasonable( refL ) ) C = std::make_pair( refC, refL );
+          }
+
+          // L calibration
+          {
+            auto refC = std::get<2>( saved_ref );
+            auto refL = std::get<3>( saved_ref );
+
+            std::cout << "L: refC: " << refC << "pF, refL: " << refL << "nH" << std::endl;
+
+            if ( reasonable( refC ) && reasonable( refL ) ) L = std::make_pair( refC, refL );
+          }
+
+          callback();
+        } },
+        _hid_SendRef{ [&]( void ) {
+          if ( _device == nullptr )
+            if ( !init() ) return;
+
+#pragma pack( push, 1 )
+          struct report_t
+          {
+            unsigned char id;
+            unsigned char data[ 16 ];
+          };
+#pragma pack( pop )
+
+          report_t g;
+          g.id = 0x03;
+          g.data[ 0 ] = version;
+
+          auto resonable_c_calibration = reasonable( C.first ) && reasonable( C.second );
+          if ( resonable_c_calibration )
+            if ( !_original_WriteIntValueToBytes( C.first, g.data[ 1 ], g.data[ 2 ] ) ||
+                 !_original_WriteIntValueToBytes( C.second, g.data[ 3 ], g.data[ 4 ], g.data[ 5 ] ) )
+              return;
+
+          auto resonable_l_calibration = reasonable( L.first ) && reasonable( L.second );
+          if ( resonable_l_calibration )
+            if ( !_original_WriteIntValueToBytes( L.first, g.data[ 6 ], g.data[ 7 ] ) ||
+                 !_original_WriteIntValueToBytes( L.second, g.data[ 8 ], g.data[ 9 ], g.data[ 10 ] ) )
+              return;
+
+          if ( resonable_c_calibration || resonable_l_calibration )
+            if ( ::hid_send_feature_report( _device, (unsigned char*)&g, sizeof( g ) ) == -1 ) _hid_ProcessError();
+        } },
+        _hid_ReadFrequency{ [&]( void ) {
+          if ( _device == nullptr )
+            if ( !init() ) return;
+
+#pragma pack( push, 1 )
+          struct report_t
+          {
+            unsigned char id;
+            unsigned char data[ 3 ];
+          };
+#pragma pack( pop )
+
+          report_t report;
+          report.id = 0x01;
+
+          if ( ( ::hid_get_feature_report( _device, (unsigned char*)&report, sizeof( report ) ) == -1 ) )
+          {
+            _hid_ProcessError();
+            return;
+          }
+
+          auto a = report.data[ 0 ];
+          auto b = report.data[ 1 ];
+          auto c = report.data[ 2 ];
+          double freq = ( ( b << 8 ) + a ) * 256 / 0.36 + c;
+          if ( freq <= MINFREQ ) return;
+          rb.put( freq );
+          auto valid_refC = reasonable( C.first ) && reasonable( C.second );
+
+          if ( auto measure_L{ ( reasonable( L.first ) && reasonable( L.second ) ) && ( hw_status & RELAY_BIT ) &&
+                               status.get<TStatus::BIT::RUN_L_MEASURMENTS>() };
+               measure_L )
+          {
+            L_measured = TLC::GetLC( freq, L.first ) - L.second;
+            callback();
+            _run.put( *this );
+          }
+          else if ( auto measure_C{ ( reasonable( C.first ) && reasonable( C.second ) ) && !( hw_status & RELAY_BIT ) &&
+                                    status.get<TStatus::BIT::RUN_C_MEASURMENTS>() };
+                    measure_C )
+          {
+            C_measured = TLC::GetLC( freq, C.second ) - C.first;
+            callback();
+            _run.put( *this );
+          }
+        } }
+
+  {
+  }
+
   inline bool init( void )
   {
     _device = ::hid_open( 0x16C0, 0x05DF, nullptr );
     if ( _device )
     {
       hw_status |= PCPROGRAMRUN_BIT;
-      status.set<TStatus::BIT::NEWSTATUS>();
-      status.set<TStatus::BIT::READCALIBRATION>();
-      status.set<TStatus::BIT::C>();
+      _run.put( _hid_SendStatus );
+      _run.put( _hid_ReadRef );
+      status.set<TStatus::BIT::CONNECTED>();
       async();
     }
     else
     {
-      status.reset<TStatus::BIT::C>();
+      status.reset<TStatus::BIT::CONNECTED>();
     }
-    return ( status.get<TStatus::BIT::C>() );
+    return ( status.get<TStatus::BIT::CONNECTED>() );
   }  // namespace
 
-  template <typename F, typename T>
-  inline void L_calibration( F Lc, T t )
+  template <typename F>
+  inline bool init( F f )
+  {
+    callback = std::bind( f, saved_ref );
+    return ( init() );
+  };
+
+  template <typename L, typename T, typename F>
+  inline void L_calibration( L Lc, T t, F func )
   {
     std::lock_guard<std::mutex> lockGuard{ mux };
     customer_ref_lc = Lc;
     tolerance = t;
-    status.set<TStatus::BIT::SC>();
     hw_status |= RELAY_BIT;
-    status.set<TStatus::BIT::NEWSTATUS>();
+    _run.put( _hid_SendStatus );
+    callback = std::bind( func, std::make_tuple( fraction, mean_frequency, standart_deviation, treshold,
+                                                 triggered_frequency_idle, triggered_frequency_ref ) );
+
     //std::cout << "Begin L Calibration. Calibration L: " << customer_ref_lc << "nH, tolerance: " << tolerance * 100.0 << "%" << std::endl;
   }
 
@@ -358,22 +470,41 @@ struct TExecute : public TLC
   inline void C_calibration( C Cl, T t, F func )
   {
     std::lock_guard<std::mutex> lockGuard{ mux };
+    status.set<TStatus::BIT::RUN_C_MEASURMENTS>();
+    status.reset<TStatus::BIT::RUN_L_MEASURMENTS>();
+    status.reset<TStatus::BIT::RUN_CALIBRATION>();
+
+    callback = std::bind( func, std::make_tuple( fraction, mean_frequency, standart_deviation, treshold,
+                                                 triggered_frequency_idle, triggered_frequency_ref ) );
     customer_ref_lc = Cl;
     tolerance = t;
-    status.set<TStatus::BIT::SC>();
     hw_status &= ~RELAY_BIT;
-    status.set<TStatus::BIT::NEWSTATUS>();
+    _run.put( _hid_SendStatus );
+    _run.put( _hid_ReadFrequency );
+  }
 
-    //func( std::make_pair( customer_ref_lc, tolerance * 100.0 ) );
-    //std::cout << "Begin C Calibration. Calibration C: " << customer_ref_lc << "pF, tolerance: " << tolerance * 100.0 << "%" << std::endl;
+  template <typename F>
+  inline void C_measurments( F f )
+  {
+    std::lock_guard<std::mutex> lockGuard{ mux };
+    status.set<TStatus::BIT::RUN_C_MEASURMENTS>();
+    status.reset<TStatus::BIT::RUN_L_MEASURMENTS>();
+    status.reset<TStatus::BIT::RUN_CALIBRATION>();
+
+    callback = std::bind( f, C_measured );
+
+    hw_status &= ~RELAY_BIT;
+    _run.put( _hid_SendStatus );
+    _run.put( _hid_ReadFrequency );
   }
 
   inline void deinit( void )
   {
     hw_status &= ~PCPROGRAMRUN_BIT;
     hw_status &= ~RELAY_BIT;
-    status.set<TStatus::BIT::NEWSTATUS>();
-    status.reset<TStatus::BIT::C>();
+    status.reset<TStatus::BIT::RUN_C_MEASURMENTS>();
+    status.reset<TStatus::BIT::RUN_L_MEASURMENTS>();
+    status.reset<TStatus::BIT::RUN_CALIBRATION>();
   }
 
   inline void relay_on( void )
