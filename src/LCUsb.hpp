@@ -129,6 +129,33 @@ inline f_t callback;
 
 inline std::tuple<uint16_t, uint32_t, uint16_t, uint32_t> saved_ref;
 
+struct TLC
+{
+ private:
+  Kernel::TRingBufferStatistic<double, M> _ref;
+
+  static constexpr double pi = 3.1415926535897932385;
+
+ public:
+  template <typename F, typename LC>
+  inline double GetLC( F freq, LC lc )
+  {
+    return ( ( 1.0 / ( 4.0 * ( pi * pi ) * ( freq * freq ) * lc ) ) * std::pow( 10, 21 ) );
+  }
+
+  template <typename F1, typename F2, typename LC, typename T>
+  inline double GetRef( F1 freq1, F2 freq2, LC lc, T t )
+  {
+    double resultLC = ( 1.0 / ( 4.0 * ( pi * pi ) * lc ) ) * ( 1.0 / ( freq2 * freq2 ) - 1.0 / ( freq1 * freq1 ) ) *
+                      std::pow( 10.0, 21.0 );
+    _ref.put( resultLC );
+    auto d = _ref.getD();
+    auto m = _ref.getM();
+    if ( d < m * t ) return ( m );
+    return ( double{} );
+  }
+};
+
 struct TExecute : public TLC
 {
  private:
@@ -187,7 +214,6 @@ struct TExecute : public TLC
   template <typename R1, typename R2>
   void successfully_calibrated( R1 ref1, R2 ref2 )
   {
-    status.reset<TStatus::BIT::SC>();
     if ( hw_status & RELAY_BIT )
     {
       L.first = floor( ref1 + 0.5 );
@@ -205,7 +231,7 @@ struct TExecute : public TLC
 
     if ( yesno( "save ref's? " ) )
     {
-      status.set<TStatus::BIT::NEWCALIBRATION>();
+      _run.put( _hid_SendRef() );
     }
   }
 
@@ -257,7 +283,7 @@ struct TExecute : public TLC
   {
     std::this_thread::sleep_for( std::chrono::milliseconds( 33 ) );
     _run();
-    if ( status.get<TStatus::BIT::NEW_STATUS>() )
+    /*if ( status.get<TStatus::BIT::NEW_STATUS>() )
       _hid_SendStatus();
     else if ( auto need_ref_get{ status.get<TStatus::BIT::CONNECTED>() &&
                                  status.get<TStatus::BIT::READ_CALIBRATION>() };
@@ -274,7 +300,7 @@ struct TExecute : public TLC
     {
       ::hid_close( _device );
       return;
-    }
+    }*/
     async();
   }
 
@@ -329,7 +355,7 @@ struct TExecute : public TLC
             auto refC = std::get<0>( saved_ref );
             auto refL = std::get<1>( saved_ref );
 
-            std::cout << "C: refC: " << refC << "pF, refL: " << refL << "nH" << std::endl;
+            //std::cout << "C: refC: " << refC << "pF, refL: " << refL << "nH" << std::endl;
 
             if ( reasonable( refC ) && reasonable( refL ) ) C = std::make_pair( refC, refL );
           }
@@ -339,11 +365,10 @@ struct TExecute : public TLC
             auto refC = std::get<2>( saved_ref );
             auto refL = std::get<3>( saved_ref );
 
-            std::cout << "L: refC: " << refC << "pF, refL: " << refL << "nH" << std::endl;
+            //std::cout << "L: refC: " << refC << "pF, refL: " << refL << "nH" << std::endl;
 
             if ( reasonable( refC ) && reasonable( refL ) ) L = std::make_pair( refC, refL );
           }
-
           callback();
         } },
         _hid_SendRef{ [&]( void ) {
@@ -412,7 +437,7 @@ struct TExecute : public TLC
           {
             L_measured = TLC::GetLC( freq, L.first ) - L.second;
             callback();
-            _run.put( *this );
+            _run.put( _hid_ReadFrequency );
           }
           else if ( auto measure_C{ ( reasonable( C.first ) && reasonable( C.second ) ) && !( hw_status & RELAY_BIT ) &&
                                     status.get<TStatus::BIT::RUN_C_MEASURMENTS>() };
@@ -420,7 +445,38 @@ struct TExecute : public TLC
           {
             C_measured = TLC::GetLC( freq, C.second ) - C.first;
             callback();
-            _run.put( *this );
+            _run.put( _hid_ReadFrequency );
+          }
+          else if ( status.get<TStatus::BIT::RUN_CALIBRATION>() )
+          {
+            double Ms = M - 1.0;
+            fraction = rb.size() / Ms;
+            mean_frequency = rb.getM();
+            standart_deviation = rb.getD();
+            treshold = tolerance * mean_frequency;
+            callback();
+
+            auto stable_freq{ rb.full() && ( standart_deviation < tolerance * mean_frequency ) };
+            auto is_idle_not_triggered{ triggered_frequency_idle < MINFREQ };
+            auto is_idle{ ( abs( mean_frequency - triggered_frequency_idle ) < MINFREQ ) &&
+                          ( MINFREQ < mean_frequency ) };
+            auto is_ref{ abs( mean_frequency - triggered_frequency_ref ) < MINFREQ };
+
+            if ( stable_freq && ( is_idle_not_triggered || is_idle ) )
+              triggered_frequency_idle = mean_frequency;
+            else if ( !is_idle && stable_freq )
+            {
+              triggered_frequency_ref = mean_frequency;
+              auto ref1 = floor(
+                  TLC::GetRef( triggered_frequency_idle, triggered_frequency_ref, customer_ref_lc, tolerance ) + 0.5 );
+              if ( 100.0 < ref1 )
+              {
+                auto ref2 = floor( TLC::GetLC( triggered_frequency_idle, ref1 ) + 0.5 );
+                //triggered_frequency_idle = double{};
+                successfully_calibrated( ref1, ref2 );
+              }
+            }
+            _run.put( _hid_ReadFrequency );
           }
         } }
 

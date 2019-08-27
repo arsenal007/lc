@@ -35,33 +35,6 @@ callback_t callback_treshold{ &dummy };
 callback_t callback_frequency_idle{ &dummy };
 callback_t callback_frequency_ref{ &dummy };
 
-struct TLC
-{
- private:
-  Kernel::TRingBufferStatistic<double, M> _ref;
-
-  static constexpr double pi = 3.1415926535897932385;
-
- public:
-  template <typename F, typename LC>
-  inline double GetLC( F freq, LC lc )
-  {
-    return ( ( 1.0 / ( 4.0 * ( pi * pi ) * ( freq * freq ) * lc ) ) * std::pow( 10, 21 ) );
-  }
-
-  template <typename F1, typename F2, typename LC, typename T>
-  inline double GetRef( F1 freq1, F2 freq2, LC lc, T t )
-  {
-    double resultLC = ( 1.0 / ( 4.0 * ( pi * pi ) * lc ) ) * ( 1.0 / ( freq2 * freq2 ) - 1.0 / ( freq1 * freq1 ) ) *
-                      std::pow( 10.0, 21.0 );
-    _ref.put( resultLC );
-    auto d = _ref.getD();
-    auto m = _ref.getM();
-    if ( d < m * t ) return ( m );
-    return ( double{} );
-  }
-};
-
 TExecute execute;
 
 void set_callback_inductance( void ( *l )( double ) )
