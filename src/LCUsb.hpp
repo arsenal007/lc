@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <functional>
 
-#include "hidapi.h"
+#include <hidapi/hidapi.h>
 #include "TRingBuffer.hpp"
 
 struct TStatus
@@ -57,8 +57,7 @@ using f_t = std::function<void( void )>;
 struct TRun
 {
  private:
-  f_t _func[ 32 ];
-  Kernel::TRingBuffer _rb;
+  Kernel::TRingBuffer<f_t, 32> _rb;
 
  public:
   inline void operator()( void )
@@ -75,7 +74,7 @@ struct TRun
     _rb.put( item );
   }
 
-  TRun() : _func{}, _rb{ _func } {}
+  TRun() : _rb{} {}
 };
 
 template <typename A, typename B, typename C>
@@ -119,14 +118,13 @@ inline uint8_t version{};
 
 static constexpr uint8_t RELAY_BIT = ( 1 << 7 );
 static constexpr uint8_t PCPROGRAMRUN_BIT = ( 1 << 6 );
+static constexpr uint8_t CALIBRATION_BIT = ( 1 << 5 );
 
-inline TStatus status;
 inline uint8_t hw_status;
 static constexpr size_t M = 1024;
 inline std::mutex mux;
-inline double customer_ref_lc, tolerance, C_measured, L_measured;
+inline double customer_ref_lc, tolerance, measured;
 inline f_t callback;
-
 inline std::tuple<uint16_t, uint32_t, uint16_t, uint32_t> saved_ref;
 
 struct TLC
@@ -156,7 +154,7 @@ struct TLC
   }
 };
 
-struct TExecute : public TLC
+struct TExecute : public TLC, TRun
 {
  private:
   std::pair<uint16_t, uint32_t> C{};  // first = C, second = L
@@ -172,7 +170,6 @@ struct TExecute : public TLC
   std::shared_future<void> fut[ Mt ]{};
   size_t k{};
 
-  TRun _run;
   f_t _hid_SendStatus, _hid_ReadRef, _hid_SendRef, _hid_ReadFrequency;
 
   inline void _hid_ProcessError( void )
@@ -231,17 +228,17 @@ struct TExecute : public TLC
 
     if ( yesno( "save ref's? " ) )
     {
-      _run.put( _hid_SendRef() );
+      put( _hid_SendRef );
     }
   }
 
-  template <typename T, size_t N>
+  /*  template <typename T, size_t N>
   inline size_t sizeof_array( T ( & )[ N ] )
   {
     return ( N );
   }
 
-  inline void calibrate( void )
+    inline void calibrate( void )
   {
     _hid_ReadFrequency();
     double Ms = M - 1.0;
@@ -254,7 +251,6 @@ struct TExecute : public TLC
     auto stable_freq{ rb.full() && ( standart_deviation < tolerance * mean_frequency ) };
     auto is_idle_not_triggered{ triggered_frequency_idle < MINFREQ };
     auto is_idle{ ( abs( mean_frequency - triggered_frequency_idle ) < MINFREQ ) && ( MINFREQ < mean_frequency ) };
-    auto is_ref{ abs( mean_frequency - triggered_frequency_ref ) < MINFREQ };
 
     if ( stable_freq && ( is_idle_not_triggered || is_idle ) )
       triggered_frequency_idle = mean_frequency;
@@ -271,19 +267,23 @@ struct TExecute : public TLC
       }
     }
   }
-
-  inline void async( void )
+*/
+  inline void async_task_send( void )
   {
     if ( fut[ k ].valid() ) fut[ k ].get();
-    fut[ k ] = std::async( std::launch::async, *this );
+    fut[ k ] = std::async( std::launch::async, [&]( void ) {
+      std::this_thread::sleep_for( std::chrono::milliseconds( 33 ) );
+      operator()();
+      async_task_send();
+    } );
     k = ( k + 1 ) % Mt;
   }
 
-  void operator()( void )
+  /*void operator()( void )
   {
     std::this_thread::sleep_for( std::chrono::milliseconds( 33 ) );
     _run();
-    /*if ( status.get<TStatus::BIT::NEW_STATUS>() )
+    if ( status.get<TStatus::BIT::NEW_STATUS>() )
       _hid_SendStatus();
     else if ( auto need_ref_get{ status.get<TStatus::BIT::CONNECTED>() &&
                                  status.get<TStatus::BIT::READ_CALIBRATION>() };
@@ -300,15 +300,18 @@ struct TExecute : public TLC
     {
       ::hid_close( _device );
       return;
-    }*/
+    }
     async();
-  }
+  }*/
 
  public:
   TExecute( void )
       : _hid_SendStatus{ [&]( void ) {
           if ( _device == nullptr )
-            if ( !init() ) return;
+          {
+            init();
+            return;
+          }
 
 #pragma pack( push, 1 )
           struct report_t
@@ -327,7 +330,10 @@ struct TExecute : public TLC
         } },
         _hid_ReadRef{ [&]( void ) {
           if ( _device == nullptr )
-            if ( !init() ) return;
+          {
+            init();
+            return;
+          }
 
 #pragma pack( push, 1 )
           struct report_t
@@ -352,8 +358,8 @@ struct TExecute : public TLC
                                        _original_ReadIntValueFromBytes( g.data[ 8 ], g.data[ 9 ], g.data[ 10 ] ) );
           // C calibration
           {
-            auto refC = std::get<0>( saved_ref );
-            auto refL = std::get<1>( saved_ref );
+            auto refC{ std::get<0>( saved_ref ) };
+            auto refL{ std::get<1>( saved_ref ) };
 
             //std::cout << "C: refC: " << refC << "pF, refL: " << refL << "nH" << std::endl;
 
@@ -362,8 +368,8 @@ struct TExecute : public TLC
 
           // L calibration
           {
-            auto refC = std::get<2>( saved_ref );
-            auto refL = std::get<3>( saved_ref );
+            auto refC{ std::get<2>( saved_ref ) };
+            auto refL{ std::get<3>( saved_ref ) };
 
             //std::cout << "L: refC: " << refC << "pF, refL: " << refL << "nH" << std::endl;
 
@@ -373,7 +379,10 @@ struct TExecute : public TLC
         } },
         _hid_SendRef{ [&]( void ) {
           if ( _device == nullptr )
-            if ( !init() ) return;
+          {
+            init();
+            return;
+          }
 
 #pragma pack( push, 1 )
           struct report_t
@@ -404,7 +413,10 @@ struct TExecute : public TLC
         } },
         _hid_ReadFrequency{ [&]( void ) {
           if ( _device == nullptr )
-            if ( !init() ) return;
+          {
+            init();
+            return;
+          }
 
 #pragma pack( push, 1 )
           struct report_t
@@ -429,25 +441,26 @@ struct TExecute : public TLC
           double freq = ( ( b << 8 ) + a ) * 256 / 0.36 + c;
           if ( freq <= MINFREQ ) return;
           rb.put( freq );
-          auto valid_refC = reasonable( C.first ) && reasonable( C.second );
 
-          if ( auto measure_L{ ( reasonable( L.first ) && reasonable( L.second ) ) && ( hw_status & RELAY_BIT ) &&
-                               status.get<TStatus::BIT::RUN_L_MEASURMENTS>() };
+          if ( auto measure_L{ ( reasonable( L.first ) && reasonable( L.second ) ) &&
+                               ( hw_status & PCPROGRAMRUN_BIT ) && ( hw_status & RELAY_BIT ) &&
+                               !( hw_status & CALIBRATION_BIT ) };
                measure_L )
           {
-            L_measured = TLC::GetLC( freq, L.first ) - L.second;
+            measured = TLC::GetLC( freq, L.first ) - L.second;
             callback();
-            _run.put( _hid_ReadFrequency );
+            put( _hid_ReadFrequency );
           }
-          else if ( auto measure_C{ ( reasonable( C.first ) && reasonable( C.second ) ) && !( hw_status & RELAY_BIT ) &&
-                                    status.get<TStatus::BIT::RUN_C_MEASURMENTS>() };
+          else if ( auto measure_C{ ( reasonable( C.first ) && reasonable( C.second ) ) &&
+                                    ( hw_status & PCPROGRAMRUN_BIT ) && !( hw_status & RELAY_BIT ) &&
+                                    !( hw_status & CALIBRATION_BIT ) };
                     measure_C )
           {
-            C_measured = TLC::GetLC( freq, C.second ) - C.first;
+            measured = TLC::GetLC( freq, C.second ) - C.first;
             callback();
-            _run.put( _hid_ReadFrequency );
+            put( _hid_ReadFrequency );
           }
-          else if ( status.get<TStatus::BIT::RUN_CALIBRATION>() )
+          else if ( ( hw_status & PCPROGRAMRUN_BIT ) && ( hw_status & CALIBRATION_BIT ) )
           {
             double Ms = M - 1.0;
             fraction = rb.size() / Ms;
@@ -460,7 +473,6 @@ struct TExecute : public TLC
             auto is_idle_not_triggered{ triggered_frequency_idle < MINFREQ };
             auto is_idle{ ( abs( mean_frequency - triggered_frequency_idle ) < MINFREQ ) &&
                           ( MINFREQ < mean_frequency ) };
-            auto is_ref{ abs( mean_frequency - triggered_frequency_ref ) < MINFREQ };
 
             if ( stable_freq && ( is_idle_not_triggered || is_idle ) )
               triggered_frequency_idle = mean_frequency;
@@ -476,7 +488,11 @@ struct TExecute : public TLC
                 successfully_calibrated( ref1, ref2 );
               }
             }
-            _run.put( _hid_ReadFrequency );
+            put( _hid_ReadFrequency );
+          }
+          else if ( !( hw_status & PCPROGRAMRUN_BIT ) )
+          {
+            _hid_ProcessError();
           }
         } }
 
@@ -489,16 +505,12 @@ struct TExecute : public TLC
     if ( _device )
     {
       hw_status |= PCPROGRAMRUN_BIT;
-      _run.put( _hid_SendStatus );
-      _run.put( _hid_ReadRef );
-      status.set<TStatus::BIT::CONNECTED>();
-      async();
+      put( _hid_SendStatus );
+      put( _hid_ReadRef );
+      async_task_send();
+      return ( true );
     }
-    else
-    {
-      status.reset<TStatus::BIT::CONNECTED>();
-    }
-    return ( status.get<TStatus::BIT::CONNECTED>() );
+    return ( false );
   }  // namespace
 
   template <typename F>
@@ -506,70 +518,65 @@ struct TExecute : public TLC
   {
     callback = std::bind( f, saved_ref );
     return ( init() );
-  };
+  }
 
   template <typename L, typename T, typename F>
   inline void L_calibration( L Lc, T t, F func )
   {
     std::lock_guard<std::mutex> lockGuard{ mux };
+
+    callback = std::bind( func, std::make_tuple( fraction, mean_frequency, standart_deviation, treshold,
+                                                 triggered_frequency_idle, triggered_frequency_ref ) );
     customer_ref_lc = Lc;
     tolerance = t;
     hw_status |= RELAY_BIT;
-    _run.put( _hid_SendStatus );
-    callback = std::bind( func, std::make_tuple( fraction, mean_frequency, standart_deviation, treshold,
-                                                 triggered_frequency_idle, triggered_frequency_ref ) );
-
-    //std::cout << "Begin L Calibration. Calibration L: " << customer_ref_lc << "nH, tolerance: " << tolerance * 100.0 << "%" << std::endl;
+    hw_status |= CALIBRATION_BIT;
+    put( _hid_SendStatus );
+    put( _hid_ReadFrequency );
   }
 
   template <typename C, typename T, typename F>
   inline void C_calibration( C Cl, T t, F func )
   {
     std::lock_guard<std::mutex> lockGuard{ mux };
-    status.set<TStatus::BIT::RUN_C_MEASURMENTS>();
-    status.reset<TStatus::BIT::RUN_L_MEASURMENTS>();
-    status.reset<TStatus::BIT::RUN_CALIBRATION>();
 
     callback = std::bind( func, std::make_tuple( fraction, mean_frequency, standart_deviation, treshold,
                                                  triggered_frequency_idle, triggered_frequency_ref ) );
     customer_ref_lc = Cl;
     tolerance = t;
     hw_status &= ~RELAY_BIT;
-    _run.put( _hid_SendStatus );
-    _run.put( _hid_ReadFrequency );
+    hw_status |= CALIBRATION_BIT;
+    put( _hid_SendStatus );
+    put( _hid_ReadFrequency );
   }
 
   template <typename F>
   inline void C_measurments( F f )
   {
     std::lock_guard<std::mutex> lockGuard{ mux };
-    status.set<TStatus::BIT::RUN_C_MEASURMENTS>();
-    status.reset<TStatus::BIT::RUN_L_MEASURMENTS>();
-    status.reset<TStatus::BIT::RUN_CALIBRATION>();
-
-    callback = std::bind( f, C_measured );
-
+    callback = std::bind( f, measured );
     hw_status &= ~RELAY_BIT;
-    _run.put( _hid_SendStatus );
-    _run.put( _hid_ReadFrequency );
+    hw_status &= ~CALIBRATION_BIT;
+    put( _hid_SendStatus );
+    put( _hid_ReadFrequency );
+  }
+
+  template <typename F>
+  inline void L_measurments( F f )
+  {
+    std::lock_guard<std::mutex> lockGuard{ mux };
+    callback = std::bind( f, measured );
+    hw_status |= RELAY_BIT;
+    hw_status &= ~CALIBRATION_BIT;
+    put( _hid_SendStatus );
+    put( _hid_ReadFrequency );
   }
 
   inline void deinit( void )
   {
     hw_status &= ~PCPROGRAMRUN_BIT;
     hw_status &= ~RELAY_BIT;
-    status.reset<TStatus::BIT::RUN_C_MEASURMENTS>();
-    status.reset<TStatus::BIT::RUN_L_MEASURMENTS>();
-    status.reset<TStatus::BIT::RUN_CALIBRATION>();
-  }
-
-  inline void relay_on( void )
-  {
-    hw_status |= RELAY_BIT;
-  }
-
-  inline void relay_off( void )
-  {
-    hw_status &= ~RELAY_BIT;
+    hw_status &= ~CALIBRATION_BIT;
+    put( _hid_SendStatus );
   }
 };

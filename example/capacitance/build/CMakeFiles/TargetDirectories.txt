@@ -1,0 +1,4 @@
+C:/Users/vkuzmenko/eclipse-workspace/liblcusb/example/capacitance/build/CMakeFiles/rebuild_cache.dir
+C:/Users/vkuzmenko/eclipse-workspace/liblcusb/example/capacitance/build/CMakeFiles/edit_cache.dir
+C:/Users/vkuzmenko/eclipse-workspace/liblcusb/example/capacitance/build/CMakeFiles/objlib.dir
+C:/Users/vkuzmenko/eclipse-workspace/liblcusb/example/capacitance/build/CMakeFiles/C.dir

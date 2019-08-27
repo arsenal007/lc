@@ -3,7 +3,7 @@
 # Cache Variables: (probably not for direct use in your scripts)
 #  WINHID_INCLUDE_DIR
 #  WINHID_CRT_INCLUDE_DIR
-#  WINHID_LIBRARY
+#  WINHIDAPI_LIBRARY
 #
 # Non-cache variables you might use in your CMakeLists.txt:
 #  WINHID_FOUND
@@ -75,10 +75,10 @@ if(MSVC)
 		"$ENV{ProgramFiles}/Windows Kits/"
 		"c:/WinDDK/")
 	clean_directory_list(_prefixed)
-	find_library(WINHID_LIBRARY
+	find_library(WINHIDAPI_LIBRARY
 		NAMES
-		hid
-		libhid
+		hidapi
+		libhidapi
 		PATHS
 		"${WINHID_ROOT_DIR}"
 		${WINSDK_LIBDIRS}
@@ -95,11 +95,11 @@ if(MSVC)
 		"lib/win8/um/${_arch8}" # Win 8 min requirement
 		)
 	# Might want to look close to the library first for the includes.
-	if(WINHID_LIBRARY)
-		get_filename_component(WINHID_LIBRARY_DIR "${WINHID_LIBRARY}" PATH)
+	if(WINHIDAPI_LIBRARY)
+		get_filename_component(WINHIDAPI_LIBRARY_DIR "${WINHIDAPI_LIBRARY}" PATH)
 		if(WINDOWSSDK_FOUND)
-			get_windowssdk_from_component("${WINHID_LIBRARY}" _USED_WINSDK)
-			set(WINHID_LIBRARY_FROM_WINDOWSSDK ON)
+			get_windowssdk_from_component("${WINHIDAPI_LIBRARY}" _USED_WINSDK)
+			set(WINHIDAPI_LIBRARY_FROM_WINDOWSSDK ON)
 			get_windowssdk_include_dirs(${_USED_WINSDK} WINHID_INCLUDE_HINTS)
 		endif()
 	endif()
@@ -150,9 +150,9 @@ if(MSVC)
 			set(_need_crt_dir ON)
 		endif()
 	endif()
-	find_path(WINHID_INCLUDE_DIR
+	find_path(WINHIDAPI_INCLUDE_DIR
 		NAMES
-		hidsdi.h
+		hidapi.h
 		HINTS
 		${WINHID_INCLUDE_HINTS}
 		PATHS
@@ -169,9 +169,9 @@ else()
 	if(MINGW)
 		include(MinGWSearchPathExtras)
 
-		find_library(WINHID_LIBRARY
+		find_library(WINHIDAPI_LIBRARY
 			NAMES
-			libhid
+			libhidapi
 			HINTS
 			"${WINHID_ROOT_DIR}"
 			${MINGWSEARCH_LIBRARY_DIRS}
@@ -190,10 +190,10 @@ else()
 			lib
 			lib/w32api)
 	else()
-		find_library(WINHID_LIBRARY
+		find_library(WINHIDAPI_LIBRARY
 			NAMES
-			hid
-			libhid
+			hidapi
+			libhidapi
 			HINTS
 			"${WINHID_ROOT_DIR}"
 			/mingw
@@ -227,7 +227,7 @@ endif()
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(WinHID
 	DEFAULT_MSG
-	WINHID_LIBRARY
+	WINHIDAPI_LIBRARY
 	WINHID_SETUPAPI_LIBRARY
 	WINHID_INCLUDE_DIR
 	${_deps_check})
@@ -241,36 +241,36 @@ if(WINHID_FOUND)
 			set(_winreq "Windows XP")
 		elseif(WINHID_LIBRARY MATCHES "[Ll]ib/wnet")
 			set(_winreq "Windows Server 2003")
-		elseif(WINHID_LIBRARY MATCHES "[Ll]ib/wlh")
+		elseif(WINHIDAPI_LIBRARY MATCHES "[Ll]ib/wlh")
 			set(_winreq "Windows Vista")
-		elseif(WINHID_LIBRARY MATCHES "[Ll]ib/win7")
+		elseif(WINHIDAPI_LIBRARY MATCHES "[Ll]ib/win7")
 			set(_winreq "Windows 7")
-		elseif(WINHID_LIBRARY MATCHES "[Ll]ib/win8")
+		elseif(WINHIDAPI_LIBRARY MATCHES "[Ll]ib/win8")
 			set(_winreq "Windows 8")
 			set(_winreq_uncertain ON)
-		elseif(WINHID_LIBRARY MATCHES "[Ll]ib/winv6.3")
+		elseif(WINHIDAPI_LIBRARY MATCHES "[Ll]ib/winv6.3")
 			set(_winreq "Windows 8.1")
 			set(_winreq_uncertain ON)
-		elseif(WINHID_LIBRARY MATCHES "[Ll]ib/10.0")
+		elseif(WINHIDAPI_LIBRARY MATCHES "[Ll]ib/10.0")
 			set(_winreq "Windows 10")
 			set(_winreq_uncertain ON)
 		endif()
 		if(NOT "${WINHID_MIN_WINDOWS_VER}" STREQUAL "${_winreq}")
 			if(NOT WinHID_FIND_QUIETLY)
 				if(NOT _winreq)
-					message("Couldn't determine if the WINHID_LIBRARY would result in a minimum version compatibility requirement.")
+					message("Couldn't determine if the WINHIDAPI_LIBRARY would result in a minimum version compatibility requirement.")
 				elseif(_winreq_uncertain)
 					message(STATUS
-					"Found WINHID_LIBRARY in the Windows SDK for ${_winreq} , which may or may not affect minimum compatible Windows version.")
+					"Found WINHIDAPI_LIBRARY in the Windows SDK for ${_winreq} , which may or may not affect minimum compatible Windows version.")
 				else()
 					message(STATUS
-						"Linking against WINHID_LIBRARY will enforce this minimum version: ${_winreq}")
+						"Linking against WINHIDAPI_LIBRARY will enforce this minimum version: ${_winreq}")
 				endif()
 			endif()
 			set(WINHID_MIN_WINDOWS_VER "${_winreq}" CACHE INTERNAL "" FORCE)
 		endif()
 	endif()
-	set(WINHID_LIBRARIES "${WINHID_LIBRARY}" "${WINHID_SETUPAPI_LIBRARY}")
+	set(WINHID_LIBRARIES "${WINHIDAPI_LIBRARY}" "${WINHID_SETUPAPI_LIBRARY}")
 	if(_need_crt_dir)
 		set(WINHID_INCLUDE_DIRS
 			"${WINHID_CRT_INCLUDE_DIR}"
@@ -285,4 +285,4 @@ endif()
 
 mark_as_advanced(WINHID_INCLUDE_DIR
 	WINHID_CRT_INCLUDE_DIR
-	WINHID_LIBRARY)
+	WINHIDAPI_LIBRARY)

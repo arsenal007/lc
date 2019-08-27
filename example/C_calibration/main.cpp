@@ -9,7 +9,7 @@
 #include <thread>
 #include <LCUsb.hpp>
 
-int main( int argc, char** argv )
+int main( int, char** )
 {
   TExecute lc;
   auto res = lc.init( []( auto t ) {
@@ -25,18 +25,16 @@ int main( int argc, char** argv )
     }
   } );
   std::this_thread::sleep_for( std::chrono::seconds( 2 ) );
-  double L = 89200.0;
-  double tolerance = 0.000006;
-  lc.C_measurments( []( auto Capicatance ) {
-    std::string p{ " pF" };
-    if ( Capicatance > 1000.0 )
+  lc.L_measurments( []( auto Inducatance ) {
+    std::string p{ " nH" };
+    if ( Inducatance > 1000.0 )
     {
-      p = " nF";
-      Capicatance /= 1000.0;
-      if ( Capicatance > 1000.0 )
+      p = " mkH";
+      Inducatance /= 1000.0;
+      if ( Inducatance > 1000.0 )
       {
-        p = " mF";
-        Capicatance /= 1000.0;
+        p = " mH";
+        Inducatance /= 1000.0;
       }
     }
 
@@ -48,10 +46,10 @@ int main( int argc, char** argv )
       std::cout << " ";
     std::cout.flush();
 
-    std::cout << "\rCapicatance: " << Capicatance << p;
+    std::cout << "\rInducatance: " << Inducatance << p;
     std::cout.flush();
   } );
   while ( res )
     std::this_thread::sleep_for( std::chrono::milliseconds( 2000 ) );
   lc.deinit();
-};
+}

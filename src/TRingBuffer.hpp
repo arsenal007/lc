@@ -34,15 +34,10 @@ namespace Kernel
 
   // https://embeddedartistry.com/blog/2017/4/6/circular-buffers-in-cc
   // https://github.com/embeddedartistry/embedded-resources.git
-  template <typename T>
-  struct TRingBuffer : public TRingBufferBase<T>
+  template <typename T, size_t size_>
+  struct TRingBuffer
   {
-    template <size_t size>
-    TRingBuffer( T ( &buf )[ size ] ) : _buffer_{ buf }, size_{ size }, head_{}, tail_{}
-    {
-    }
-
-    TRingBuffer( T* buf, size_t size ) : _buffer_{ buf }, size_{ size }, head_{}, tail_{} {}
+    TRingBuffer( void ) : _buffer_{}, head_{}, tail_{} {}
 
     inline T get( void ) noexcept
     {
@@ -87,33 +82,29 @@ namespace Kernel
     }
 
    protected:
-    T* _buffer_;
-    size_t const size_;
+    T _buffer_[ size_ ];
     uint32_t head_;
     uint32_t tail_;
   };
 
-  template <typename T>
-  struct TRingBufferWindow : public TRingBuffer<T>
+  template <typename T, size_t K>
+  struct TRingBufferWindow : public TRingBuffer<T, K>
   {
-    template <size_t size>
-    TRingBufferWindow( T ( &buf )[ size ] ) : TRingBuffer<T>( buf )
-    {
-    }
+    TRingBufferWindow( void ) : TRingBuffer<T, K>{} {}
 
-    template <size_t S>
-    inline void view( T ( &buf )[ S ] )
+    template <size_t N>
+    inline void view( T ( &buf )[ N ] )
     {
-      auto N = TRingBuffer<T>::size();
-      if ( N > S )
+      auto M{ TRingBuffer<T, K>::size() };
+      if ( M > N )
       {
-        auto index = ( TRingBuffer<T>::head_ - 1 ) % TRingBuffer<T>::size_;
-        auto i = S;
+        auto index = ( TRingBuffer<T, K>::head_ - 1 ) % TRingBuffer<T, K>::size_;
+        auto i = N;
         do
         {
-          index = ( index - 1 ) % TRingBuffer<T>::size_;
+          index = ( index - 1 ) % TRingBuffer<T, K>::size_;
           i--;
-          buf[ i ] = TRingBuffer<T>::_buffer_[ index ];
+          buf[ i ] = TRingBuffer<T, K>::_buffer_[ index ];
         } while ( i != 0 );
       }
     }
@@ -160,43 +151,38 @@ namespace Kernel
     }
   };
 
-  template <typename T, size_t size>
-  struct TRingBufferStatistic : public TRingBuffer<T>
+  template <typename T, size_t size, typename S = typename TSum<T>::type>
+  struct TRingBufferStatistic : public TRingBuffer<T, size>
   {
-    using sum_t = typename TSum<T>::type;
-    TRingBufferStatistic( void ) : TRingBuffer<T>{ b } {}
+    TRingBufferStatistic( void ) : TRingBuffer<T, size>{} {}
 
-    inline sum_t getM( void ) noexcept
+    inline S getM( void ) noexcept
     {
-      sum_t sum{};
-      auto N = TRingBuffer<T>::size();
+      S sum{};
+      auto N = TRingBuffer<T, size>::size();
       for ( size_t i = 0; i < N; i++ )
       {
-        auto v = TRingBuffer<T>::get();
-        TRingBuffer<T>::put( v );
+        auto v = TRingBuffer<T, size>::get();
+        TRingBuffer<T, size>::put( v );
         sum += v;
       }
-      return ( sum / sum_t{ N } );
+      return ( sum / S{ N } );
     }
 
-    inline sum_t getD( void ) noexcept
+    inline S getD( void ) noexcept
     {
-      auto N = TRingBuffer<T>::size();
+      auto N = TRingBuffer<T, size>::size();
       auto m = getM();
-      sum_t sum2{};
+      S sum2{};
       for ( size_t i = 0; i < N; i++ )
       {
-        auto v = TRingBuffer<T>::get();
-        TRingBuffer<T>::put( v );
+        auto v = TRingBuffer<T, size>::get();
+        TRingBuffer<T, size>::put( v );
         auto a = ( v - m );
         sum2 += a * a;
       }
-      return ( sqrt( sum2 / sum_t{ N - _one } ) );
+      return ( sqrt( sum2 / S{ N - S{ 1 } } ) );
     }
-
-   private:
-    T b[ size ];
-    static constexpr sum_t _one = 1.0;
   };
 
 }  // namespace Kernel
