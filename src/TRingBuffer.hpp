@@ -151,19 +151,19 @@ namespace Kernel
     }
   };
 
-  template <typename T, size_t size, typename S = typename TSum<T>::type>
-  struct TRingBufferStatistic : public TRingBuffer<T, size>
+  template <typename T, size_t size, typename S = typename TSum<T>::type, typename R = TRingBuffer<T, size>>
+  struct TRingBufferStatistic : public R
   {
-    TRingBufferStatistic( void ) : TRingBuffer<T, size>{} {}
+    TRingBufferStatistic( void ) : R{} {}
 
-    inline S getM( void ) noexcept
+    inline S getM( void )
     {
       S sum{};
-      auto N = TRingBuffer<T, size>::size();
+      auto N = R::size();
       for ( size_t i = 0; i < N; i++ )
       {
-        auto v = TRingBuffer<T, size>::get();
-        TRingBuffer<T, size>::put( v );
+        auto v = R::get();
+        R::put( v );
         sum += v;
       }
       return ( sum / S{ N } );
@@ -171,13 +171,13 @@ namespace Kernel
 
     inline S getD( void ) noexcept
     {
-      auto N = TRingBuffer<T, size>::size();
+      auto N = R::size();
       auto m = getM();
       S sum2{};
       for ( size_t i = 0; i < N; i++ )
       {
-        auto v = TRingBuffer<T, size>::get();
-        TRingBuffer<T, size>::put( v );
+        auto v = R::get();
+        R::put( v );
         auto a = ( v - m );
         sum2 += a * a;
       }

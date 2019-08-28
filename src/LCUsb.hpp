@@ -15,6 +15,12 @@
 #include <hidapi/hidapi.h>
 #include "TRingBuffer.hpp"
 
+template <typename... A>
+inline auto and_( A... arg )
+{
+  return ( a && ... true );
+};
+
 struct TStatus
 {
   enum BIT : uint64_t
