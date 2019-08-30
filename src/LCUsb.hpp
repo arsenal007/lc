@@ -275,6 +275,7 @@ struct TExecute : public TLC, TRun
     fut[ k ] = std::async( std::launch::async, [&]( void ) {
       std::this_thread::sleep_for( std::chrono::milliseconds( 33 ) );
       operator()();
+
       async_task_send();
     } );
     k = ( k + 1 ) % Mt;
@@ -380,6 +381,7 @@ struct TExecute : public TLC, TRun
 
             if ( reasonable( refC ) && reasonable( refL ) ) L = std::make_pair( refC, refL );
           }
+
           callback[ 0 ]();
         } },
         _hid_SendRef{ [&]( void ) {
@@ -423,7 +425,7 @@ struct TExecute : public TLC, TRun
         _hid_ReadFrequency{ [&]( void ) {
           if ( _device == nullptr )
           {
-            init();
+            if ( init() ) put( _hid_ReadFrequency );
             return;
           }
 
@@ -438,33 +440,25 @@ struct TExecute : public TLC, TRun
           report_t report;
           report.id = 0x01;
 
-          static unsigned int i = 0;
-          i++;
-          std::cout << "a0" << std::endl;
-          if ( ( ::hid_get_feature_report( _device, (unsigned char*)&report, sizeof( report ) ) == -1 ) ||
-               ( i % 10 == 0 ) )
+          if ( ( ::hid_get_feature_report( _device, (unsigned char*)&report, sizeof( report ) ) == -1 ) )
           {
             _hid_ProcessError();
             put( _hid_ReadFrequency );
             return;
           }
-          std::cout << "a1" << std::endl;
           auto a = report.data[ 0 ];
           auto b = report.data[ 1 ];
           auto c = report.data[ 2 ];
           double freq = ( ( b << 8 ) + a ) * 256 / 0.36 + c;
           if ( freq <= MINFREQ ) return;
           rb.put( freq );
-          std::cout << "a2" << std::endl;
           if ( auto measure_L{ ( reasonable( L.first ) && reasonable( L.second ) ) &&
                                ( hw_status & PCPROGRAMRUN_BIT ) && ( hw_status & RELAY_BIT ) &&
                                !( hw_status & CALIBRATION_BIT ) };
                measure_L )
           {
-            std::cout << "a3" << std::endl;
             measured = TLC::GetLC( freq, L.first ) - L.second;
             callback[ 1 ]();
-            std::cout << "a4" << std::endl;
             put( _hid_ReadFrequency );
           }
           else if ( auto measure_C{ ( reasonable( C.first ) && reasonable( C.second ) ) &&
@@ -523,8 +517,6 @@ struct TExecute : public TLC, TRun
       hw_status |= PCPROGRAMRUN_BIT;
       put( _hid_SendStatus );
       put( _hid_ReadRef );
-      async_task_send();
-      std::cout << "init ok" << std::endl;
       return ( true );
     }
     return ( false );
@@ -534,7 +526,9 @@ struct TExecute : public TLC, TRun
   inline bool init( F f )
   {
     callback[ 0 ] = std::bind( f, std::cref( saved_ref ) );
-    return ( init() );
+    auto success{ init() };
+    if ( success ) async_task_send();
+    return ( success );
   }
 
   template <typename L, typename T, typename F>
