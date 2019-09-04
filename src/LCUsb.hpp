@@ -162,7 +162,18 @@ struct TExecute : public TLC, TRun
 
   double fraction, mean_frequency, standart_deviation, treshold, triggered_frequency_idle, triggered_frequency_ref,
       measured;
-  uint8_t calibration_stage;
+
+  enum CSTAGE : uint8_t
+  {
+    FRACTION,
+    IDLE_DIVARGANCE,
+    REF_DIVARGANCE,
+    FREQ,
+    REF_C,
+    REF_L
+  };
+
+  CSTAGE calibration_stage;
 
   std::tuple<uint16_t, uint32_t, uint16_t, uint32_t> saved_ref;
   hid_device* _device{};
@@ -456,7 +467,7 @@ struct TExecute : public TLC, TRun
             if ( stable_freq && ( is_idle_not_triggered || is_idle ) )
             {
               triggered_frequency_idle = mean_frequency;
-              calibration_stage = 1;
+              calibration_stage = CSTAGE::IDLE_DIVARGANCE;
               callback_run();
             }
             else if ( stable_freq && ( is_ref_not_triggered || is_ref ) )
@@ -472,14 +483,14 @@ struct TExecute : public TLC, TRun
                 {
                   L.first = floor( ref1 + 0.5 );
                   L.second = floor( ref2 + 0.5 );
-                  calibration_stage = 4;
+                  calibration_stage = CSTAGE::REF_L;
                   callback_run();
                 }
                 else
                 {
                   C.first = floor( ref2 + 0.5 );
                   C.second = floor( ref1 + 0.5 );
-                  calibration_stage = 3;
+                  calibration_stage = CSTAGE::REF_C;
                   callback_run();
                 }
 
@@ -495,9 +506,12 @@ struct TExecute : public TLC, TRun
               }
               else
               {
-                calibration_stage = 2;
+                calibration_stage = CSTAGE::REF_DIVARGANCE;
                 callback_run();
               }
+            }
+            else
+            {
             }
             put( _hid_ReadFrequency );
           }
@@ -507,7 +521,7 @@ struct TExecute : public TLC, TRun
           }
           else
           {
-            calibration_stage = 5;
+            calibration_stage = CSTAGE::FREQ;
             callback_run();
           }
         } }
@@ -545,10 +559,10 @@ struct TExecute : public TLC, TRun
   {
     std::lock_guard<std::mutex> lockGuard{ mux };
 
-    callback_run = std::bind(
-        func, std::tuple{ std::cref( calibration_stage ), std::cref( fraction ), std::cref( mean_frequency ),
-                          std::cref( standart_deviation ), std::cref( treshold ), std::cref( triggered_frequency_idle ),
-                          std::cref( triggered_frequency_ref ), std::cref( L.first ), std::cref( L.second ) } );
+    callback_run =
+        std::bind( func, std::cref( calibration_stage ), std::cref( fraction ), std::cref( mean_frequency ),
+                   std::cref( standart_deviation ), std::cref( treshold ), std::cref( triggered_frequency_idle ),
+                   std::cref( triggered_frequency_ref ), std::cref( L.first ), std::cref( L.second ) );
     customer_ref_lc = Lc;
     tolerance = t;
     hw_status |= RELAY_BIT;
@@ -562,10 +576,10 @@ struct TExecute : public TLC, TRun
   {
     std::lock_guard<std::mutex> lockGuard{ mux };
 
-    callback_run = std::bind(
-        func, std::tuple{ std::cref( calibration_stage ), std::cref( fraction ), std::cref( mean_frequency ),
-                          std::cref( standart_deviation ), std::cref( treshold ), std::cref( triggered_frequency_idle ),
-                          std::cref( triggered_frequency_ref ), std::cref( C.first ), std::cref( C.second ) } );
+    callback_run =
+        std::bind( func, std::cref( calibration_stage ), std::cref( fraction ), std::cref( mean_frequency ),
+                   std::cref( standart_deviation ), std::cref( treshold ), std::cref( triggered_frequency_idle ),
+                   std::cref( triggered_frequency_ref ), std::cref( L.first ), std::cref( L.second ) );
     save = s;
     customer_ref_lc = Cl;
     tolerance = t;
