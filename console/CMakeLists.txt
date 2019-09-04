@@ -13,10 +13,7 @@ project(lcusb VERSION 1.00 LANGUAGES C CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/../../cmake")
 #include(FindWinHID)
-include(MinGWSearchPathExtras)
-
-set(WINHIDAPI_ROOT_DIR );
-
+#include(MinGWSearchPathExtras)
 find_path(WINHIDAPI_INCLUDE_DIR
 		NAMES
 		hidapi/hidapi.h
@@ -56,7 +53,7 @@ set_property(TARGET objlib PROPERTY POSITION_INDEPENDENT_CODE 1)
 
 # shared and static libraries built from the same object files
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../src ${WINHIDAPI_INCLUDE_DIR} )
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../src ${WINHIDAPI_INCLUDE_DIR} )
 add_executable(lc $<TARGET_OBJECTS:objlib> )
 #target_include_directories(C PUBLIC  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../src> )
 target_link_libraries(lc ${WINHIDAPI_LIBRARY})

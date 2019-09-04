@@ -188,7 +188,6 @@ struct TExecute : public TLC, TRun
   std::function<void( void )> _hid_ReadFrequency;
   std::function<void( void )> callback_init;
   std::function<void( void )> callback_run;
-  std::function<void( void )> callback_calibrate;
   std::function<bool( void )> save;
   bool first_call;
 
@@ -452,10 +451,7 @@ struct TExecute : public TLC, TRun
             standart_deviation = rb.getD();
             treshold = tolerance * mean_frequency;
 
-            //calibration_stage = 5;
-            //callback_run();
-
-            auto stable_freq{ rb.full() && ( standart_deviation < tolerance * mean_frequency ) };
+            auto stable_freq{ rb.full() && ( standart_deviation < treshold ) };
 
             auto is_idle_not_triggered{ triggered_frequency_idle < MINFREQ };
             auto is_idle{ ( abs( mean_frequency - triggered_frequency_idle ) < 100.0 ) &&
@@ -510,19 +506,21 @@ struct TExecute : public TLC, TRun
                 callback_run();
               }
             }
+            else if ( !rb.full() )
+            {
+              calibration_stage = CSTAGE::FRACTION;
+              callback_run();
+            }
             else
             {
+              calibration_stage = CSTAGE::FREQ;
+              callback_run();
             }
             put( _hid_ReadFrequency );
           }
           else if ( !( hw_status & PCPROGRAMRUN_BIT ) )
           {
             _hid_ProcessError();
-          }
-          else
-          {
-            calibration_stage = CSTAGE::FREQ;
-            callback_run();
           }
         } }
 
