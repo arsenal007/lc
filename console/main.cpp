@@ -259,24 +259,15 @@ int main( int argc, char** argv )
   else if ( input.cmdOptionExists( "-nc" ) )
   {
     lc.C_calibration( double{ 1000.0 }, double{ 0.000006 }, TCalibrate{}, []() -> bool {
-      std::cout << std::endl << "save ref's? [y/n]";
-      std::string line;
-      if ( !std::getline( std::cin, line ) )
-      {
-        std::cerr << "\n";
-        std::cerr << "error: unexpected end of file\n";
-        std::exit( EXIT_FAILURE );
-      }
+      std::cout << std::endl << "press ENTER to save..." << std::endl;
 
-      std::transform( line.begin(), line.end(), line.begin(), []( unsigned char x ) { return std::tolower( x ); } );
-
-      if ( line == "y" || line == "yes" )
+      if ( std::cin.get() != '\n' )
       {
-        return true;
+        return ( true );
       }
-      if ( line == "n" || line == "no" )
+      else
       {
-        return false;
+        return ( false );
       }
     } );
   }

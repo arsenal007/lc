@@ -15,48 +15,10 @@
 #include <hidapi/hidapi.h>
 #include "TRingBuffer.hpp"
 
-struct TStatus
-{
-  enum BIT : uint64_t
-  {
-    CONNECTED = ( 1 << 0 ),  //CONNECTED
-    NEW_STATUS = ( 1 << 1 ),
-    NEW_CALIBRATION_SAVE = ( 1 << 2 ),
-    READ_CALIBRATION = ( 1 << 3 ),
-    RUN_CALIBRATION = ( 1 << 5 ),
-    RUN_C_MEASURMENTS = ( 1 << 6 ),
-    RUN_L_MEASURMENTS = ( 1 << 7 )
-  };
-
-  TStatus( void ) : status{} {}
-
-  template <BIT b>
-  bool get( void )
-  {
-    return ( ( status & b ) != 0 );
-  }
-
-  template <BIT b>
-  void set( void )
-  {
-    status |= b;
-  }
-
-  template <BIT b>
-  void reset( void )
-  {
-    status &= ~b;
-  }
-
- private:
-  uint64_t status;
-};
-
-using f_t = std::function<void( void )>;
-
 struct TRun
 {
  private:
+  using f_t = std::function<void( void )>;
   Kernel::TRingBuffer<f_t, 32> _rb;
 
  public:
@@ -92,7 +54,7 @@ inline uint16_t _original_ReadIntValueFromBytes( A a, B b )
 template <typename T>
 inline bool reasonable( T v )
 {
-  return ( ( std::numeric_limits<T>::min() + 10 < v ) && ( v < std::numeric_limits<T>::max() - 10 ) );
+  return ( ( std::numeric_limits<T>::min() + 100 < v ) && ( v < std::numeric_limits<T>::max() - 100 ) );
 }
 
 template <typename V, typename A, typename B, typename C>
@@ -123,7 +85,8 @@ static constexpr uint8_t CALIBRATION_BIT = ( 1 << 5 );
 inline uint8_t hw_status;
 static constexpr size_t M = 1024;
 inline std::mutex mux;
-inline double customer_ref_lc, tolerance;
+inline double customer_ref_lc;
+inline double tolerance;
 
 struct TLC
 {
@@ -155,13 +118,18 @@ struct TLC
 struct TExecute : public TLC, TRun
 {
  private:
-  std::pair<uint16_t, uint32_t> C{};  // first = C, second = L
-  std::pair<uint16_t, uint32_t> L{};
-  Kernel::TRingBufferStatistic<double, M> rb;
+  std::pair<uint16_t, uint32_t> C{};           // first = C, second = L
+  std::pair<uint16_t, uint32_t> L{};           // first = C, second = L
+  Kernel::TRingBufferStatistic<double, M> rb;  // frequencies buffer
   static constexpr double MINFREQ = 16000.0;
 
-  double fraction, mean_frequency, standart_deviation, treshold, triggered_frequency_idle, triggered_frequency_ref,
-      measured;
+  double fraction;
+  double mean_frequency;
+  double standart_deviation;
+  double treshold;
+  double triggered_frequency_idle;
+  double triggered_frequency_ref;
+  double measured;
 
   enum CSTAGE : uint8_t
   {
@@ -185,15 +153,33 @@ struct TExecute : public TLC, TRun
   template <typename T, typename SF = std::shared_future<T>>
   struct TSharedFuture : public SF
   {
+    TSharedFuture() : first_call{ true } {}
     inline bool is_ready( void )
     {
-      if ( SF::valid() )
-        return ( SF::wait_for( std::chrono::seconds( 0 ) ) == std::future_status::ready );
+      if ( auto ready( SF::wait_for( std::chrono::seconds( 0 ) ) == std::future_status::ready );
+           SF::valid() && ready && first_call )
+      {
+        return ( true );
+      }
       else
         return ( false );
     }
 
-    using SF::operator=;
+    template <typename Future>
+    inline auto operator=( Future&& f )
+    {
+      first_call = true;
+      return ( SF::operator=( std::forward<Future>( f ) ) );
+    }
+
+    inline const auto& get( void )
+    {
+      first_call = false;
+      return ( SF::get() );
+    }
+
+   private:
+    bool first_call;
   };
 
   TSharedFuture<bool> save_new_ref;
@@ -215,77 +201,13 @@ struct TExecute : public TLC, TRun
       _device = nullptr;
     }
   }
-  /*
-  template <typename R1, typename R2>
-  void successfully_calibrated( R1 ref1, R2 ref2 )
-  {
-    if ( auto lc{ hw_status & RELAY_BIT }; lc )
-    {
-      L.first = floor( ref1 + 0.5 );
-      L.second = floor( ref2 + 0.5 );
-      callback_calibrate();
-    }
-    else
-    {
-      C.first = floor( ref2 + 0.5 );
-      C.second = floor( ref1 + 0.5 );
-      callback_calibrate();
-    }
 
-    if ( first_call )
-    {
-      save_new_ref = std::async( std::launch::async, save );
-      first_call = false;
-    }
-    else if ( save_new_ref.valid() )
-    {
-      if ( save_new_ref.get() ) put( _hid_SendRef );
-    }
-  }
-
-  template <typename T, size_t N>
-  inline size_t sizeof_array( T ( & )[ N ] )
-  {
-    return ( N );
-  }
-
-    inline void calibrate( void )
-  {
-    _hid_ReadFrequency();
-    double Ms = M - 1.0;
-    fraction = rb.size() / Ms;
-    mean_frequency = rb.getM();
-    standart_deviation = rb.getD();
-    treshold = tolerance * mean_frequency;
-    callback();
-
-    auto stable_freq{ rb.full() && ( standart_deviation < tolerance * mean_frequency ) };
-    auto is_idle_not_triggered{ triggered_frequency_idle < MINFREQ };
-    auto is_idle{ ( abs( mean_frequency - triggered_frequency_idle ) < MINFREQ ) && ( MINFREQ < mean_frequency ) };
-
-    if ( stable_freq && ( is_idle_not_triggered || is_idle ) )
-      triggered_frequency_idle = mean_frequency;
-    else if ( !is_idle && stable_freq )
-    {
-      triggered_frequency_ref = mean_frequency;
-      auto ref1 =
-          floor( TLC::GetRef( triggered_frequency_idle, triggered_frequency_ref, customer_ref_lc, tolerance ) + 0.5 );
-      if ( 100.0 < ref1 )
-      {
-        auto ref2 = floor( TLC::GetLC( triggered_frequency_idle, ref1 ) + 0.5 );
-        //triggered_frequency_idle = double{};
-        successfully_calibrated( ref1, ref2 );
-      }
-    }
-  }
-*/
   inline void async_task_send( void )
   {
     if ( fut[ k ].valid() ) fut[ k ].get();
     fut[ k ] = std::async( std::launch::async, [&]( void ) {
       std::this_thread::sleep_for( std::chrono::milliseconds( 33 ) );
       operator()();
-
       async_task_send();
     } );
     k = ( k + 1 ) % Mt;
@@ -506,7 +428,6 @@ struct TExecute : public TLC, TRun
                   callback_run();
                 }
 
-                std::cout << "call" << std::endl;
                 if ( first_call )
                 {
                   save_new_ref = std::async( std::launch::async, save );
@@ -514,14 +435,9 @@ struct TExecute : public TLC, TRun
                 }
                 else if ( save_new_ref.is_ready() )
                 {
-                  std::cout << "here" << std::endl;
-                  if ( save_new_ref.get() )
-                  {
-                    put( _hid_SendRef );
-                    std::cout << "SendRef" << std::endl;
-                  }
+                  if ( save_new_ref.get() ) put( _hid_SendRef );
+                  return;
                 }
-                std::cout << "exit" << std::endl;
               }
               else
               {
