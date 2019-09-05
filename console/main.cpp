@@ -140,7 +140,7 @@ struct TCalibrate
       case ( TExecute::CSTAGE::FRACTION ):
       {
         clean();
-        int barWidth = 40;
+        int barWidth = 50;
         std::cout << "[";
         int pos = barWidth * fraction;
         for ( int i = 0; i < barWidth; ++i )
@@ -154,7 +154,7 @@ struct TCalibrate
         }
         std::cout << "] ";
         cout_set_double();
-        std::cout << fraction << "%";
+        std::cout << fraction * 100.0 << "%";
         break;
       }
     }

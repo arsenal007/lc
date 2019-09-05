@@ -181,7 +181,23 @@ struct TExecute : public TLC, TRun
   static constexpr size_t Mt = 8;
   size_t k{};
   std::shared_future<void> fut[ Mt ]{};
-  std::shared_future<bool> save_new_ref;
+
+  template <typename T, typename SF = std::shared_future<T>>
+  struct TSharedFuture : public SF
+  {
+    inline bool is_ready( void )
+    {
+      if ( SF::valid() )
+        return ( SF::wait_for( std::chrono::seconds( 0 ) ) == std::future_status::ready );
+      else
+        return ( false );
+    }
+
+    using SF::operator=;
+  };
+
+  TSharedFuture<bool> save_new_ref;
+
   std::function<void( void )> _hid_SendStatus;
   std::function<void( void )> _hid_ReadRef;
   std::function<void( void )> _hid_SendRef;
@@ -490,15 +506,22 @@ struct TExecute : public TLC, TRun
                   callback_run();
                 }
 
+                std::cout << "call" << std::endl;
                 if ( first_call )
                 {
                   save_new_ref = std::async( std::launch::async, save );
                   first_call = false;
                 }
-                else if ( save_new_ref.valid() )
+                else if ( save_new_ref.is_ready() )
                 {
-                  if ( save_new_ref.get() ) put( _hid_SendRef );
+                  std::cout << "here" << std::endl;
+                  if ( save_new_ref.get() )
+                  {
+                    put( _hid_SendRef );
+                    std::cout << "SendRef" << std::endl;
+                  }
                 }
+                std::cout << "exit" << std::endl;
               }
               else
               {
@@ -522,7 +545,8 @@ struct TExecute : public TLC, TRun
           {
             _hid_ProcessError();
           }
-        } }
+        } },
+        first_call{ true }
 
   {
   }
@@ -577,7 +601,7 @@ struct TExecute : public TLC, TRun
     callback_run =
         std::bind( func, std::cref( calibration_stage ), std::cref( fraction ), std::cref( mean_frequency ),
                    std::cref( standart_deviation ), std::cref( treshold ), std::cref( triggered_frequency_idle ),
-                   std::cref( triggered_frequency_ref ), std::cref( L.first ), std::cref( L.second ) );
+                   std::cref( triggered_frequency_ref ), std::cref( C.first ), std::cref( C.second ) );
     save = s;
     customer_ref_lc = Cl;
     tolerance = t;
