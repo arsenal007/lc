@@ -1,0 +1,3 @@
+[submodule "console/tclap"]
+	path = console/tclap
+	url = https://github.com/eile/tclap.git

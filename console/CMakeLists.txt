@@ -25,6 +25,16 @@ find_path(WINHIDAPI_INCLUDE_DIR
 		include/w32api/ddk
 		include/ddk
 		ddk)
+		
+find_path(TCLAP_INCLUDE_DIR
+		NAMES
+		tclap/CmdLine.h
+		PATHS
+		"${WINHIDAPI_ROOT_DIR}"
+		${CMAKE_SOURCE_DIR}
+		/mingw
+		PATH_SUFFIXES
+		tclap/include)		
 set(CMAKE_FIND_STATIC on)
 find_library(WINHIDAPI_LIBRARY
 			NAMES
@@ -70,7 +80,7 @@ set_property(TARGET objlib PROPERTY POSITION_INDEPENDENT_CODE 1)
 
 # shared and static libraries built from the same object files
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../src ${WINHIDAPI_INCLUDE_DIR} )
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../src ${WINHIDAPI_INCLUDE_DIR} ${TCLAP_INCLUDE_DIR} )
 add_executable(lc $<TARGET_OBJECTS:objlib> )
 #target_include_directories(C PUBLIC  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../src> )
 message("WINHIDAPI_LIBRARY: ${WINHIDAPI_LIBRARY}")
