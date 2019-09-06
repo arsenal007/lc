@@ -195,14 +195,15 @@ int main( int argc, char** argv )
     TCLAP::CmdLine cmd( "USB LC Meter, simple demonstration console application", ' ', "0.1", true );
 
     // Define a value argument and add it to the command line.
-    TCLAP::ValueArg<uint16_t> ref( "r", "reference", "calibration reference value of capicator or inductance", false,
-                                   1000, "uint16_t" );
+    TCLAP::ValueArg<double> ref( "r", "reference", "calibration reference value of capacitance[pF] or inductance[nH]",
+                                 false, 0.0, "double" );
 
     cmd.add( ref );
 
-    TCLAP::ValueArg<double> tolerance_( "t", "tolerance", "treshold level tolerance", false, 0.000006, "double" );
+    TCLAP::ValueArg<double> tolerance_arg( "t", "tolerance", "threshold level tolerance [ 0.0006% ]", false, 0.0,
+                                           "double" );
 
-    cmd.add( tolerance_ );
+    cmd.add( tolerance_arg );
 
     // Define a switch and add it to the command line.
     TCLAP::SwitchArg capicatance( "c", "capicatance", "measure capicatance mode", false );
@@ -216,7 +217,7 @@ int main( int argc, char** argv )
 
     // Get the value parsed by each arg.
 
-    auto res = lc.init( []( auto t ) {
+    lc.init( []( auto t ) {
       {
         auto refC = std::get<0>( t );
         auto refL = std::get<1>( t );
@@ -228,9 +229,16 @@ int main( int argc, char** argv )
         std::cout << "L: refC: " << refC << "pF, refL: " << refL << "nH" << std::endl;
       }
     } );
+
+    auto ref_value{ ref.getValue() };
+    auto tol{ tolerance_arg.getValue() / 100.0 };
+
+    auto is_ref{ ref_value > 1.0 };
+    auto is_tol{ tol > 0.0000000000001 };
+
     std::this_thread::sleep_for( std::chrono::seconds( 2 ) );
     //InputParser input{ argc, argv };
-    if ( capicatance.getValue() )
+    if ( capicatance.getValue() && ( !( is_ref && is_tol ) ) )
     {
       lc.C_measurments( []( auto Capicatance ) {
         std::string p{ " pF" };
@@ -257,7 +265,7 @@ int main( int argc, char** argv )
         std::cout.flush();
       } );
     }
-    else if ( false )
+    else if ( inductance.getValue() && ( !( is_ref && is_tol ) ) )
     {
       lc.L_measurments( []( auto Inducatance ) {
         std::string p{ " nH" };
@@ -284,9 +292,24 @@ int main( int argc, char** argv )
         std::cout.flush();
       } );
     }
-    else if ( false )
+    else if ( capicatance.getValue() && is_ref && is_tol )
     {
-      lc.C_calibration( double{ 1000.0 }, double{ 0.000006 }, TCalibrate{}, []() -> bool {
+      lc.C_calibration( ref_value, tol, TCalibrate{}, []() -> bool {
+        std::cout << std::endl << "press ENTER to save..." << std::endl;
+
+        if ( std::cin.get() != '\n' )
+        {
+          return ( true );
+        }
+        else
+        {
+          return ( false );
+        }
+      } );
+    }
+    else if ( inductance.getValue() && is_ref && is_tol )
+    {
+      lc.L_calibration( ref_value, tol, TCalibrate{}, []() -> bool {
         std::cout << std::endl << "press ENTER to save..." << std::endl;
 
         if ( std::cin.get() != '\n' )

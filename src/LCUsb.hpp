@@ -492,18 +492,19 @@ struct TExecute : public TLC, TRun
     return ( success );
   }
 
-  template <typename RefInductance, typename T, typename F>
-  inline void L_calibration( RefInductance Lc, T t, F func )
+  template <typename RefInductance, typename T, typename F, typename SaveQuestions>
+  inline void L_calibration( RefInductance Lc, T t, F func, SaveQuestions s )
   {
     std::lock_guard<std::mutex> lockGuard{ mux };
 
+    hw_status |= RELAY_BIT;
     callback_run =
         std::bind( func, std::cref( calibration_stage ), std::cref( fraction ), std::cref( mean_frequency ),
                    std::cref( standart_deviation ), std::cref( treshold ), std::cref( triggered_frequency_idle ),
-                   std::cref( triggered_frequency_ref ), std::cref( L.first ), std::cref( L.second ) );
+                   std::cref( triggered_frequency_ref ), std::cref( C.first ), std::cref( C.second ) );
+    save = s;
     customer_ref_lc = Lc;
     tolerance = t;
-    hw_status |= RELAY_BIT;
     hw_status |= CALIBRATION_BIT;
     put( _hid_SendStatus );
     put( _hid_ReadFrequency );
@@ -514,6 +515,7 @@ struct TExecute : public TLC, TRun
   {
     std::lock_guard<std::mutex> lockGuard{ mux };
 
+    hw_status &= ~RELAY_BIT;
     callback_run =
         std::bind( func, std::cref( calibration_stage ), std::cref( fraction ), std::cref( mean_frequency ),
                    std::cref( standart_deviation ), std::cref( treshold ), std::cref( triggered_frequency_idle ),
@@ -521,7 +523,6 @@ struct TExecute : public TLC, TRun
     save = s;
     customer_ref_lc = Cl;
     tolerance = t;
-    hw_status &= ~RELAY_BIT;
     hw_status |= CALIBRATION_BIT;
     put( _hid_SendStatus );
     put( _hid_ReadFrequency );
