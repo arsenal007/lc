@@ -73,6 +73,23 @@ struct TCalibrate
 {
   TCalibrate() : first_call{ 0xFF } {}
 
+  bool operator()( void )
+  {
+    std::cout << std::endl << "press ENTER to save..." << std::endl;
+    char c{};
+    std::cin.get( c );
+    if ( c == '\n' )
+    {
+      std::cout << std::endl << "save and exit..." << std::endl;
+      return ( true );
+    }
+    else
+    {
+      std::cout << std::endl << "exit without save..." << std::endl;
+      return ( false );
+    }
+  }
+
   template <typename Stage, typename Fraction, typename Mean, typename Deviation, typename Treshold, typename Idle,
             typename Ref, typename RefC, typename RefL>
   void operator()( const Stage& stage, const Fraction& fraction, const Mean& mean, const Deviation& deviation,
@@ -287,43 +304,17 @@ int main( int argc, char** argv )
         for ( size_t j = 0; j < 40; j++ )
           std::cout << " ";
         std::cout.flush();
-
         std::cout << "\rInducatance: " << Inducatance << p;
         std::cout.flush();
       } );
     }
     else if ( capicatance.getValue() && is_ref && is_tol )
     {
-      lc.C_calibration( ref_value, tol, TCalibrate{}, []() -> bool {
-        std::cout << std::endl << "press ENTER to save..." << std::endl;
-        char c{};
-        std::cin.get( c );
-        if ( c == '\n' )
-        {
-          std::cout << std::endl << "ENTER" << std::endl;
-          return ( true );
-        }
-        else
-        {
-          std::cout << std::endl << "NOT ENTER" << std::endl;
-          return ( false );
-        }
-      } );
+      lc.C_calibration( ref_value, tol, TCalibrate{} );
     }
     else if ( inductance.getValue() && is_ref && is_tol )
     {
-      lc.L_calibration( ref_value, tol, TCalibrate{}, []() -> bool {
-        std::cout << std::endl << "press ENTER to save..." << std::endl;
-
-        if ( std::cin.get() != '\n' )
-        {
-          return ( true );
-        }
-        else
-        {
-          return ( false );
-        }
-      } );
+      lc.L_calibration( ref_value, tol, TCalibrate{} );
     }
   }
   catch ( TCLAP::ArgException& e )

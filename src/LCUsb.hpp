@@ -192,6 +192,7 @@ struct TExecute : public TLC, TRun
   std::function<void( void )> _hid_ReadFrequency;
   std::function<void( void )> callback_init;
   std::function<void( void )> callback_run;
+  std::function<void( double )> measure;
   std::function<bool( void )> save;
   bool first_call;
 
@@ -370,8 +371,7 @@ struct TExecute : public TLC, TRun
                                !( hw_status & CALIBRATION_BIT ) };
                measure_L )
           {
-            measured = TLC::GetLC( freq, L.first ) - L.second;
-            callback_run();
+            measure( TLC::GetLC( freq, L.first ) - L.second );
             put( _hid_ReadFrequency );
           }
           else if ( auto measure_C{ ( reasonable( C.first ) && reasonable( C.second ) ) &&
@@ -379,8 +379,7 @@ struct TExecute : public TLC, TRun
                                     !( hw_status & CALIBRATION_BIT ) };
                     measure_C )
           {
-            measured = TLC::GetLC( freq, C.second ) - C.first;
-            callback_run();
+            measure( TLC::GetLC( freq, C.second ) - C.first );
             put( _hid_ReadFrequency );
           }
           else if ( ( hw_status & PCPROGRAMRUN_BIT ) && ( hw_status & CALIBRATION_BIT ) )
@@ -501,8 +500,8 @@ struct TExecute : public TLC, TRun
     return ( success );
   }
 
-  template <typename RefInductance, typename T, typename F, typename SaveQuestions>
-  inline void L_calibration( RefInductance Lc, T t, F func, SaveQuestions s )
+  template <typename RefInductance, typename T, typename F>
+  inline void L_calibration( RefInductance Lc, T t, F func )
   {
     std::lock_guard<std::mutex> lockGuard{ mux };
 
@@ -511,7 +510,7 @@ struct TExecute : public TLC, TRun
         std::bind( func, std::cref( calibration_stage ), std::cref( fraction ), std::cref( mean_frequency ),
                    std::cref( standart_deviation ), std::cref( treshold ), std::cref( triggered_frequency_idle ),
                    std::cref( triggered_frequency_ref ), std::cref( L.first ), std::cref( L.second ) );
-    save = s;
+    save = func;
     customer_ref_lc = Lc;
     tolerance = t;
     old_standart_deviation_idle = std::numeric_limits<double>::max();
@@ -521,8 +520,8 @@ struct TExecute : public TLC, TRun
     put( _hid_ReadFrequency );
   }
 
-  template <typename RefCapacitance, typename T, typename F, typename SaveQuestions>
-  inline void C_calibration( RefCapacitance Cl, T t, F func, SaveQuestions s )
+  template <typename RefCapacitance, typename T, typename F>
+  inline void C_calibration( RefCapacitance Cl, T t, F func )
   {
     std::lock_guard<std::mutex> lockGuard{ mux };
 
@@ -531,7 +530,7 @@ struct TExecute : public TLC, TRun
         std::bind( func, std::cref( calibration_stage ), std::cref( fraction ), std::cref( mean_frequency ),
                    std::cref( standart_deviation ), std::cref( treshold ), std::cref( triggered_frequency_idle ),
                    std::cref( triggered_frequency_ref ), std::cref( C.first ), std::cref( C.second ) );
-    save = s;
+    save = func;
     customer_ref_lc = Cl;
     tolerance = t;
     old_standart_deviation_idle = std::numeric_limits<double>::max();
@@ -541,11 +540,11 @@ struct TExecute : public TLC, TRun
     put( _hid_ReadFrequency );
   }
 
-  template <typename F>
-  inline void C_measurments( F f )
+  template <typename FuncCallback>
+  inline void C_measurments( FuncCallback func )
   {
     std::lock_guard<std::mutex> lockGuard{ mux };
-    callback_run = std::bind( f, std::cref( measured ) );
+    measure = func;
     hw_status &= ~RELAY_BIT;
     hw_status &= ~CALIBRATION_BIT;
     put( _hid_SendStatus );
@@ -569,5 +568,154 @@ struct TExecute : public TLC, TRun
     hw_status &= ~RELAY_BIT;
     hw_status &= ~CALIBRATION_BIT;
     put( _hid_SendStatus );
+  }
+};
+
+struct TAsync : public TRun
+{
+  inline void run( void )
+  {
+    if ( fut[ k ].valid() ) fut[ k ].get();
+    fut[ k ] = std::async( std::launch::async, [&]( void ) {
+      std::this_thread::sleep_for( std::chrono::milliseconds( 33 ) );
+      TRun::operator()();
+      run();
+    } );
+    k = ( k + 1 ) % Mt;
+  }
+
+ protected:
+  static constexpr size_t Mt = 8;
+  size_t k{};
+  std::shared_future<void> fut[ Mt ]{};
+};
+
+template <typename FunctorCallback>
+struct TBase : public TAsync
+{
+  TBase( FunctorCallback f )
+      : _callback_{ f }, _hid_ReadRef{ hid_ReadRef }, _hid_SendStatus{ hid_SendStatus }, _device{}, C{}, L{}
+  {
+    _init_ = init();
+    if ( _init_ )
+    {
+      put( _hid_ReadRef );
+      TAsync::run();
+    }
+  }
+
+  inline auto is_init()
+  {
+    return ( _init_ );
+  }
+
+ protected:
+  inline bool init( void )
+  {
+    _device = ::hid_open( 0x16C0, 0x05DF, nullptr );
+    if ( _device )
+    {
+      hw_status |= PCPROGRAMRUN_BIT;
+      put( _hid_SendStatus );
+      return ( true );
+    }
+    return ( false );
+  }
+
+  inline void hid_ProcessError( void )
+  {
+    if ( _device )
+    {
+      ::hid_close( _device );
+      _device = nullptr;
+    }
+  }
+
+  void hid_SendStatus( void )
+  {
+    if ( _device == nullptr )
+    {
+      init();
+      return;
+    }
+
+#pragma pack( push, 1 )
+    struct report_t
+    {
+      unsigned char id;
+      unsigned char status;
+    };
+#pragma pack( pop )
+
+    report_t report;
+    report.id = 0x02;
+    report.status = hw_status;
+
+    if ( ::hid_send_feature_report( _device, reinterpret_cast<uint8_t*>( &report ), sizeof( report ) ) == -1 )
+    {
+      hid_ProcessError();
+      put( _hid_SendStatus );
+    }
+  }
+
+  void hid_ReadRef( void )
+  {
+    if ( _device == nullptr )
+    {
+      init();
+      return;
+    }
+
+#pragma pack( push, 1 )
+    struct report_t
+    {
+      unsigned char id;
+      unsigned char data[ 16 ];
+    };
+#pragma pack( pop )
+
+    report_t g;
+    g.id = 0x03;
+
+    if ( ::hid_get_feature_report( _device, (unsigned char*)&g, sizeof( g ) ) == -1 )
+    {
+      hid_ProcessError();
+      put( _hid_ReadRef );
+      return;
+    }
+
+    auto C_refC{ _original_ReadIntValueFromBytes( g.data[ 1 ], g.data[ 2 ] ) };
+    auto C_refL{ _original_ReadIntValueFromBytes( g.data[ 3 ], g.data[ 4 ], g.data[ 5 ] ) };
+    auto L_refC{ _original_ReadIntValueFromBytes( g.data[ 6 ], g.data[ 7 ] ) };
+    auto L_refL{ _original_ReadIntValueFromBytes( g.data[ 8 ], g.data[ 9 ], g.data[ 10 ] ) };
+
+    _callback_( C_refC, C_refL, L_refC, L_refL );
+
+    // C calibration
+
+    if ( reasonable( C_refC ) && reasonable( C_refL ) ) C = std::make_pair( C_refC, C_refL );
+
+    // L calibration
+
+    if ( reasonable( L_refC ) && reasonable( L_refL ) ) L = std::make_pair( L_refC, L_refL );
+
+    _callback_( C.first, C.second, L.first, L.second );
+  }
+
+  std::function<void( void )> _hid_ReadRef;
+  std::function<void( void )> _hid_SendStatus;
+  FunctorCallback _callback_;
+  bool _init_;
+  hid_device* _device;
+  std::pair<uint16_t, uint32_t> C;  // first = C, second = L
+  std::pair<uint16_t, uint32_t> L;  // first = C, second = L
+};
+
+template <typename Func>
+struct TCMeasure
+{
+  template <typename F>
+  TCMeasure( F init, Func f )
+  {
   }
 };
