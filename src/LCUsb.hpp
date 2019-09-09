@@ -126,6 +126,8 @@ struct TExecute : public TLC, TRun
   double fraction;
   double mean_frequency;
   double standart_deviation;
+  double old_standart_deviation_idle;
+  double old_standart_deviation_ref;
   double treshold;
   double triggered_frequency_idle;
   double triggered_frequency_ref;
@@ -400,48 +402,56 @@ struct TExecute : public TLC, TRun
 
             if ( stable_freq && ( is_idle_not_triggered || is_idle ) )
             {
-              triggered_frequency_idle = mean_frequency;
-              calibration_stage = CSTAGE::IDLE_DIVARGANCE;
-              callback_run();
-            }
-            else if ( stable_freq && ( is_ref_not_triggered || is_ref ) )
-            {
-              triggered_frequency_ref = mean_frequency;
-              auto ref1 = floor(
-                  TLC::GetRef( triggered_frequency_idle, triggered_frequency_ref, customer_ref_lc, tolerance ) + 0.5 );
-              if ( 100.0 < ref1 )
+              if ( standart_deviation < old_standart_deviation_idle )
               {
-                auto ref2 = floor( TLC::GetLC( triggered_frequency_idle, ref1 ) + 0.5 );
-
-                if ( auto lc{ hw_status & RELAY_BIT }; lc )
-                {
-                  L.first = floor( ref1 + 0.5 );
-                  L.second = floor( ref2 + 0.5 );
-                  calibration_stage = CSTAGE::REF_L;
-                  callback_run();
-                }
-                else
-                {
-                  C.first = floor( ref2 + 0.5 );
-                  C.second = floor( ref1 + 0.5 );
-                  calibration_stage = CSTAGE::REF_C;
-                  callback_run();
-                }
-
-                if ( first_call )
-                {
-                  save_new_ref = std::async( std::launch::async, save );
-                  first_call = false;
-                }
-                else if ( save_new_ref.is_ready() )
-                {
-                  if ( save_new_ref.get() ) put( _hid_SendRef );
-                  return;
-                }
+                triggered_frequency_idle = mean_frequency;
+                old_standart_deviation_idle = standart_deviation;
+                calibration_stage = CSTAGE::IDLE_DIVARGANCE;
+                callback_run();
               }
               else
               {
-                calibration_stage = CSTAGE::REF_DIVARGANCE;
+                calibration_stage = CSTAGE::FREQ;
+                callback_run();
+              }
+            }
+            else if ( stable_freq && ( standart_deviation < old_standart_deviation_ref ) &&
+                      ( is_ref_not_triggered || is_ref ) )
+            {
+              triggered_frequency_ref = mean_frequency;
+              old_standart_deviation_ref = standart_deviation;
+              calibration_stage = CSTAGE::REF_DIVARGANCE;
+              callback_run();
+            }
+            else if ( auto ref1{ floor(
+                          TLC::GetRef( triggered_frequency_idle, triggered_frequency_ref, customer_ref_lc, tolerance ) +
+                          0.5 ) };
+                      stable_freq && ( 100.0 < ref1 ) && is_ref )
+            {
+              auto ref2 = floor( TLC::GetLC( triggered_frequency_idle, ref1 ) + 0.5 );
+              if ( first_call )
+              {
+                save_new_ref = std::async( std::launch::async, save );
+                first_call = false;
+              }
+              else if ( save_new_ref.is_ready() )
+              {
+                if ( save_new_ref.get() ) put( _hid_SendRef );
+                std::cout << std::endl << "succesfully calibrated" << std::endl;
+                return;
+              }
+              if ( auto lc{ hw_status & RELAY_BIT }; lc )
+              {
+                L.first = floor( ref1 + 0.5 );
+                L.second = floor( ref2 + 0.5 );
+                calibration_stage = CSTAGE::REF_L;
+                callback_run();
+              }
+              else
+              {
+                C.first = floor( ref2 + 0.5 );
+                C.second = floor( ref1 + 0.5 );
+                calibration_stage = CSTAGE::REF_C;
                 callback_run();
               }
             }
@@ -463,7 +473,6 @@ struct TExecute : public TLC, TRun
           }
         } },
         first_call{ true }
-
   {
   }
 
@@ -501,10 +510,12 @@ struct TExecute : public TLC, TRun
     callback_run =
         std::bind( func, std::cref( calibration_stage ), std::cref( fraction ), std::cref( mean_frequency ),
                    std::cref( standart_deviation ), std::cref( treshold ), std::cref( triggered_frequency_idle ),
-                   std::cref( triggered_frequency_ref ), std::cref( C.first ), std::cref( C.second ) );
+                   std::cref( triggered_frequency_ref ), std::cref( L.first ), std::cref( L.second ) );
     save = s;
     customer_ref_lc = Lc;
     tolerance = t;
+    old_standart_deviation_idle = std::numeric_limits<double>::max();
+    old_standart_deviation_ref = std::numeric_limits<double>::max();
     hw_status |= CALIBRATION_BIT;
     put( _hid_SendStatus );
     put( _hid_ReadFrequency );
@@ -523,6 +534,8 @@ struct TExecute : public TLC, TRun
     save = s;
     customer_ref_lc = Cl;
     tolerance = t;
+    old_standart_deviation_idle = std::numeric_limits<double>::max();
+    old_standart_deviation_ref = std::numeric_limits<double>::max();
     hw_status |= CALIBRATION_BIT;
     put( _hid_SendStatus );
     put( _hid_ReadFrequency );

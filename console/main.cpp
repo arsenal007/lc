@@ -296,13 +296,16 @@ int main( int argc, char** argv )
     {
       lc.C_calibration( ref_value, tol, TCalibrate{}, []() -> bool {
         std::cout << std::endl << "press ENTER to save..." << std::endl;
-
-        if ( std::cin.get() != '\n' )
+        char c{};
+        std::cin.get( c );
+        if ( c == '\n' )
         {
+          std::cout << std::endl << "ENTER" << std::endl;
           return ( true );
         }
         else
         {
+          std::cout << std::endl << "NOT ENTER" << std::endl;
           return ( false );
         }
       } );
