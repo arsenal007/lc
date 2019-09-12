@@ -91,7 +91,7 @@ inline double tolerance;
 struct TLC
 {
  private:
-  Kernel::TRingBufferStatistic<double, M> _ref;
+  Kernel::TRingBufferStatistic<double, 32> _ref;
 
   static constexpr double pi = 3.1415926535897932385;
 
@@ -161,6 +161,7 @@ struct TExecute : public TLC, TRun
       if ( auto ready( SF::wait_for( std::chrono::seconds( 0 ) ) == std::future_status::ready );
            SF::valid() && ready && first_call )
       {
+        std::cout << "ready " << std::boolalpha << ready << std::endl;
         return ( true );
       }
       else
@@ -428,6 +429,7 @@ struct TExecute : public TLC, TRun
                       stable_freq && ( 100.0 < ref1 ) && is_ref )
             {
               auto ref2 = floor( TLC::GetLC( triggered_frequency_idle, ref1 ) + 0.5 );
+
               if ( first_call )
               {
                 save_new_ref = std::async( std::launch::async, save );
@@ -439,6 +441,7 @@ struct TExecute : public TLC, TRun
                 std::cout << std::endl << "succesfully calibrated" << std::endl;
                 return;
               }
+
               if ( auto lc{ hw_status & RELAY_BIT }; lc )
               {
                 L.first = floor( ref1 + 0.5 );
