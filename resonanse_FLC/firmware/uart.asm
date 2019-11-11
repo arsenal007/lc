@@ -37,25 +37,29 @@
 
         movlw b'00000100'       ; RB2(TX)=1 others are 0
         movwf PORTB
-
+		
         bsf STATUS,RP0          ; RAM PAGE 1
-
-        movlw 0xFF
-        movwf TRISA             ; portA all pins input
-
-        movlw b'11110010'       ; RB7-RB4 and RB1(RX)=input, others output
+		errorlevel -302
+        movlw b'11111111'
+		movwf TRISA             ; portA all pins input
+		
+		movlw b'11110010'       ; RB7-RB4 and RB1(RX)=input, others output
         movwf TRISB
-
+		
 ; ------------------------------------
 ; SET BAUD RATE TO COMMUNICATE WITH PC
 ; ------------------------------------
 ; Boot Baud Rate = 9600, No Parity, 1 Stop Bit
 ;
+	 
         movlw 0x19              ; 0x19=9600 bps (0x0C=19200 bps)
         movwf SPBRG
+		
         movlw b'00100100'       ; brgh = high (2)
         movwf TXSTA             ; enable Async Transmission, set brgh
-
+		
+		errorlevel +302
+		
         bcf STATUS,RP0          ; RAM PAGE 0
 
         movlw b'10010000'       ; enable Async Reception
@@ -97,20 +101,26 @@ receive btfss PIR1,RCIF         ; (5) check for received data
 ; SEND CHARACTER IN W VIA RS232 AND WAIT UNTIL FINISHED SENDING
 ; -------------------------------------------------------------
 ;
-send    movwf TXREG             ; send data in W
-
-TransWt bsf STATUS,RP0          ; RAM PAGE 1
-WtHere  btfss TXSTA,TRMT        ; (1) transmission is complete if hi
+send:
+		movwf TXREG             ; send data in W
+		errorlevel -302
+		bsf STATUS,RP0          ; RAM PAGE 1
+WtHere:
+        btfss TXSTA,TRMT        ; (1) transmission is complete if hi
         goto WtHere
-
+		
         bcf STATUS,RP0          ; RAM PAGE 0
+		
+		errorlevel +302
+		
         return
 ;
 ; -------
 ; MESSAGE
 ; -------
 ;
-message movlw  '1'
+message:
+        movlw  '1'
         call send
         movlw  '6'
         call send
