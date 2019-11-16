@@ -404,7 +404,7 @@ U 1 1 5DC6A51A
 P 2100 1300
 F 0 "L1" H 1950 1250 50  0000 L CNN
 F 1 "8uH*" H 1850 1350 50  0000 L CNN
-F 2 "lc_probe:Choke_Toroid_horizontal_Diameter10-5mm_Amidon-T37_2" H 2100 1300 50  0001 C CNN
+F 2 "Choke_Toroid_ThroughHole:Choke_Toroid_6,5x13mm_Vertical" H 2100 1300 50  0001 C CNN
 F 3 "" H 2100 1300 50  0001 C CNN
 	1    2100 1300
 	-1   0    0    1   
@@ -750,7 +750,7 @@ U 1 1 5DCE0AF9
 P 1700 3700
 F 0 "J3" H 1700 3800 50  0000 C CNN
 F 1 "Conn_01x02" H 1700 3500 50  0000 C CNN
-F 2 "lc_probe:SolderWirePad_double_SMD_2x5mm" H 1700 3700 50  0001 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm" H 1700 3700 50  0001 C CNN
 F 3 "" H 1700 3700 50  0001 C CNN
 	1    1700 3700
 	-1   0    0    -1  
@@ -761,7 +761,7 @@ U 1 1 5DCE0D20
 P 2000 800
 F 0 "J4" H 2000 900 50  0000 C CNN
 F 1 "Conn_01x02" H 2000 600 50  0000 C CNN
-F 2 "lc_probe:SolderWirePad_double_SMD_2x5mm" H 2000 800 50  0001 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm" H 2000 800 50  0001 C CNN
 F 3 "" H 2000 800 50  0001 C CNN
 	1    2000 800 
 	0    -1   -1   0   
