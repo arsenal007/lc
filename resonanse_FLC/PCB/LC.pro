@@ -1,4 +1,4 @@
-update=Fri 08 Nov 2019 07:32:12 CET
+update=Sa 16 Nov 2019 07:23:34 CET
 version=1
 last_client=kicad
 [pcbnew]
@@ -52,8 +52,7 @@ LibName20=siliconi
 LibName21=opto
 LibName22=atmel
 LibName23=contrib
-LibName24=libs/MCU_Microchip_PIC16
-LibName25=ftdi
-LibName26=Connector
-LibName27=libs/bf998
-LibName28=Relay
+LibName24=ftdi
+LibName25=Connector
+LibName26=libs/bf998
+LibName27=Relay
