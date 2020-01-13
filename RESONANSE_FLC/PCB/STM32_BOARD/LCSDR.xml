@@ -1,0 +1,3287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>/home/arsenal/HAM_Elektronik/low_cost_SDR 1/sch_pcb_KiCad_0805/LCSDR.sch</source>
+    <date>Fr 23 Sep 2016 09:13:50 CEST</date>
+    <tool>Eeschema 4.0.3+e1-6302~38~ubuntu14.04.1-stable</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>Hermes-Lite</title>
+        <company>SofterHardware</company>
+        <rev>2.0-pre1</rev>
+        <date>2016-02-18</date>
+        <source>LCSDR.sch</source>
+        <comment number="1" value="KF7O Steve Haynal"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="2" name="/BPF3/" tstamps="/57E5F93F/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>BPF3.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C31">
+      <value>3n3</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57C41833</tstamp>
+    </comp>
+    <comp ref="U3">
+      <value>74HC4053</value>
+      <footprint>LCSDR:TSSOP-16_4.4x5mm_Pitch0.65mm</footprint>
+      <libsource lib="LCSDR" part="74HC4053"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DAD1DF</tstamp>
+    </comp>
+    <comp ref="C32">
+      <value>3n3</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DADD50</tstamp>
+    </comp>
+    <comp ref="L8">
+      <value>4,7uH</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DADEEC</tstamp>
+    </comp>
+    <comp ref="C35">
+      <value>120pF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DAE1DD</tstamp>
+    </comp>
+    <comp ref="L6">
+      <value>4,7uH</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DAE2B7</tstamp>
+    </comp>
+    <comp ref="L7">
+      <value>4,7uH</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DAE33B</tstamp>
+    </comp>
+    <comp ref="C36">
+      <value>220pF</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DAE3B1</tstamp>
+    </comp>
+    <comp ref="C37">
+      <value>120pF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DAE42B</tstamp>
+    </comp>
+    <comp ref="C27">
+      <value>15pF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DAE4C2</tstamp>
+    </comp>
+    <comp ref="C28">
+      <value>15pF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DAE548</tstamp>
+    </comp>
+    <comp ref="U4">
+      <value>SN74LVC1G3157</value>
+      <footprint>LCSDR:SOT-23-6</footprint>
+      <libsource lib="LCSDR" part="SN74LVC1G3157"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DBCBD7</tstamp>
+    </comp>
+    <comp ref="U5">
+      <value>SN74LVC1G3157</value>
+      <footprint>LCSDR:SOT-23-6</footprint>
+      <libsource lib="LCSDR" part="SN74LVC1G3157"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DBCE56</tstamp>
+    </comp>
+    <comp ref="L5">
+      <value>100uH</value>
+      <footprint>LCSDR:Resistor_Horizontal_RM10mm</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DBD541</tstamp>
+    </comp>
+    <comp ref="R16">
+      <value>k51</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DBD8CA</tstamp>
+    </comp>
+    <comp ref="R15">
+      <value>k51</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DBDBD6</tstamp>
+    </comp>
+    <comp ref="C14">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DBE0F8</tstamp>
+    </comp>
+    <comp ref="C13">
+      <value>10uF 16v</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DBE60B</tstamp>
+    </comp>
+    <comp ref="L4">
+      <value>47uH</value>
+      <footprint>LCSDR:Resistor_Horizontal_RM10mm</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DBF209</tstamp>
+    </comp>
+    <comp ref="C22">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DBF40B</tstamp>
+    </comp>
+    <comp ref="C21">
+      <value>1uF</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DBF4D1</tstamp>
+    </comp>
+    <comp ref="L9">
+      <value>47uH</value>
+      <footprint>LCSDR:Resistor_Horizontal_RM10mm</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DC091A</tstamp>
+    </comp>
+    <comp ref="C47">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DC0A87</tstamp>
+    </comp>
+    <comp ref="C46">
+      <value>10uF 16v</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DC0CAB</tstamp>
+    </comp>
+    <comp ref="U7">
+      <value>74LVC74ABQ</value>
+      <footprint>LCSDR:DHVQFN14</footprint>
+      <libsource lib="LCSDR" part="74LVC74ABQ"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DC1C91</tstamp>
+    </comp>
+    <comp ref="C45">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DC2443</tstamp>
+    </comp>
+    <comp ref="U10">
+      <value>74LVC1G74GM</value>
+      <footprint>LCSDR:XQFN8</footprint>
+      <libsource lib="LCSDR" part="74LVC1G74GM"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DC3B76</tstamp>
+    </comp>
+    <comp ref="R49">
+      <value>1k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCB5C0</tstamp>
+    </comp>
+    <comp ref="R51">
+      <value>1k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCB8BF</tstamp>
+    </comp>
+    <comp ref="R50">
+      <value>k15</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCBDA5</tstamp>
+    </comp>
+    <comp ref="C71">
+      <value>1n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCC0BB</tstamp>
+    </comp>
+    <comp ref="C72">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCC286</tstamp>
+    </comp>
+    <comp ref="R36">
+      <value>20R</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCEC37</tstamp>
+    </comp>
+    <comp ref="R33">
+      <value>20R</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCEE21</tstamp>
+    </comp>
+    <comp ref="R24">
+      <value>20R</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCEF77</tstamp>
+    </comp>
+    <comp ref="R17">
+      <value>20R</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCF032</tstamp>
+    </comp>
+    <comp ref="C23">
+      <value>27n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DD1E65</tstamp>
+    </comp>
+    <comp ref="C33">
+      <value>27n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DD1F69</tstamp>
+    </comp>
+    <comp ref="C43">
+      <value>27n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DD20FB</tstamp>
+    </comp>
+    <comp ref="C51">
+      <value>27n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DD2350</tstamp>
+    </comp>
+    <comp ref="C19">
+      <value>10uF 16v</value>
+      <footprint>LCSDR:TantalC_SizeA_EIA-3216_Wave</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DD2534</tstamp>
+    </comp>
+    <comp ref="C30">
+      <value>10uF 16v</value>
+      <footprint>LCSDR:TantalC_SizeA_EIA-3216_Wave</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DD2735</tstamp>
+    </comp>
+    <comp ref="C41">
+      <value>10uF 16v</value>
+      <footprint>LCSDR:TantalC_SizeA_EIA-3216_Wave</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DD28BB</tstamp>
+    </comp>
+    <comp ref="C48">
+      <value>10uF 16v</value>
+      <footprint>LCSDR:TantalC_SizeA_EIA-3216_Wave</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DD2994</tstamp>
+    </comp>
+    <comp ref="U6">
+      <value>74HC4053</value>
+      <footprint>LCSDR:TSSOP-16_4.4x5mm_Pitch0.65mm</footprint>
+      <libsource lib="LCSDR" part="74HC4053"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DC38DC</tstamp>
+    </comp>
+    <comp ref="R14">
+      <value>10k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCA634</tstamp>
+    </comp>
+    <comp ref="C16">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCAD4D</tstamp>
+    </comp>
+    <comp ref="C15">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCB11A</tstamp>
+    </comp>
+    <comp ref="C56">
+      <value>15n</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCBCBC</tstamp>
+    </comp>
+    <comp ref="R42">
+      <value>4k75</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DCFBBC</tstamp>
+    </comp>
+    <comp ref="R31">
+      <value>3k 1%</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DEC65C</tstamp>
+    </comp>
+    <comp ref="R29">
+      <value>1k 1%</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DECC93</tstamp>
+    </comp>
+    <comp ref="R34">
+      <value>4k75</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DED492</tstamp>
+    </comp>
+    <comp ref="R25">
+      <value>4k75</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DED566</tstamp>
+    </comp>
+    <comp ref="R30">
+      <value>k27</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DEE34F</tstamp>
+    </comp>
+    <comp ref="R26">
+      <value>1k 1%</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DF0139</tstamp>
+    </comp>
+    <comp ref="R21">
+      <value>3k 1%</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DF1358</tstamp>
+    </comp>
+    <comp ref="R7">
+      <value>1k 1%</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DF5E0D</tstamp>
+    </comp>
+    <comp ref="R2">
+      <value>3k 1%</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DF6153</tstamp>
+    </comp>
+    <comp ref="R8">
+      <value>1k 1%</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DF6345</tstamp>
+    </comp>
+    <comp ref="R13">
+      <value>4k75</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DF717D</tstamp>
+    </comp>
+    <comp ref="R5">
+      <value>4k75</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DF74E7</tstamp>
+    </comp>
+    <comp ref="R11">
+      <value>3k 1%</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DF8606</tstamp>
+    </comp>
+    <comp ref="R10">
+      <value>k27</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DF8B67</tstamp>
+    </comp>
+    <comp ref="C7">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E071A5</tstamp>
+    </comp>
+    <comp ref="C6">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E073C5</tstamp>
+    </comp>
+    <comp ref="R4">
+      <value>k75</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E08A80</tstamp>
+    </comp>
+    <comp ref="R1">
+      <value>k75</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E08F92</tstamp>
+    </comp>
+    <comp ref="C4">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E094B7</tstamp>
+    </comp>
+    <comp ref="C3">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E0A514</tstamp>
+    </comp>
+    <comp ref="L1">
+      <value>47uH</value>
+      <footprint>LCSDR:Resistor_Horizontal_RM10mm</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E0BCA9</tstamp>
+    </comp>
+    <comp ref="L3">
+      <value>100uH</value>
+      <footprint>LCSDR:Resistor_Horizontal_RM10mm</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E0DBDA</tstamp>
+    </comp>
+    <comp ref="C17">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E107E1</tstamp>
+    </comp>
+    <comp ref="C18">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E108F2</tstamp>
+    </comp>
+    <comp ref="U8">
+      <value>MC33179DR2G</value>
+      <footprint>LCSDR:SOIC-14_3.9x8.7mm_Pitch1.27mm</footprint>
+      <libsource lib="LCSDR" part="MC33179DR2G"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E11E12</tstamp>
+    </comp>
+    <comp ref="R43">
+      <value>4k75</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E1961C</tstamp>
+    </comp>
+    <comp ref="C60">
+      <value>390p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E1A24B</tstamp>
+    </comp>
+    <comp ref="C62">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E1ACC8</tstamp>
+    </comp>
+    <comp ref="C61">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E1C280</tstamp>
+    </comp>
+    <comp ref="R47">
+      <value>4k75</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E1D333</tstamp>
+    </comp>
+    <comp ref="R40">
+      <value>4k75</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E1D921</tstamp>
+    </comp>
+    <comp ref="R46">
+      <value>4k75</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E1E111</tstamp>
+    </comp>
+    <comp ref="C69">
+      <value>390p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E1E280</tstamp>
+    </comp>
+    <comp ref="R48">
+      <value>4k75</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E1F02A</tstamp>
+    </comp>
+    <comp ref="C52">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E23730</tstamp>
+    </comp>
+    <comp ref="C53">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E23B1E</tstamp>
+    </comp>
+    <comp ref="L10">
+      <value>47uH</value>
+      <footprint>LCSDR:Resistor_Horizontal_RM10mm</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E243F0</tstamp>
+    </comp>
+    <comp ref="U9">
+      <value>74HC4053</value>
+      <footprint>LCSDR:TSSOP-16_4.4x5mm_Pitch0.65mm</footprint>
+      <libsource lib="LCSDR" part="74HC4053"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E26531</tstamp>
+    </comp>
+    <comp ref="U2">
+      <value>74HC4053</value>
+      <footprint>LCSDR:TSSOP-16_4.4x5mm_Pitch0.65mm</footprint>
+      <libsource lib="LCSDR" part="74HC4053"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E267B4</tstamp>
+    </comp>
+    <comp ref="C58">
+      <value>6.8uF</value>
+      <footprint>LCSDR:TantalC_SizeA_EIA-3216_Wave</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2707A</tstamp>
+    </comp>
+    <comp ref="C66">
+      <value>6.8uF</value>
+      <footprint>LCSDR:TantalC_SizeA_EIA-3216_Wave</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E27231</tstamp>
+    </comp>
+    <comp ref="R39">
+      <value>1k 1%</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E273FB</tstamp>
+    </comp>
+    <comp ref="R45">
+      <value>1k 1%</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E27670</tstamp>
+    </comp>
+    <comp ref="C59">
+      <value>10n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E277DA</tstamp>
+    </comp>
+    <comp ref="C64">
+      <value>10n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E27A1D</tstamp>
+    </comp>
+    <comp ref="L12">
+      <value>472K</value>
+      <footprint>LCSDR:Resistor_Horizontal_RM10mm</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2A47A</tstamp>
+    </comp>
+    <comp ref="L13">
+      <value>472K</value>
+      <footprint>LCSDR:Resistor_Horizontal_RM10mm</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2A633</tstamp>
+    </comp>
+    <comp ref="C68">
+      <value>6.8uF</value>
+      <footprint>LCSDR:TantalC_SizeA_EIA-3216_Wave</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2E7B0</tstamp>
+    </comp>
+    <comp ref="C70">
+      <value>6.8uF</value>
+      <footprint>LCSDR:TantalC_SizeA_EIA-3216_Wave</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2EC58</tstamp>
+    </comp>
+    <comp ref="C57">
+      <value>6.8uF</value>
+      <footprint>LCSDR:TantalC_SizeA_EIA-3216_Wave</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DFF2E0</tstamp>
+    </comp>
+    <comp ref="R41">
+      <value>10k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DFFA7A</tstamp>
+    </comp>
+    <comp ref="R44">
+      <value>10k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DFFC43</tstamp>
+    </comp>
+    <comp ref="C63">
+      <value>6.8uF</value>
+      <footprint>LCSDR:TantalC_SizeA_EIA-3216_Wave</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E046F8</tstamp>
+    </comp>
+    <comp ref="C50">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E05257</tstamp>
+    </comp>
+    <comp ref="C49">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E0541F</tstamp>
+    </comp>
+    <comp ref="R37">
+      <value>1k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E06958</tstamp>
+    </comp>
+    <comp ref="R38">
+      <value>1k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E06BEC</tstamp>
+    </comp>
+    <comp ref="C54">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E0A1F3</tstamp>
+    </comp>
+    <comp ref="C55">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E0A3AD</tstamp>
+    </comp>
+    <comp ref="L2">
+      <value>100uH</value>
+      <footprint>LCSDR:Resistor_Horizontal_RM10mm</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E0D11C</tstamp>
+    </comp>
+    <comp ref="C65">
+      <value>15n</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E12D3F</tstamp>
+    </comp>
+    <comp ref="R12">
+      <value>k10</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E1E5F1</tstamp>
+    </comp>
+    <comp ref="C9">
+      <value>6.8uF</value>
+      <footprint>LCSDR:TantalC_SizeA_EIA-3216_Wave</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E1F887</tstamp>
+    </comp>
+    <comp ref="C11">
+      <value>15n</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2101C</tstamp>
+    </comp>
+    <comp ref="C5">
+      <value>4.7uF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E235C0</tstamp>
+    </comp>
+    <comp ref="R3">
+      <value>10k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E240F4</tstamp>
+    </comp>
+    <comp ref="R9">
+      <value>10k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E24543</tstamp>
+    </comp>
+    <comp ref="C10">
+      <value>4.7uF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E24703</tstamp>
+    </comp>
+    <comp ref="C12">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E280C5</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2993B</tstamp>
+    </comp>
+    <comp ref="C8">
+      <value>6.8uF</value>
+      <footprint>LCSDR:TantalC_SizeA_EIA-3216_Wave</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E29C5B</tstamp>
+    </comp>
+    <comp ref="R6">
+      <value>k10</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E29E36</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2B9A1</tstamp>
+    </comp>
+    <comp ref="L11">
+      <value>100uH</value>
+      <footprint>LCSDR:Resistor_Horizontal_RM10mm</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2DABE</tstamp>
+    </comp>
+    <comp ref="R20">
+      <value>2k2</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E32E46</tstamp>
+    </comp>
+    <comp ref="R23">
+      <value>1M5</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E332A1</tstamp>
+    </comp>
+    <comp ref="R19">
+      <value>2k2</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E3425E</tstamp>
+    </comp>
+    <comp ref="C29">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E34F2B</tstamp>
+    </comp>
+    <comp ref="C26">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E35D18</tstamp>
+    </comp>
+    <comp ref="R27">
+      <value>k43</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E3663A</tstamp>
+    </comp>
+    <comp ref="R28">
+      <value>k560</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E3691A</tstamp>
+    </comp>
+    <comp ref="C42">
+      <value>220p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E36F4E</tstamp>
+    </comp>
+    <comp ref="R32">
+      <value>1k5</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E37C11</tstamp>
+    </comp>
+    <comp ref="C40">
+      <value>22n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E38012</tstamp>
+    </comp>
+    <comp ref="C25">
+      <value>22p</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E38BD6</tstamp>
+    </comp>
+    <comp ref="R35">
+      <value>27R</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E3C38A</tstamp>
+    </comp>
+    <comp ref="R22">
+      <value>10k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E3C5D0</tstamp>
+    </comp>
+    <comp ref="Q1">
+      <value>BC850</value>
+      <footprint>LCSDR:SOT-23</footprint>
+      <libsource lib="transistors" part="BC850"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57DFFD08</tstamp>
+    </comp>
+    <comp ref="C24">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E06C53</tstamp>
+    </comp>
+    <comp ref="J1">
+      <value>JACK_TRS_3pins</value>
+      <footprint>LCSDR:audio_jack_3_5mm_PJ307</footprint>
+      <libsource lib="LCSDR" part="JACK_TRS_3pins"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E19C24</tstamp>
+    </comp>
+    <comp ref="C20">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E28DCB</tstamp>
+    </comp>
+    <comp ref="C39">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2A6A7</tstamp>
+    </comp>
+    <comp ref="C38">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2A8E0</tstamp>
+    </comp>
+    <comp ref="R18">
+      <value>1k5</value>
+      <footprint>LCSDR:R_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2E5BD</tstamp>
+    </comp>
+    <comp ref="J2">
+      <value>JACK_TRS_3pins</value>
+      <footprint>LCSDR:audio_jack_3_5mm_PJ307</footprint>
+      <libsource lib="LCSDR" part="JACK_TRS_3pins"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E2FEC7</tstamp>
+    </comp>
+    <comp ref="J3">
+      <value>JACK_TRS_3pins</value>
+      <footprint>LCSDR:audio_jack_3_5mm_PJ307</footprint>
+      <libsource lib="LCSDR" part="JACK_TRS_3pins"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E30674</tstamp>
+    </comp>
+    <comp ref="C44">
+      <value>2n2</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E349E8</tstamp>
+    </comp>
+    <comp ref="J4">
+      <value>JACK_TRS_3pins</value>
+      <footprint>LCSDR:audio_jack_3_5mm_PJ307</footprint>
+      <libsource lib="LCSDR" part="JACK_TRS_3pins"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E36EB5</tstamp>
+    </comp>
+    <comp ref="U12">
+      <value>L78M09</value>
+      <footprint>TO_SOT_Packages_SMD:TO-252-2Lead</footprint>
+      <libsource lib="LCSDR" part="L78M09"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E3C900</tstamp>
+    </comp>
+    <comp ref="U11">
+      <value>Si570</value>
+      <footprint>LCSDR:Si570</footprint>
+      <libsource lib="LCSDR" part="Si570"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E3F639</tstamp>
+    </comp>
+    <comp ref="R53">
+      <value>2k2</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E429D6</tstamp>
+    </comp>
+    <comp ref="R54">
+      <value>2k2</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E42C42</tstamp>
+    </comp>
+    <comp ref="R52">
+      <value>10k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E4604B</tstamp>
+    </comp>
+    <comp ref="C73">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E4242E</tstamp>
+    </comp>
+    <comp ref="C76">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E4F258</tstamp>
+    </comp>
+    <comp ref="C77">
+      <value>100uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E4FAF4</tstamp>
+    </comp>
+    <comp ref="C78">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E5150F</tstamp>
+    </comp>
+    <comp ref="C79">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E5174E</tstamp>
+    </comp>
+    <comp ref="C82">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E549CE</tstamp>
+    </comp>
+    <comp ref="C83">
+      <value>100uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E54C1D</tstamp>
+    </comp>
+    <comp ref="CON1">
+      <value>BARREL_JACK</value>
+      <footprint>LCSDR:BARREL_JACK</footprint>
+      <libsource lib="LCSDR-rescue" part="BARREL_JACK-RESCUE-LCSDR"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E59218</tstamp>
+    </comp>
+    <comp ref="C75">
+      <value>820uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E5C644</tstamp>
+    </comp>
+    <comp ref="C74">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E5E045</tstamp>
+    </comp>
+    <comp ref="U14">
+      <value>LD1117S25CTR</value>
+      <footprint>LCSDR:SOT-223</footprint>
+      <libsource lib="LCSDR-rescue" part="LD1117S25CTR-RESCUE-LCSDR"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E5F8E7</tstamp>
+    </comp>
+    <comp ref="C84">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E5FD3C</tstamp>
+    </comp>
+    <comp ref="C85">
+      <value>100uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E5FFAB</tstamp>
+    </comp>
+    <comp ref="R55">
+      <value>k18</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E62142</tstamp>
+    </comp>
+    <comp ref="C81">
+      <value>10uF</value>
+      <footprint>LCSDR:C_Radial_D5_L11_P2.5</footprint>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E66460</tstamp>
+    </comp>
+    <comp ref="C80">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E66E36</tstamp>
+    </comp>
+    <comp ref="U13">
+      <value>LD1117S33TR</value>
+      <footprint>LCSDR:SOT-223</footprint>
+      <libsource lib="LCSDR-rescue" part="LD1117S33TR-RESCUE-LCSDR"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E137B7</tstamp>
+    </comp>
+    <comp ref="C34">
+      <value>15n</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E1B394</tstamp>
+    </comp>
+    <comp ref="U1">
+      <value>MC33179DR2G</value>
+      <footprint>LCSDR:SOIC-14_3.9x8.7mm_Pitch1.27mm</footprint>
+      <libsource lib="LCSDR" part="MC33179DR2G"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E4667B</tstamp>
+    </comp>
+    <comp ref="U16">
+      <value>PCF8574</value>
+      <footprint>LCSDR:SO-16-W</footprint>
+      <libsource lib="philips" part="PCF8574"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E3A460</tstamp>
+    </comp>
+    <comp ref="P6">
+      <value>I2C_Si570</value>
+      <footprint>Pin_Headers:Pin_Header_Angled_1x04</footprint>
+      <libsource lib="conn" part="CONN_01X04"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E4E8E5</tstamp>
+    </comp>
+    <comp ref="C134">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E48324</tstamp>
+    </comp>
+    <comp ref="P8">
+      <value>TX_PA</value>
+      <footprint>LCSDR:Pin_Header_Straight_1x03</footprint>
+      <libsource lib="conn" part="CONN_01X03"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57E4BD91</tstamp>
+    </comp>
+    <comp ref="L15">
+      <value>47uF</value>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6EC06</tstamp>
+    </comp>
+    <comp ref="C86">
+      <value>1uF</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6EC52</tstamp>
+    </comp>
+    <comp ref="C87">
+      <value>1uF</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6ECA2</tstamp>
+    </comp>
+    <comp ref="R56">
+      <value>k47</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6ED5E</tstamp>
+    </comp>
+    <comp ref="R57">
+      <value>k47</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6EDCA</tstamp>
+    </comp>
+    <comp ref="D2">
+      <value>BAV203-G08</value>
+      <footprint>LCSDR:MiniMELF_Standard</footprint>
+      <libsource lib="device" part="D_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6EE7A</tstamp>
+    </comp>
+    <comp ref="D1">
+      <value>BAV203-G08</value>
+      <footprint>LCSDR:MiniMELF_Standard</footprint>
+      <libsource lib="device" part="D_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6EF09</tstamp>
+    </comp>
+    <comp ref="C100">
+      <value>750pF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6F142</tstamp>
+    </comp>
+    <comp ref="C99">
+      <value>1n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6F18F</tstamp>
+    </comp>
+    <comp ref="C98">
+      <value>1n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6F1BF</tstamp>
+    </comp>
+    <comp ref="L18">
+      <value>4.7uH</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6F5A4</tstamp>
+    </comp>
+    <comp ref="C94">
+      <value>200p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6F61C</tstamp>
+    </comp>
+    <comp ref="C90">
+      <value>1n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6F66F</tstamp>
+    </comp>
+    <comp ref="L16">
+      <value>10uF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6F85F</tstamp>
+    </comp>
+    <comp ref="L17">
+      <value>4.7uF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6F8D4</tstamp>
+    </comp>
+    <comp ref="R59">
+      <value>10k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6F93E</tstamp>
+    </comp>
+    <comp ref="C89">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6F9DF</tstamp>
+    </comp>
+    <comp ref="C97">
+      <value>750p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6FB97</tstamp>
+    </comp>
+    <comp ref="C96">
+      <value>1n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6FC18</tstamp>
+    </comp>
+    <comp ref="C95">
+      <value>1n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6FC88</tstamp>
+    </comp>
+    <comp ref="C101">
+      <value>220n</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6FD76</tstamp>
+    </comp>
+    <comp ref="C102">
+      <value>220n</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E6FDF2</tstamp>
+    </comp>
+    <comp ref="D3">
+      <value>BAV203-G08</value>
+      <footprint>LCSDR:MiniMELF_Standard</footprint>
+      <libsource lib="device" part="D_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E71A05</tstamp>
+    </comp>
+    <comp ref="C105">
+      <value>680p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E71C08</tstamp>
+    </comp>
+    <comp ref="L20">
+      <value>2.2uF</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E71E7D</tstamp>
+    </comp>
+    <comp ref="L19">
+      <value>4.7uF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E71F0C</tstamp>
+    </comp>
+    <comp ref="C109">
+      <value>220n</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E72073</tstamp>
+    </comp>
+    <comp ref="C110">
+      <value>220n</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E72104</tstamp>
+    </comp>
+    <comp ref="C103">
+      <value>680p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E72190</tstamp>
+    </comp>
+    <comp ref="L21">
+      <value>2.2uF</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E72223</tstamp>
+    </comp>
+    <comp ref="C106">
+      <value>820p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E726E3</tstamp>
+    </comp>
+    <comp ref="C107">
+      <value>680p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7280B</tstamp>
+    </comp>
+    <comp ref="D6">
+      <value>BAV203-G08</value>
+      <footprint>LCSDR:MiniMELF_Standard</footprint>
+      <libsource lib="device" part="D_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E72A89</tstamp>
+    </comp>
+    <comp ref="R60">
+      <value>10k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E72C3B</tstamp>
+    </comp>
+    <comp ref="C108">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E72EFD</tstamp>
+    </comp>
+    <comp ref="D5">
+      <value>BAV203-G08</value>
+      <footprint>LCSDR:MiniMELF_Standard</footprint>
+      <libsource lib="device" part="D_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E73F7B</tstamp>
+    </comp>
+    <comp ref="C112">
+      <value>820p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E740BA</tstamp>
+    </comp>
+    <comp ref="L22">
+      <value>2.2uF</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7416B</tstamp>
+    </comp>
+    <comp ref="L23">
+      <value>1uF</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E743C0</tstamp>
+    </comp>
+    <comp ref="C111">
+      <value>360p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7447B</tstamp>
+    </comp>
+    <comp ref="C114">
+      <value>33p</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E74531</tstamp>
+    </comp>
+    <comp ref="L24">
+      <value>1uF</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E749BD</tstamp>
+    </comp>
+    <comp ref="C117">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E758C5</tstamp>
+    </comp>
+    <comp ref="C116">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E75988</tstamp>
+    </comp>
+    <comp ref="R61">
+      <value>10k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E76182</tstamp>
+    </comp>
+    <comp ref="C113">
+      <value>820p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E76245</tstamp>
+    </comp>
+    <comp ref="D4">
+      <value>BAV203-G08</value>
+      <footprint>LCSDR:MiniMELF_Standard</footprint>
+      <libsource lib="device" part="D_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7688F</tstamp>
+    </comp>
+    <comp ref="D7">
+      <value>BAV203-G08</value>
+      <footprint>LCSDR:MiniMELF_Standard</footprint>
+      <libsource lib="device" part="D_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E770DF</tstamp>
+    </comp>
+    <comp ref="C119">
+      <value>33p</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E77A43</tstamp>
+    </comp>
+    <comp ref="C120">
+      <value>360p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E77CBA</tstamp>
+    </comp>
+    <comp ref="L26">
+      <value>470nF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E781B4</tstamp>
+    </comp>
+    <comp ref="L25">
+      <value>1uF</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E782B5</tstamp>
+    </comp>
+    <comp ref="C118">
+      <value>180p</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E783AD</tstamp>
+    </comp>
+    <comp ref="L27">
+      <value>470nF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E784B2</tstamp>
+    </comp>
+    <comp ref="C123">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E785AA</tstamp>
+    </comp>
+    <comp ref="C124">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E78691</tstamp>
+    </comp>
+    <comp ref="R62">
+      <value>10k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E78775</tstamp>
+    </comp>
+    <comp ref="C121">
+      <value>33p</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7885C</tstamp>
+    </comp>
+    <comp ref="C122">
+      <value>360p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E78958</tstamp>
+    </comp>
+    <comp ref="D8">
+      <value>BAV203-G08</value>
+      <footprint>LCSDR:MiniMELF_Standard</footprint>
+      <libsource lib="device" part="D_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E78A55</tstamp>
+    </comp>
+    <comp ref="C115">
+      <value>100n</value>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7A352</tstamp>
+    </comp>
+    <comp ref="D9">
+      <value>BAV203-G08</value>
+      <footprint>LCSDR:MiniMELF_Standard</footprint>
+      <libsource lib="device" part="D_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7BA6D</tstamp>
+    </comp>
+    <comp ref="L28">
+      <value>470nF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7BC68</tstamp>
+    </comp>
+    <comp ref="L29">
+      <value>220nF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7C077</tstamp>
+    </comp>
+    <comp ref="C126">
+      <value>120p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7C24B</tstamp>
+    </comp>
+    <comp ref="L30">
+      <value>220nF</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7C349</tstamp>
+    </comp>
+    <comp ref="C129">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7C562</tstamp>
+    </comp>
+    <comp ref="C130">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7C666</tstamp>
+    </comp>
+    <comp ref="C128">
+      <value>270p</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7D7DE</tstamp>
+    </comp>
+    <comp ref="D10">
+      <value>BAV203-G08</value>
+      <footprint>LCSDR:MiniMELF_Standard</footprint>
+      <libsource lib="device" part="D_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7DC14</tstamp>
+    </comp>
+    <comp ref="R63">
+      <value>10k</value>
+      <footprint>LCSDR:R_1206_0603</footprint>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7E00A</tstamp>
+    </comp>
+    <comp ref="C125">
+      <value>100n</value>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7E40C</tstamp>
+    </comp>
+    <comp ref="C132">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7EF20</tstamp>
+    </comp>
+    <comp ref="C131">
+      <value>100n</value>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E7F369</tstamp>
+    </comp>
+    <comp ref="P2">
+      <value>ANT/PA</value>
+      <footprint>LCSDR:Pin_Header_Straight_1x03</footprint>
+      <libsource lib="conn" part="CONN_01X03"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E278A7</tstamp>
+    </comp>
+    <comp ref="U15">
+      <value>78L05</value>
+      <footprint>LCSDR:TO-92_Inline_Narrow_Oval</footprint>
+      <libsource lib="LCSDR" part="L78M09"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E2C531</tstamp>
+    </comp>
+    <comp ref="R58">
+      <value>0*</value>
+      <libsource lib="device" part="R_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E2EEA4</tstamp>
+    </comp>
+    <comp ref="C92">
+      <value>100n</value>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E2F4D1</tstamp>
+    </comp>
+    <comp ref="C93">
+      <value>10uF</value>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E2F8D0</tstamp>
+    </comp>
+    <comp ref="C88">
+      <value>10uF</value>
+      <libsource lib="device" part="CP1_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E2FBAD</tstamp>
+    </comp>
+    <comp ref="C91">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E2FDFD</tstamp>
+    </comp>
+    <comp ref="L14">
+      <value>47uF</value>
+      <libsource lib="device" part="L_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E3FF58</tstamp>
+    </comp>
+    <comp ref="C67">
+      <value>820p</value>
+      <footprint>LCSDR:C_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E409BA</tstamp>
+    </comp>
+    <comp ref="C104">
+      <value>100n</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E4500C</tstamp>
+    </comp>
+    <comp ref="C127">
+      <value>270p</value>
+      <footprint>LCSDR:C_1206_0603</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E45818</tstamp>
+    </comp>
+    <comp ref="U17">
+      <value>ULN2003_</value>
+      <footprint>LCSDR:SOIC-16_3.9x9.9mm_Pitch1.27mm</footprint>
+      <libsource lib="LCSDR" part="ULN2003_"/>
+      <sheetpath names="/BPF3/" tstamps="/57E5F93F/"/>
+      <tstamp>57E4C554</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="LCSDR" part="74HC4053">
+      <description>Triple analog Multiplexer 2 to 1 line</description>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">74HC4053</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Y1" type="passive"/>
+        <pin num="2" name="Y0" type="passive"/>
+        <pin num="3" name="Z1" type="passive"/>
+        <pin num="4" name="Z" type="passive"/>
+        <pin num="5" name="Z0" type="passive"/>
+        <pin num="6" name="Inh" type="input"/>
+        <pin num="7" name="VEE" type="power_in"/>
+        <pin num="8" name="VSS" type="power_in"/>
+        <pin num="9" name="C" type="input"/>
+        <pin num="10" name="B" type="input"/>
+        <pin num="11" name="A" type="input"/>
+        <pin num="12" name="X0" type="passive"/>
+        <pin num="13" name="X1" type="passive"/>
+        <pin num="14" name="X" type="passive"/>
+        <pin num="15" name="Y" type="passive"/>
+        <pin num="16" name="VDD" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="LCSDR" part="74LVC1G74GM">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">74LVC1G74GM</field>
+      </fields>
+      <pins>
+        <pin num="1" name="S" type="input"/>
+        <pin num="2" name="R" type="input"/>
+        <pin num="3" name="Q" type="input"/>
+        <pin num="4" name="GND" type="input"/>
+        <pin num="5" name="Q*" type="input"/>
+        <pin num="6" name="D" type="input"/>
+        <pin num="7" name="C" type="input"/>
+        <pin num="8" name="VCC" type="input"/>
+        <pin num="14" name="VDD" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="LCSDR" part="74LVC74ABQ">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">74LVC74ABQ</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1R" type="input"/>
+        <pin num="2" name="Out" type="output"/>
+        <pin num="3" name="1C" type="input"/>
+        <pin num="4" name="1S" type="input"/>
+        <pin num="5" name="1Q" type="input"/>
+        <pin num="6" name="1Q*" type="input"/>
+        <pin num="7" name="VCC" type="input"/>
+        <pin num="8" name="2Q" type="input"/>
+        <pin num="9" name="2Q*" type="input"/>
+        <pin num="10" name="2S" type="input"/>
+        <pin num="11" name="2C" type="input"/>
+        <pin num="12" name="2D" type="input"/>
+        <pin num="13" name="2R" type="input"/>
+        <pin num="14" name="VCC" type="input"/>
+        <pin num="15" name="GND" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="LCSDR-rescue" part="BARREL_JACK-RESCUE-LCSDR">
+      <fields>
+        <field name="Reference">CON</field>
+        <field name="Value">BARREL_JACK-RESCUE-LCSDR</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+        <pin num="3" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="transistors" part="BC850">
+      <aliases>
+        <alias>BC849</alias>
+      </aliases>
+      <description>45V Vce, 0.1A Ic, Low noise, NPN, SOT-23</description>
+      <docs>http://www.fairchildsemi.com/ds/BC/BC850.pdf</docs>
+      <footprints>
+        <fp>SOT-23*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">Q</field>
+        <field name="Value">BC850</field>
+        <field name="Footprint">SOT-23</field>
+      </fields>
+      <pins>
+        <pin num="1" name="B" type="input"/>
+        <pin num="2" name="E" type="passive"/>
+        <pin num="3" name="C" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="CONN_01X03">
+      <description>Connector 01x03</description>
+      <footprints>
+        <fp>Pin_Header_Straight_1X03</fp>
+        <fp>Pin_Header_Angled_1X03</fp>
+        <fp>Socket_Strip_Straight_1X03</fp>
+        <fp>Socket_Strip_Angled_1X03</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">CONN_01X03</field>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="CONN_01X04">
+      <description>Connector 01x04</description>
+      <footprints>
+        <fp>Pin_Header_Straight_1X04</fp>
+        <fp>Pin_Header_Angled_1X04</fp>
+        <fp>Socket_Strip_Straight_1X04</fp>
+        <fp>Socket_Strip_Angled_1X04</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">CONN_01X04</field>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="CP1_Small">
+      <description>Polarised capacitor</description>
+      <footprints>
+        <fp>CP*</fp>
+        <fp>Elko*</fp>
+        <fp>TantalC*</fp>
+        <fp>C*elec</fp>
+        <fp>c_elec*</fp>
+        <fp>SMD*_Pol</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">CP1_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="C_Small">
+      <description>Unpolarized capacitor</description>
+      <footprints>
+        <fp>C?</fp>
+        <fp>C_????_*</fp>
+        <fp>C_????</fp>
+        <fp>SMD*_c</fp>
+        <fp>Capacitor*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="D_Small">
+      <description>Diode</description>
+      <footprints>
+        <fp>Diode_*</fp>
+        <fp>D-Pak_TO252AA</fp>
+        <fp>*SingleDiode</fp>
+        <fp>*SingleDiode*</fp>
+        <fp>*_Diode_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">D_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="LCSDR" part="JACK_TRS_3pins">
+      <description>audio jack TRS 6 pins</description>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">JACK_TRS_3pins</field>
+      </fields>
+      <pins>
+        <pin num="1" name="T" type="passive"/>
+        <pin num="2" name="R" type="passive"/>
+        <pin num="3" name="RN" type="passive"/>
+        <pin num="4" name="SN" type="passive"/>
+        <pin num="5" name="S" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="LCSDR" part="L78M09">
+      <aliases>
+        <alias>LM7806CT</alias>
+        <alias>LM7808CT</alias>
+        <alias>LM7809CT</alias>
+        <alias>LM7810CT</alias>
+        <alias>LM7812CT</alias>
+        <alias>LM7815CT</alias>
+        <alias>LM7818CT</alias>
+        <alias>LM7824CT</alias>
+        <alias>LM7806ACT</alias>
+        <alias>LM7808ACT</alias>
+        <alias>LM7809ACT</alias>
+        <alias>LM7810ACT</alias>
+        <alias>LM7812ACT</alias>
+        <alias>LM7815ACT</alias>
+        <alias>LM7818ACT</alias>
+        <alias>LM7824ACT</alias>
+      </aliases>
+      <description>Positive 1A 35V Linear Regulator, Fixed Output 5V, TO-220</description>
+      <docs>http://www.fairchildsemi.com/ds/LM/LM7805.pdf</docs>
+      <footprints>
+        <fp>TO*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">L78M09</field>
+      </fields>
+      <pins>
+        <pin num="1" name="IN" type="input"/>
+        <pin num="2" name="GND" type="power_in"/>
+        <pin num="3" name="OUT" type="power_out"/>
+      </pins>
+    </libpart>
+    <libpart lib="LCSDR-rescue" part="LD1117S25CTR-RESCUE-LCSDR">
+      <footprints>
+        <fp>SOT223</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LD1117S25CTR-RESCUE-LCSDR</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GND" type="power_in"/>
+        <pin num="2" name="VO" type="power_out"/>
+        <pin num="3" name="VI" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="LCSDR-rescue" part="LD1117S33TR-RESCUE-LCSDR">
+      <footprints>
+        <fp>SOT223</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LD1117S33TR-RESCUE-LCSDR</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GND" type="power_in"/>
+        <pin num="2" name="VO" type="power_out"/>
+        <pin num="3" name="VI" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="L_Small">
+      <description>Inductor</description>
+      <footprints>
+        <fp>CP*</fp>
+        <fp>SM*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">L</field>
+        <field name="Value">L_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="LCSDR" part="MC33179DR2G">
+      <aliases>
+        <alias>LM324</alias>
+        <alias>TLC274</alias>
+        <alias>TL074</alias>
+        <alias>LM324N</alias>
+        <alias>LM324AN</alias>
+        <alias>MCP6004</alias>
+      </aliases>
+      <description>Quad Op amp.</description>
+      <docs>op_amps/lm324.pdf</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">MC33179DR2G</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="output"/>
+        <pin num="2" name="-" type="input"/>
+        <pin num="3" name="+" type="input"/>
+        <pin num="4" name="V+" type="power_in"/>
+        <pin num="5" name="+" type="input"/>
+        <pin num="6" name="-" type="input"/>
+        <pin num="7" name="~" type="output"/>
+        <pin num="8" name="~" type="output"/>
+        <pin num="9" name="-" type="input"/>
+        <pin num="10" name="+" type="input"/>
+        <pin num="11" name="V-" type="power_in"/>
+        <pin num="12" name="+" type="input"/>
+        <pin num="13" name="-" type="input"/>
+        <pin num="14" name="~" type="output"/>
+      </pins>
+    </libpart>
+    <libpart lib="philips" part="PCF8574">
+      <aliases>
+        <alias>PCF8574A</alias>
+      </aliases>
+      <description>8 Bit Port/Expander to I2C Bus, DIP/SOIC-16</description>
+      <docs>http://www.nxp.com/documents/data_sheet/PCF8574_PCF8574A.pdf</docs>
+      <footprints>
+        <fp>DIP*</fp>
+        <fp>PDIP*</fp>
+        <fp>SO*</fp>
+        <fp>SOIC*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">PCF8574</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A0" type="input"/>
+        <pin num="2" name="A1" type="input"/>
+        <pin num="3" name="A2" type="input"/>
+        <pin num="4" name="P0" type="BiDi"/>
+        <pin num="5" name="P1" type="BiDi"/>
+        <pin num="6" name="P2" type="BiDi"/>
+        <pin num="7" name="P3" type="BiDi"/>
+        <pin num="8" name="VSS" type="power_in"/>
+        <pin num="9" name="P4" type="BiDi"/>
+        <pin num="10" name="P5" type="BiDi"/>
+        <pin num="11" name="P6" type="BiDi"/>
+        <pin num="12" name="P7" type="BiDi"/>
+        <pin num="13" name="~INT~" type="openCol"/>
+        <pin num="14" name="SCL" type="input"/>
+        <pin num="15" name="SDA" type="BiDi"/>
+        <pin num="16" name="VDD" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="R_Small">
+      <description>Resistor</description>
+      <footprints>
+        <fp>Resistor_*</fp>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="LCSDR" part="SN74LVC1G3157">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">SN74LVC1G3157</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Y1" type="input"/>
+        <pin num="2" name="GND" type="input"/>
+        <pin num="3" name="Y0" type="input"/>
+        <pin num="4" name="Z" type="input"/>
+        <pin num="5" name="Vcc" type="input"/>
+        <pin num="6" name="S" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="LCSDR" part="Si570">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">Si570</field>
+      </fields>
+      <pins>
+        <pin num="1" name="NC" type="power_in"/>
+        <pin num="2" name="OE" type="power_in"/>
+        <pin num="3" name="GND" type="power_in"/>
+        <pin num="4" name="CLK+" type="power_in"/>
+        <pin num="5" name="CLK-" type="power_in"/>
+        <pin num="6" name="VDD" type="power_out"/>
+        <pin num="7" name="SDA" type="power_out"/>
+        <pin num="8" name="SCL" type="power_out"/>
+      </pins>
+    </libpart>
+    <libpart lib="LCSDR" part="ULN2003_">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">ULN2003_</field>
+      </fields>
+      <pins>
+        <pin num="1" name="I1" type="input"/>
+        <pin num="2" name="I2" type="input"/>
+        <pin num="3" name="I3" type="input"/>
+        <pin num="4" name="I4" type="input"/>
+        <pin num="5" name="I5" type="input"/>
+        <pin num="6" name="I6" type="input"/>
+        <pin num="7" name="I7" type="input"/>
+        <pin num="8" name="GND" type="power_in"/>
+        <pin num="9" name="COM" type="input"/>
+        <pin num="10" name="O7" type="openCol"/>
+        <pin num="11" name="O6" type="openCol"/>
+        <pin num="12" name="O5" type="openCol"/>
+        <pin num="13" name="O4" type="openCol"/>
+        <pin num="14" name="O3" type="openCol"/>
+        <pin num="15" name="O2" type="openCol"/>
+        <pin num="16" name="O1" type="openCol"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="LCSDR-rescue">
+      <uri>/home/arsenal/HAM_Elektronik/low_cost_SDR 1/sch_pcb_KiCad_0805/LCSDR-rescue.lib</uri>
+    </library>
+    <library logical="device">
+      <uri>/usr/share/kicad/library/device.lib</uri>
+    </library>
+    <library logical="transistors">
+      <uri>/usr/share/kicad/library/transistors.lib</uri>
+    </library>
+    <library logical="conn">
+      <uri>/usr/share/kicad/library/conn.lib</uri>
+    </library>
+    <library logical="philips">
+      <uri>/usr/share/kicad/library/philips.lib</uri>
+    </library>
+    <library logical="LCSDR">
+      <uri>/home/arsenal/HAM_Elektronik/low_cost_SDR 1/sch_pcb_KiCad_0805/libs/LCSDR.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Net-(R47-Pad2)">
+      <node ref="U8" pin="8"/>
+      <node ref="U6" pin="2"/>
+      <node ref="R47" pin="2"/>
+    </net>
+    <net code="2" name="Net-(R47-Pad1)">
+      <node ref="U8" pin="9"/>
+      <node ref="R48" pin="2"/>
+      <node ref="R47" pin="1"/>
+    </net>
+    <net code="3" name="Net-(C66-Pad1)">
+      <node ref="C66" pin="1"/>
+      <node ref="C69" pin="2"/>
+      <node ref="U8" pin="6"/>
+      <node ref="R46" pin="2"/>
+    </net>
+    <net code="4" name="Net-(R12-Pad2)">
+      <node ref="U1" pin="7"/>
+      <node ref="R12" pin="2"/>
+      <node ref="R31" pin="1"/>
+    </net>
+    <net code="5" name="Net-(R42-Pad2)">
+      <node ref="U8" pin="14"/>
+      <node ref="R42" pin="2"/>
+      <node ref="U3" pin="2"/>
+    </net>
+    <net code="6" name="Net-(R40-Pad2)">
+      <node ref="R42" pin="1"/>
+      <node ref="R40" pin="2"/>
+      <node ref="U8" pin="13"/>
+    </net>
+    <net code="7" name="Net-(C69-Pad1)">
+      <node ref="U6" pin="5"/>
+      <node ref="C69" pin="1"/>
+      <node ref="R46" pin="1"/>
+      <node ref="U8" pin="7"/>
+      <node ref="R48" pin="1"/>
+    </net>
+    <net code="8" name="Net-(C60-Pad1)">
+      <node ref="C60" pin="1"/>
+      <node ref="R40" pin="1"/>
+      <node ref="R43" pin="2"/>
+      <node ref="U3" pin="5"/>
+      <node ref="U8" pin="1"/>
+    </net>
+    <net code="9" name="Net-(C70-Pad1)">
+      <node ref="U9" pin="1"/>
+      <node ref="C70" pin="1"/>
+    </net>
+    <net code="10" name="Net-(C70-Pad2)">
+      <node ref="C70" pin="2"/>
+      <node ref="J4" pin="4"/>
+      <node ref="J4" pin="5"/>
+    </net>
+    <net code="11" name="Net-(C68-Pad2)">
+      <node ref="C68" pin="2"/>
+      <node ref="J4" pin="2"/>
+      <node ref="J4" pin="3"/>
+    </net>
+    <net code="12" name="Net-(C68-Pad1)">
+      <node ref="C68" pin="1"/>
+      <node ref="U9" pin="3"/>
+    </net>
+    <net code="13" name="Net-(C12-Pad1)">
+      <node ref="R44" pin="2"/>
+      <node ref="R3" pin="1"/>
+      <node ref="R38" pin="2"/>
+      <node ref="R37" pin="2"/>
+      <node ref="C49" pin="1"/>
+      <node ref="C50" pin="1"/>
+      <node ref="C12" pin="1"/>
+      <node ref="R9" pin="2"/>
+      <node ref="C20" pin="2"/>
+      <node ref="R41" pin="1"/>
+    </net>
+    <net code="14" name="Net-(C57-Pad2)">
+      <node ref="J3" pin="3"/>
+      <node ref="J3" pin="2"/>
+      <node ref="C57" pin="2"/>
+    </net>
+    <net code="15" name="Net-(C63-Pad2)">
+      <node ref="C63" pin="2"/>
+      <node ref="J3" pin="5"/>
+      <node ref="J3" pin="4"/>
+    </net>
+    <net code="16" name="Net-(C63-Pad1)">
+      <node ref="R44" pin="1"/>
+      <node ref="U9" pin="4"/>
+      <node ref="C63" pin="1"/>
+    </net>
+    <net code="17" name="Net-(C57-Pad1)">
+      <node ref="U9" pin="15"/>
+      <node ref="R41" pin="2"/>
+      <node ref="C57" pin="1"/>
+    </net>
+    <net code="18" name="Net-(C58-Pad1)">
+      <node ref="C60" pin="2"/>
+      <node ref="R43" pin="1"/>
+      <node ref="U8" pin="2"/>
+      <node ref="C58" pin="1"/>
+    </net>
+    <net code="19" name="Net-(C52-Pad1)">
+      <node ref="U8" pin="4"/>
+      <node ref="L10" pin="2"/>
+      <node ref="C53" pin="1"/>
+      <node ref="C52" pin="1"/>
+    </net>
+    <net code="20" name="Net-(L13-Pad2)">
+      <node ref="U9" pin="5"/>
+      <node ref="L13" pin="2"/>
+    </net>
+    <net code="21" name="Net-(L12-Pad2)">
+      <node ref="L12" pin="2"/>
+      <node ref="U9" pin="2"/>
+    </net>
+    <net code="22" name="Net-(C64-Pad2)">
+      <node ref="L13" pin="1"/>
+      <node ref="R45" pin="1"/>
+      <node ref="C64" pin="2"/>
+    </net>
+    <net code="23" name="Net-(C59-Pad1)">
+      <node ref="L12" pin="1"/>
+      <node ref="C59" pin="1"/>
+      <node ref="R39" pin="1"/>
+    </net>
+    <net code="24" name="Net-(C66-Pad2)">
+      <node ref="C66" pin="2"/>
+      <node ref="R45" pin="2"/>
+    </net>
+    <net code="25" name="Net-(C58-Pad2)">
+      <node ref="C58" pin="2"/>
+      <node ref="R39" pin="2"/>
+    </net>
+    <net code="26" name="/0">
+      <node ref="U7" pin="5"/>
+      <node ref="U5" pin="6"/>
+    </net>
+    <net code="27" name="Net-(C28-Pad2)">
+      <node ref="U4" pin="4"/>
+      <node ref="C28" pin="2"/>
+      <node ref="L5" pin="2"/>
+      <node ref="L7" pin="2"/>
+      <node ref="U5" pin="4"/>
+      <node ref="C37" pin="1"/>
+    </net>
+    <net code="28" name="Net-(C13-Pad1)">
+      <node ref="C13" pin="1"/>
+      <node ref="C14" pin="2"/>
+      <node ref="R15" pin="2"/>
+      <node ref="L5" pin="1"/>
+      <node ref="R16" pin="2"/>
+    </net>
+    <net code="29" name="Net-(R7-Pad1)">
+      <node ref="R8" pin="1"/>
+      <node ref="R7" pin="1"/>
+      <node ref="U1" pin="14"/>
+    </net>
+    <net code="30" name="Net-(C31-Pad2)">
+      <node ref="L8" pin="1"/>
+      <node ref="C31" pin="2"/>
+      <node ref="C32" pin="1"/>
+    </net>
+    <net code="31" name="Net-(C27-Pad2)">
+      <node ref="C36" pin="1"/>
+      <node ref="C27" pin="2"/>
+      <node ref="L7" pin="1"/>
+      <node ref="L6" pin="2"/>
+      <node ref="C28" pin="1"/>
+    </net>
+    <net code="32" name="Net-(C27-Pad1)">
+      <node ref="C27" pin="1"/>
+      <node ref="C32" pin="2"/>
+      <node ref="L6" pin="1"/>
+      <node ref="C35" pin="1"/>
+    </net>
+    <net code="33" name="Net-(U10-Pad5)">
+      <node ref="U10" pin="6"/>
+      <node ref="U7" pin="3"/>
+      <node ref="U7" pin="3"/>
+      <node ref="U7" pin="3"/>
+      <node ref="U10" pin="5"/>
+    </net>
+    <net code="34" name="Net-(U7-Pad12)">
+      <node ref="U7" pin="12"/>
+      <node ref="U7" pin="8"/>
+    </net>
+    <net code="35" name="+2V5">
+      <node ref="C84" pin="1"/>
+      <node ref="U14" pin="2"/>
+      <node ref="R16" pin="1"/>
+      <node ref="L4" pin="1"/>
+      <node ref="C85" pin="1"/>
+    </net>
+    <net code="36" name="Net-(C21-Pad2)">
+      <node ref="U5" pin="5"/>
+      <node ref="U4" pin="5"/>
+      <node ref="C21" pin="2"/>
+      <node ref="C22" pin="2"/>
+      <node ref="L4" pin="2"/>
+      <node ref="L9" pin="1"/>
+    </net>
+    <net code="37" name="Net-(R5-Pad2)">
+      <node ref="U3" pin="3"/>
+      <node ref="U1" pin="12"/>
+      <node ref="R5" pin="2"/>
+    </net>
+    <net code="38" name="Net-(R13-Pad2)">
+      <node ref="U3" pin="1"/>
+      <node ref="R13" pin="2"/>
+      <node ref="U1" pin="10"/>
+    </net>
+    <net code="39" name="Net-(R34-Pad2)">
+      <node ref="U6" pin="3"/>
+      <node ref="R34" pin="2"/>
+      <node ref="U1" pin="5"/>
+    </net>
+    <net code="40" name="Net-(C3-Pad1)">
+      <node ref="C4" pin="1"/>
+      <node ref="R1" pin="1"/>
+      <node ref="C3" pin="1"/>
+      <node ref="L1" pin="2"/>
+      <node ref="U1" pin="4"/>
+    </net>
+    <net code="41" name="Net-(R10-Pad1)">
+      <node ref="R7" pin="2"/>
+      <node ref="R2" pin="1"/>
+      <node ref="R10" pin="1"/>
+      <node ref="U1" pin="13"/>
+    </net>
+    <net code="42" name="Net-(R21-Pad1)">
+      <node ref="R30" pin="1"/>
+      <node ref="U1" pin="2"/>
+      <node ref="R26" pin="2"/>
+      <node ref="R21" pin="1"/>
+    </net>
+    <net code="43" name="Net-(R10-Pad2)">
+      <node ref="R8" pin="2"/>
+      <node ref="U1" pin="9"/>
+      <node ref="R11" pin="2"/>
+      <node ref="R10" pin="2"/>
+    </net>
+    <net code="44" name="Net-(C6-Pad1)">
+      <node ref="R4" pin="2"/>
+      <node ref="U8" pin="12"/>
+      <node ref="R1" pin="2"/>
+      <node ref="C6" pin="1"/>
+      <node ref="R13" pin="1"/>
+      <node ref="U8" pin="3"/>
+      <node ref="C7" pin="1"/>
+      <node ref="R2" pin="2"/>
+      <node ref="U8" pin="10"/>
+      <node ref="R21" pin="2"/>
+      <node ref="C62" pin="1"/>
+      <node ref="C61" pin="1"/>
+      <node ref="R5" pin="1"/>
+      <node ref="R34" pin="1"/>
+      <node ref="U8" pin="5"/>
+      <node ref="R25" pin="1"/>
+    </net>
+    <net code="45" name="Net-(R29-Pad2)">
+      <node ref="R31" pin="2"/>
+      <node ref="R29" pin="2"/>
+      <node ref="R30" pin="2"/>
+      <node ref="U1" pin="6"/>
+    </net>
+    <net code="46" name="Net-(R55-Pad2)">
+      <node ref="R55" pin="2"/>
+      <node ref="U14" pin="1"/>
+    </net>
+    <net code="47" name="+9V">
+      <node ref="L10" pin="1"/>
+      <node ref="L1" pin="1"/>
+      <node ref="L11" pin="1"/>
+      <node ref="L3" pin="1"/>
+      <node ref="U13" pin="3"/>
+      <node ref="R27" pin="2"/>
+      <node ref="U14" pin="3"/>
+      <node ref="C80" pin="1"/>
+      <node ref="C81" pin="1"/>
+      <node ref="C78" pin="1"/>
+      <node ref="U12" pin="3"/>
+      <node ref="L2" pin="1"/>
+      <node ref="C79" pin="1"/>
+      <node ref="C77" pin="1"/>
+      <node ref="C76" pin="1"/>
+    </net>
+    <net code="48" name="+13.8V">
+      <node ref="C91" pin="1"/>
+      <node ref="U12" pin="1"/>
+      <node ref="U15" pin="1"/>
+      <node ref="CON1" pin="1"/>
+      <node ref="C74" pin="1"/>
+      <node ref="C75" pin="1"/>
+      <node ref="R58" pin="2"/>
+      <node ref="C88" pin="1"/>
+    </net>
+    <net code="49" name="+3V3">
+      <node ref="C82" pin="1"/>
+      <node ref="C73" pin="1"/>
+      <node ref="R52" pin="2"/>
+      <node ref="R54" pin="2"/>
+      <node ref="R53" pin="2"/>
+      <node ref="U11" pin="6"/>
+      <node ref="U16" pin="16"/>
+      <node ref="U13" pin="2"/>
+      <node ref="C83" pin="1"/>
+      <node ref="C134" pin="1"/>
+    </net>
+    <net code="50" name="TX_PA_1">
+      <node ref="P8" pin="2"/>
+      <node ref="U17" pin="11"/>
+    </net>
+    <net code="51" name="Net-(U16-Pad12)">
+      <node ref="U16" pin="12"/>
+    </net>
+    <net code="52" name="40M">
+      <node ref="U17" pin="3"/>
+      <node ref="U16" pin="11"/>
+    </net>
+    <net code="53" name="80M">
+      <node ref="U17" pin="2"/>
+      <node ref="U16" pin="10"/>
+    </net>
+    <net code="54" name="BPF">
+      <node ref="C104" pin="2"/>
+      <node ref="C31" pin="1"/>
+    </net>
+    <net code="55" name="TX_PA_0">
+      <node ref="U16" pin="6"/>
+      <node ref="U17" pin="6"/>
+    </net>
+    <net code="56" name="160M">
+      <node ref="U16" pin="9"/>
+      <node ref="U17" pin="1"/>
+    </net>
+    <net code="57" name="20M">
+      <node ref="U16" pin="4"/>
+      <node ref="U17" pin="4"/>
+    </net>
+    <net code="58" name="17,15,12,10M">
+      <node ref="U17" pin="5"/>
+      <node ref="U16" pin="5"/>
+    </net>
+    <net code="59" name="TX_1">
+      <node ref="C11" pin="2"/>
+      <node ref="U3" pin="11"/>
+      <node ref="C65" pin="2"/>
+      <node ref="U3" pin="10"/>
+      <node ref="U6" pin="11"/>
+      <node ref="U9" pin="11"/>
+      <node ref="U9" pin="10"/>
+      <node ref="U9" pin="9"/>
+      <node ref="U6" pin="9"/>
+      <node ref="U17" pin="10"/>
+      <node ref="U3" pin="9"/>
+      <node ref="R14" pin="2"/>
+      <node ref="U6" pin="10"/>
+      <node ref="C56" pin="2"/>
+      <node ref="C34" pin="2"/>
+      <node ref="U2" pin="11"/>
+      <node ref="U2" pin="10"/>
+      <node ref="U2" pin="9"/>
+    </net>
+    <net code="60" name="TX_0">
+      <node ref="U16" pin="7"/>
+      <node ref="U17" pin="7"/>
+    </net>
+    <net code="61" name="GND">
+      <node ref="C105" pin="2"/>
+      <node ref="U16" pin="3"/>
+      <node ref="U16" pin="2"/>
+      <node ref="U16" pin="1"/>
+      <node ref="C87" pin="1"/>
+      <node ref="C86" pin="1"/>
+      <node ref="U17" pin="8"/>
+      <node ref="U16" pin="13"/>
+      <node ref="C127" pin="2"/>
+      <node ref="C102" pin="2"/>
+      <node ref="C101" pin="2"/>
+      <node ref="C95" pin="2"/>
+      <node ref="C96" pin="2"/>
+      <node ref="C123" pin="2"/>
+      <node ref="C97" pin="2"/>
+      <node ref="C89" pin="1"/>
+      <node ref="C109" pin="2"/>
+      <node ref="U16" pin="8"/>
+      <node ref="C75" pin="2"/>
+      <node ref="C119" pin="2"/>
+      <node ref="C107" pin="2"/>
+      <node ref="C106" pin="2"/>
+      <node ref="C120" pin="2"/>
+      <node ref="C110" pin="2"/>
+      <node ref="C74" pin="2"/>
+      <node ref="C108" pin="1"/>
+      <node ref="C112" pin="2"/>
+      <node ref="C92" pin="2"/>
+      <node ref="C98" pin="2"/>
+      <node ref="C99" pin="2"/>
+      <node ref="C100" pin="2"/>
+      <node ref="C84" pin="2"/>
+      <node ref="C113" pin="2"/>
+      <node ref="C116" pin="2"/>
+      <node ref="C117" pin="2"/>
+      <node ref="U15" pin="2"/>
+      <node ref="P2" pin="3"/>
+      <node ref="C45" pin="2"/>
+      <node ref="P2" pin="1"/>
+      <node ref="U7" pin="7"/>
+      <node ref="U6" pin="8"/>
+      <node ref="U6" pin="7"/>
+      <node ref="C125" pin="1"/>
+      <node ref="U6" pin="6"/>
+      <node ref="C128" pin="2"/>
+      <node ref="C131" pin="1"/>
+      <node ref="C51" pin="2"/>
+      <node ref="U7" pin="15"/>
+      <node ref="C67" pin="2"/>
+      <node ref="U1" pin="11"/>
+      <node ref="C91" pin="2"/>
+      <node ref="C88" pin="2"/>
+      <node ref="P6" pin="4"/>
+      <node ref="P6" pin="1"/>
+      <node ref="C93" pin="2"/>
+      <node ref="R51" pin="2"/>
+      <node ref="C115" pin="1"/>
+      <node ref="C72" pin="2"/>
+      <node ref="C130" pin="2"/>
+      <node ref="C122" pin="2"/>
+      <node ref="C121" pin="2"/>
+      <node ref="U10" pin="4"/>
+      <node ref="C124" pin="2"/>
+      <node ref="C129" pin="2"/>
+      <node ref="J1" pin="1"/>
+      <node ref="C73" pin="2"/>
+      <node ref="C77" pin="2"/>
+      <node ref="C78" pin="2"/>
+      <node ref="C79" pin="2"/>
+      <node ref="C76" pin="2"/>
+      <node ref="C44" pin="1"/>
+      <node ref="R55" pin="1"/>
+      <node ref="C39" pin="2"/>
+      <node ref="C20" pin="1"/>
+      <node ref="C85" pin="2"/>
+      <node ref="C38" pin="2"/>
+      <node ref="J2" pin="1"/>
+      <node ref="J3" pin="1"/>
+      <node ref="R35" pin="2"/>
+      <node ref="R38" pin="1"/>
+      <node ref="C54" pin="2"/>
+      <node ref="C55" pin="2"/>
+      <node ref="C1" pin="2"/>
+      <node ref="C2" pin="2"/>
+      <node ref="C29" pin="2"/>
+      <node ref="C26" pin="2"/>
+      <node ref="R28" pin="1"/>
+      <node ref="C12" pin="2"/>
+      <node ref="J4" pin="1"/>
+      <node ref="U11" pin="3"/>
+      <node ref="U12" pin="2"/>
+      <node ref="C65" pin="1"/>
+      <node ref="C11" pin="1"/>
+      <node ref="C82" pin="2"/>
+      <node ref="C50" pin="2"/>
+      <node ref="C49" pin="2"/>
+      <node ref="CON1" pin="3"/>
+      <node ref="CON1" pin="2"/>
+      <node ref="C83" pin="2"/>
+      <node ref="C80" pin="2"/>
+      <node ref="R19" pin="1"/>
+      <node ref="U13" pin="1"/>
+      <node ref="C81" pin="2"/>
+      <node ref="C34" pin="1"/>
+      <node ref="R4" pin="1"/>
+      <node ref="C6" pin="2"/>
+      <node ref="C7" pin="2"/>
+      <node ref="C4" pin="2"/>
+      <node ref="U8" pin="11"/>
+      <node ref="C18" pin="2"/>
+      <node ref="C17" pin="2"/>
+      <node ref="C3" pin="2"/>
+      <node ref="P8" pin="3"/>
+      <node ref="P8" pin="1"/>
+      <node ref="C134" pin="2"/>
+      <node ref="U5" pin="2"/>
+      <node ref="C13" pin="2"/>
+      <node ref="U3" pin="6"/>
+      <node ref="U3" pin="7"/>
+      <node ref="U3" pin="8"/>
+      <node ref="R15" pin="1"/>
+      <node ref="U2" pin="8"/>
+      <node ref="C15" pin="2"/>
+      <node ref="C56" pin="1"/>
+      <node ref="C35" pin="2"/>
+      <node ref="U9" pin="6"/>
+      <node ref="C46" pin="2"/>
+      <node ref="L8" pin="2"/>
+      <node ref="C47" pin="2"/>
+      <node ref="C16" pin="2"/>
+      <node ref="C21" pin="1"/>
+      <node ref="U9" pin="7"/>
+      <node ref="U9" pin="8"/>
+      <node ref="C62" pin="2"/>
+      <node ref="C61" pin="2"/>
+      <node ref="C59" pin="2"/>
+      <node ref="C64" pin="1"/>
+      <node ref="C23" pin="2"/>
+      <node ref="C33" pin="2"/>
+      <node ref="C43" pin="2"/>
+      <node ref="C22" pin="1"/>
+      <node ref="U4" pin="2"/>
+      <node ref="C14" pin="1"/>
+      <node ref="U2" pin="7"/>
+      <node ref="C37" pin="2"/>
+      <node ref="U2" pin="6"/>
+      <node ref="C52" pin="2"/>
+      <node ref="C53" pin="2"/>
+      <node ref="C36" pin="2"/>
+    </net>
+    <net code="62" name="Net-(P6-Pad3)">
+      <node ref="U16" pin="15"/>
+      <node ref="U11" pin="7"/>
+      <node ref="R53" pin="1"/>
+      <node ref="P6" pin="3"/>
+    </net>
+    <net code="63" name="Net-(P6-Pad2)">
+      <node ref="P6" pin="2"/>
+      <node ref="R54" pin="1"/>
+      <node ref="U11" pin="8"/>
+      <node ref="U16" pin="14"/>
+    </net>
+    <net code="64" name="Net-(C42-Pad1)">
+      <node ref="C42" pin="1"/>
+      <node ref="Q1" pin="2"/>
+      <node ref="R35" pin="1"/>
+    </net>
+    <net code="65" name="Net-(C26-Pad1)">
+      <node ref="C26" pin="1"/>
+      <node ref="R20" pin="2"/>
+      <node ref="R18" pin="1"/>
+      <node ref="R19" pin="2"/>
+      <node ref="C29" pin="1"/>
+    </net>
+    <net code="66" name="Net-(R11-Pad1)">
+      <node ref="U1" pin="8"/>
+      <node ref="R6" pin="2"/>
+      <node ref="R11" pin="1"/>
+    </net>
+    <net code="67" name="Net-(C9-Pad1)">
+      <node ref="R12" pin="1"/>
+      <node ref="C9" pin="1"/>
+    </net>
+    <net code="68" name="Net-(C9-Pad2)">
+      <node ref="U2" pin="3"/>
+      <node ref="C9" pin="2"/>
+    </net>
+    <net code="69" name="Net-(C24-Pad1)">
+      <node ref="C24" pin="1"/>
+      <node ref="U2" pin="5"/>
+      <node ref="U2" pin="2"/>
+    </net>
+    <net code="70" name="Net-(C8-Pad2)">
+      <node ref="C8" pin="2"/>
+      <node ref="U2" pin="1"/>
+    </net>
+    <net code="71" name="Net-(C8-Pad1)">
+      <node ref="R6" pin="1"/>
+      <node ref="C8" pin="1"/>
+    </net>
+    <net code="72" name="Net-(C24-Pad2)">
+      <node ref="C25" pin="1"/>
+      <node ref="R22" pin="1"/>
+      <node ref="R23" pin="2"/>
+      <node ref="Q1" pin="3"/>
+      <node ref="C24" pin="2"/>
+    </net>
+    <net code="73" name="Net-(C40-Pad1)">
+      <node ref="R32" pin="2"/>
+      <node ref="C40" pin="1"/>
+    </net>
+    <net code="74" name="Net-(C38-Pad1)">
+      <node ref="R18" pin="2"/>
+      <node ref="R22" pin="2"/>
+      <node ref="C39" pin="1"/>
+      <node ref="C38" pin="1"/>
+      <node ref="R28" pin="2"/>
+      <node ref="R27" pin="1"/>
+    </net>
+    <net code="75" name="Net-(C54-Pad1)">
+      <node ref="R37" pin="1"/>
+      <node ref="C54" pin="1"/>
+      <node ref="C55" pin="1"/>
+      <node ref="L11" pin="2"/>
+      <node ref="U9" pin="16"/>
+    </net>
+    <net code="76" name="Net-(C40-Pad2)">
+      <node ref="J2" pin="4"/>
+      <node ref="J2" pin="5"/>
+      <node ref="J2" pin="3"/>
+      <node ref="J2" pin="2"/>
+      <node ref="R20" pin="1"/>
+      <node ref="C40" pin="2"/>
+      <node ref="C44" pin="2"/>
+    </net>
+    <net code="77" name="Net-(C1-Pad1)">
+      <node ref="C2" pin="1"/>
+      <node ref="C1" pin="1"/>
+      <node ref="L2" pin="2"/>
+      <node ref="U2" pin="16"/>
+    </net>
+    <net code="78" name="Net-(R52-Pad1)">
+      <node ref="R52" pin="1"/>
+      <node ref="U11" pin="2"/>
+    </net>
+    <net code="79" name="Net-(C71-Pad2)">
+      <node ref="U11" pin="4"/>
+      <node ref="C71" pin="2"/>
+    </net>
+    <net code="80" name="Net-(C25-Pad2)">
+      <node ref="C25" pin="2"/>
+      <node ref="R32" pin="1"/>
+      <node ref="C42" pin="2"/>
+      <node ref="Q1" pin="1"/>
+      <node ref="R23" pin="1"/>
+    </net>
+    <net code="81" name="Net-(C10-Pad1)">
+      <node ref="C10" pin="1"/>
+      <node ref="R9" pin="1"/>
+      <node ref="U2" pin="4"/>
+    </net>
+    <net code="82" name="Net-(C10-Pad2)">
+      <node ref="J1" pin="5"/>
+      <node ref="C10" pin="2"/>
+      <node ref="J1" pin="4"/>
+    </net>
+    <net code="83" name="Net-(C5-Pad2)">
+      <node ref="J1" pin="3"/>
+      <node ref="C5" pin="2"/>
+      <node ref="J1" pin="2"/>
+    </net>
+    <net code="84" name="Net-(C5-Pad1)">
+      <node ref="R3" pin="2"/>
+      <node ref="C5" pin="1"/>
+      <node ref="U2" pin="15"/>
+    </net>
+    <net code="89" name="Net-(C41-Pad1)">
+      <node ref="U6" pin="15"/>
+      <node ref="C41" pin="1"/>
+    </net>
+    <net code="90" name="Net-(U6-Pad14)">
+      <node ref="U6" pin="14"/>
+    </net>
+    <net code="91" name="Net-(U6-Pad13)">
+      <node ref="U6" pin="13"/>
+    </net>
+    <net code="92" name="Net-(U6-Pad12)">
+      <node ref="U6" pin="12"/>
+    </net>
+    <net code="93" name="Net-(R26-Pad1)">
+      <node ref="R26" pin="1"/>
+      <node ref="U1" pin="1"/>
+      <node ref="R29" pin="1"/>
+    </net>
+    <net code="94" name="Net-(U2-Pad14)">
+      <node ref="U2" pin="14"/>
+    </net>
+    <net code="95" name="Net-(U2-Pad13)">
+      <node ref="U2" pin="13"/>
+    </net>
+    <net code="96" name="Net-(U2-Pad12)">
+      <node ref="U2" pin="12"/>
+    </net>
+    <net code="97" name="Net-(U9-Pad14)">
+      <node ref="U9" pin="14"/>
+    </net>
+    <net code="98" name="Net-(U9-Pad13)">
+      <node ref="U9" pin="13"/>
+    </net>
+    <net code="101" name="Net-(U9-Pad12)">
+      <node ref="U9" pin="12"/>
+    </net>
+    <net code="102" name="/90">
+      <node ref="U4" pin="6"/>
+      <node ref="U7" pin="9"/>
+      <node ref="U7" pin="2"/>
+      <node ref="U7" pin="2"/>
+      <node ref="U7" pin="2"/>
+    </net>
+    <net code="103" name="Net-(U3-Pad14)">
+      <node ref="U3" pin="14"/>
+    </net>
+    <net code="104" name="Net-(U3-Pad13)">
+      <node ref="U3" pin="13"/>
+    </net>
+    <net code="105" name="Net-(U3-Pad12)">
+      <node ref="U3" pin="12"/>
+    </net>
+    <net code="106" name="/0_1">
+      <node ref="U5" pin="1"/>
+      <node ref="R36" pin="1"/>
+    </net>
+    <net code="107" name="/270_1">
+      <node ref="R24" pin="1"/>
+      <node ref="U4" pin="1"/>
+    </net>
+    <net code="108" name="Net-(C41-Pad2)">
+      <node ref="C41" pin="2"/>
+      <node ref="R33" pin="2"/>
+      <node ref="C43" pin="1"/>
+    </net>
+    <net code="109" name="Net-(C30-Pad2)">
+      <node ref="R24" pin="2"/>
+      <node ref="C33" pin="1"/>
+      <node ref="C30" pin="2"/>
+    </net>
+    <net code="110" name="Net-(C19-Pad2)">
+      <node ref="R17" pin="2"/>
+      <node ref="C23" pin="1"/>
+      <node ref="C19" pin="2"/>
+    </net>
+    <net code="111" name="Net-(C48-Pad2)">
+      <node ref="R36" pin="2"/>
+      <node ref="C48" pin="2"/>
+      <node ref="C51" pin="1"/>
+    </net>
+    <net code="112" name="/180_1">
+      <node ref="U5" pin="3"/>
+      <node ref="R33" pin="1"/>
+    </net>
+    <net code="113" name="Net-(R25-Pad2)">
+      <node ref="U1" pin="3"/>
+      <node ref="U6" pin="1"/>
+      <node ref="R25" pin="2"/>
+    </net>
+    <net code="114" name="Net-(C15-Pad1)">
+      <node ref="C16" pin="1"/>
+      <node ref="R14" pin="1"/>
+      <node ref="U3" pin="16"/>
+      <node ref="C15" pin="1"/>
+      <node ref="C17" pin="1"/>
+      <node ref="L3" pin="2"/>
+      <node ref="C18" pin="1"/>
+      <node ref="U6" pin="16"/>
+    </net>
+    <net code="115" name="Net-(C48-Pad1)">
+      <node ref="U6" pin="4"/>
+      <node ref="C48" pin="1"/>
+    </net>
+    <net code="116" name="Net-(C30-Pad1)">
+      <node ref="C30" pin="1"/>
+      <node ref="U3" pin="4"/>
+    </net>
+    <net code="117" name="Net-(C19-Pad1)">
+      <node ref="U3" pin="15"/>
+      <node ref="C19" pin="1"/>
+    </net>
+    <net code="118" name="Net-(C45-Pad1)">
+      <node ref="U7" pin="10"/>
+      <node ref="U7" pin="13"/>
+      <node ref="U7" pin="14"/>
+      <node ref="U10" pin="2"/>
+      <node ref="C45" pin="1"/>
+      <node ref="U7" pin="4"/>
+      <node ref="U7" pin="4"/>
+      <node ref="U10" pin="1"/>
+      <node ref="U7" pin="4"/>
+      <node ref="C46" pin="1"/>
+      <node ref="U7" pin="1"/>
+      <node ref="L9" pin="2"/>
+      <node ref="C47" pin="1"/>
+      <node ref="R49" pin="1"/>
+      <node ref="U10" pin="8"/>
+      <node ref="U7" pin="1"/>
+      <node ref="U7" pin="1"/>
+    </net>
+    <net code="119" name="Net-(U10-Pad3)">
+      <node ref="U10" pin="3"/>
+      <node ref="U7" pin="11"/>
+    </net>
+    <net code="120" name="Net-(U7-Pad6)">
+      <node ref="U7" pin="6"/>
+    </net>
+    <net code="127" name="/90_1">
+      <node ref="U4" pin="3"/>
+      <node ref="R17" pin="1"/>
+    </net>
+    <net code="128" name="Net-(C72-Pad1)">
+      <node ref="R50" pin="2"/>
+      <node ref="R49" pin="2"/>
+      <node ref="R51" pin="1"/>
+      <node ref="C72" pin="1"/>
+    </net>
+    <net code="129" name="Net-(C71-Pad1)">
+      <node ref="U10" pin="7"/>
+      <node ref="R50" pin="1"/>
+      <node ref="C71" pin="1"/>
+    </net>
+    <net code="130" name="Net-(U11-Pad5)">
+      <node ref="U11" pin="5"/>
+    </net>
+    <net code="131" name="Net-(U11-Pad1)">
+      <node ref="U11" pin="1"/>
+    </net>
+    <net code="132" name="Net-(C112-Pad1)">
+      <node ref="L22" pin="1"/>
+      <node ref="C112" pin="1"/>
+      <node ref="D5" pin="1"/>
+      <node ref="L23" pin="2"/>
+    </net>
+    <net code="133" name="Net-(C111-Pad2)">
+      <node ref="C114" pin="2"/>
+      <node ref="C111" pin="2"/>
+      <node ref="L22" pin="2"/>
+    </net>
+    <net code="134" name="Net-(C103-Pad1)">
+      <node ref="L21" pin="2"/>
+      <node ref="C103" pin="1"/>
+      <node ref="C106" pin="1"/>
+      <node ref="C107" pin="1"/>
+      <node ref="D4" pin="1"/>
+    </net>
+    <net code="135" name="Net-(C111-Pad1)">
+      <node ref="L24" pin="2"/>
+      <node ref="C111" pin="1"/>
+      <node ref="C114" pin="1"/>
+      <node ref="D6" pin="1"/>
+      <node ref="C113" pin="1"/>
+    </net>
+    <net code="136" name="Net-(C90-Pad2)">
+      <node ref="C94" pin="2"/>
+      <node ref="L16" pin="2"/>
+      <node ref="C90" pin="2"/>
+    </net>
+    <net code="137" name="Net-(C95-Pad1)">
+      <node ref="D1" pin="1"/>
+      <node ref="C96" pin="1"/>
+      <node ref="L16" pin="1"/>
+      <node ref="C95" pin="1"/>
+      <node ref="L17" pin="2"/>
+      <node ref="C97" pin="1"/>
+    </net>
+    <net code="138" name="Net-(C103-Pad2)">
+      <node ref="C103" pin="2"/>
+      <node ref="L19" pin="2"/>
+    </net>
+    <net code="139" name="Net-(C105-Pad1)">
+      <node ref="C67" pin="1"/>
+      <node ref="C105" pin="1"/>
+      <node ref="L20" pin="2"/>
+      <node ref="L19" pin="1"/>
+      <node ref="D3" pin="1"/>
+    </net>
+    <net code="140" name="Net-(C132-Pad2)">
+      <node ref="C132" pin="2"/>
+      <node ref="P2" pin="2"/>
+    </net>
+    <net code="141" name="Net-(C101-Pad1)">
+      <node ref="L18" pin="1"/>
+      <node ref="C102" pin="1"/>
+      <node ref="L17" pin="1"/>
+      <node ref="C101" pin="1"/>
+      <node ref="U17" pin="16"/>
+      <node ref="R59" pin="2"/>
+    </net>
+    <net code="142" name="Net-(C109-Pad1)">
+      <node ref="L20" pin="1"/>
+      <node ref="C109" pin="1"/>
+      <node ref="L21" pin="1"/>
+      <node ref="R60" pin="2"/>
+      <node ref="U17" pin="15"/>
+      <node ref="C110" pin="1"/>
+    </net>
+    <net code="143" name="Net-(C116-Pad1)">
+      <node ref="C117" pin="1"/>
+      <node ref="L24" pin="1"/>
+      <node ref="L23" pin="1"/>
+      <node ref="U17" pin="14"/>
+      <node ref="R61" pin="2"/>
+      <node ref="C116" pin="1"/>
+    </net>
+    <net code="144" name="Net-(C123-Pad1)">
+      <node ref="L27" pin="1"/>
+      <node ref="L26" pin="1"/>
+      <node ref="C123" pin="1"/>
+      <node ref="U17" pin="13"/>
+      <node ref="R62" pin="2"/>
+      <node ref="C124" pin="1"/>
+    </net>
+    <net code="145" name="Net-(C118-Pad1)">
+      <node ref="C122" pin="1"/>
+      <node ref="C121" pin="1"/>
+      <node ref="D8" pin="1"/>
+      <node ref="L27" pin="2"/>
+      <node ref="C118" pin="1"/>
+    </net>
+    <net code="146" name="Net-(C118-Pad2)">
+      <node ref="C118" pin="2"/>
+      <node ref="L25" pin="2"/>
+    </net>
+    <net code="147" name="Net-(C119-Pad1)">
+      <node ref="L25" pin="1"/>
+      <node ref="L26" pin="2"/>
+      <node ref="C120" pin="1"/>
+      <node ref="C119" pin="1"/>
+      <node ref="D7" pin="1"/>
+    </net>
+    <net code="148" name="Net-(C126-Pad1)">
+      <node ref="L30" pin="2"/>
+      <node ref="D10" pin="1"/>
+      <node ref="C126" pin="1"/>
+      <node ref="C128" pin="1"/>
+    </net>
+    <net code="149" name="Net-(C129-Pad1)">
+      <node ref="L29" pin="1"/>
+      <node ref="C130" pin="1"/>
+      <node ref="L30" pin="1"/>
+      <node ref="U17" pin="12"/>
+      <node ref="R63" pin="2"/>
+      <node ref="C129" pin="1"/>
+    </net>
+    <net code="150" name="Net-(C126-Pad2)">
+      <node ref="C126" pin="2"/>
+      <node ref="L28" pin="2"/>
+    </net>
+    <net code="151" name="Net-(C127-Pad1)">
+      <node ref="D9" pin="1"/>
+      <node ref="L28" pin="1"/>
+      <node ref="C127" pin="1"/>
+      <node ref="L29" pin="2"/>
+    </net>
+    <net code="152" name="Net-(C100-Pad1)">
+      <node ref="C100" pin="1"/>
+      <node ref="C90" pin="1"/>
+      <node ref="D2" pin="1"/>
+      <node ref="C99" pin="1"/>
+      <node ref="C94" pin="1"/>
+      <node ref="L18" pin="2"/>
+      <node ref="C98" pin="1"/>
+    </net>
+    <net code="153" name="Net-(L15-Pad2)">
+      <node ref="R57" pin="1"/>
+      <node ref="L15" pin="2"/>
+    </net>
+    <net code="154" name="Net-(C108-Pad2)">
+      <node ref="R61" pin="1"/>
+      <node ref="R62" pin="1"/>
+      <node ref="C115" pin="2"/>
+      <node ref="R60" pin="1"/>
+      <node ref="C131" pin="2"/>
+      <node ref="R58" pin="1"/>
+      <node ref="C108" pin="2"/>
+      <node ref="U15" pin="3"/>
+      <node ref="R63" pin="1"/>
+      <node ref="C93" pin="1"/>
+      <node ref="L14" pin="2"/>
+      <node ref="R59" pin="1"/>
+      <node ref="C89" pin="2"/>
+      <node ref="C87" pin="2"/>
+      <node ref="C86" pin="2"/>
+      <node ref="L15" pin="1"/>
+      <node ref="C125" pin="2"/>
+      <node ref="C92" pin="1"/>
+    </net>
+    <net code="155" name="Net-(C132-Pad1)">
+      <node ref="D10" pin="2"/>
+      <node ref="C132" pin="1"/>
+      <node ref="R57" pin="2"/>
+      <node ref="D2" pin="2"/>
+      <node ref="D4" pin="2"/>
+      <node ref="D6" pin="2"/>
+      <node ref="D8" pin="2"/>
+    </net>
+    <net code="156" name="Net-(C104-Pad1)">
+      <node ref="D1" pin="2"/>
+      <node ref="C104" pin="1"/>
+      <node ref="D3" pin="2"/>
+      <node ref="R56" pin="2"/>
+      <node ref="D9" pin="2"/>
+      <node ref="D7" pin="2"/>
+      <node ref="D5" pin="2"/>
+    </net>
+    <net code="157" name="Net-(U17-Pad9)">
+      <node ref="U17" pin="9"/>
+    </net>
+    <net code="158" name="Net-(L14-Pad1)">
+      <node ref="R56" pin="1"/>
+      <node ref="L14" pin="1"/>
+    </net>
+  </nets>
+</export>
