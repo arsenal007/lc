@@ -1,4 +1,4 @@
-update=Di 10 Dez 2019 09:56:19 CET
+update=Sa 01 Feb 2020 06:41:31 CET
 version=1
 last_client=kicad
 [pcbnew]
@@ -25,17 +25,6 @@ version=1
 NetIExt=net
 [general]
 version=1
-[schematic_editor]
-version=1
-PageLayoutDescrFile=
-PlotDirectoryName=
-SubpartIdSeparator=0
-SubpartFirstId=65
-NetFmtName=Pcbnew
-SpiceForceRefPrefix=0
-SpiceUseNetNumbers=0
-LabSize=60
-ERC_TestSimilarLabels=1
 [eeschema]
 version=1
 LibDir=
@@ -71,3 +60,13 @@ LibName28=cmos4000
 LibName29=Connector
 LibName30=Relay
 LibName31=RX998
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=Pcbnew
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
