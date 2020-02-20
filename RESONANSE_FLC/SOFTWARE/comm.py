@@ -1,6 +1,11 @@
 
 
+import serial
+
 class IO:
+
+	def __init__(self, port):
+		self.ser = serial.Serial(port, 38400, timeout=0, parity=serial.PARITY_EVEN, rtscts=1)
 
 	def get_temperature(self):
 		packet = bytearray()
@@ -9,7 +14,7 @@ class IO:
 		packet.append(0x00)
 		packet.append(0xED)
 		ser.write(packet)
-		answer = ser.read_until(0xED,7)
+		answer = self.ser.read_until(0xED,7)
 		if answer[0]==b'\xBE':
 			if answer[1]==b'\x02':
 				return struct.unpack_from('>f', answer[2:])
